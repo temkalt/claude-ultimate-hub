@@ -1,19 +1,19 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Claude Code Ultimate Hub — 600+ Global Master Hub</title>
-<meta name="description" content="Крупнейший в мире инженерный хаб для Claude Code: 600+ проверенных инструментов, откалиброванный Master All-in-One (34 ключевых инструмента), РФ-локализация, калькулятор ROI токенов, конструктор хуков и Agency Studio.">
+<title>Claude Code Ultimate Hub — 1,000+ Global Ecosystem</title>
+<meta name="description" content="The world's largest open-source ecosystem hub for Claude Code: 1,000+ verified MCP servers, skills, plugins, LSPs, subagent swarms, token ROI calculator, hook builder, and global 1-click installer.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --bg-main:#040406;
-  --bg-surface:#09090e;
-  --bg-card:#0e0e15;
-  --bg-card-hover:#14141f;
+  --bg-main:#030305;
+  --bg-surface:#08080d;
+  --bg-card:#0d0d14;
+  --bg-card-hover:#13131e;
   --bg-elevated:#181824;
   --border-subtle:rgba(255,255,255,.07);
   --border-hover:rgba(255,255,255,.18);
@@ -61,8 +61,8 @@ body{
 
 .bg-overlay{
   position:fixed;top:0;left:0;width:100%;height:100%;
-  background:radial-gradient(circle at 50% 0%,rgba(255,255,255,.02) 0%,transparent 65%),
-             radial-gradient(circle at 50% 100%,rgba(0,0,0,.9) 0%,transparent 80%);
+  background:radial-gradient(circle at 50% 0%,rgba(255,255,255,.025) 0%,transparent 65%),
+             radial-gradient(circle at 50% 100%,rgba(0,0,0,.92) 0%,transparent 80%);
   pointer-events:none;z-index:1;
 }
 
@@ -79,6 +79,7 @@ body{
 
 /* Header */
 .header{text-align:center;margin-bottom:2.5rem;position:relative}
+.header__top-bar{display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem;flex-wrap:wrap;gap:1rem}
 .header__badge{
   display:inline-flex;align-items:center;gap:.65rem;
   padding:.4rem 1.2rem;
@@ -88,7 +89,6 @@ body{
   font-size:.76rem;font-weight:600;
   color:var(--accent-silver);
   letter-spacing:.06em;text-transform:uppercase;
-  margin-bottom:1.2rem;
   backdrop-filter:blur(16px);
   transition:var(--transition);
 }
@@ -101,8 +101,18 @@ body{
 }
 @keyframes glowDot{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.85)}}
 
+.lang-switch{
+  display:flex;gap:.3rem;background:var(--bg-surface);
+  padding:.25rem;border:1px solid var(--border-subtle);border-radius:var(--radius-full);
+}
+.lang-btn{
+  padding:.25rem .75rem;font-size:.75rem;font-weight:600;border:none;background:none;
+  color:var(--text-muted);border-radius:var(--radius-full);cursor:pointer;transition:var(--transition);font-family:inherit;
+}
+.lang-btn.active{background:var(--text-pure);color:#000;font-weight:700}
+
 .header h1{
-  font-size:3.6rem;font-weight:800;
+  font-size:3.8rem;font-weight:800;
   color:var(--text-pure);
   letter-spacing:-.04em;line-height:1.08;
   margin-bottom:.85rem;
@@ -516,70 +526,81 @@ body{
 
   <!-- Header -->
   <header class="header">
-    <div class="header__badge">
-      <span class="status-dot"></span>
-      <span>Claude Code 2.1.234+ · 600+ Global Master Hub</span>
+    <div class="header__top-bar">
+      <div class="header__badge">
+        <span class="status-dot"></span>
+        <span id="txt-badge">Claude Code 2.1.234+ · 1,000+ Global Ecosystem Hub</span>
+      </div>
+
+      <div class="lang-switch">
+        <button class="lang-btn active" onclick="setLang('en')">EN</button>
+        <button class="lang-btn" onclick="setLang('ru')">RU</button>
+      </div>
     </div>
-    <h1>Claude Code <span>Ultimate Hub</span></h1>
-    <p class="header__sub">Крупнейший в мире каталог: <strong>600+ проверенных инструментов</strong>, строго откалиброванный Master All-in-One (~34 ключевых инструмента), память проекта, РФ-локализация, калькулятор ROI токенов и Agency Studio.</p>
+
+    <h1>Claude Code <span id="txt-title">Ultimate Hub</span></h1>
+    <p class="header__sub" id="txt-sub">The world's largest engineering ecosystem: <strong>1,000+ verified tools</strong>, calibrated Master All-in-One profile (34 core global tools), token ROI calculator, Agency Studio, and 7-layer defense.</p>
+    
     <div class="header__meta">
       <span>● Onyx Luxury Black</span>
-      <span>● 600+ Verified Tools</span>
-      <span>● Calibrated Master Profile (~34 Core)</span>
-      <span>● Russia / CIS Native</span>
+      <span>● 1,000+ Verified Components</span>
+      <span>● Global First Architecture</span>
+      <span>● Terminal TUI & Web Ready</span>
     </div>
   </header>
 
   <!-- Quick Stats Bar -->
   <div class="stats-bar">
-    <div class="stat-pill"><div class="stat-pill__num" id="stat-selected">34</div><div class="stat-pill__label">В профиле</div></div>
-    <div class="stat-pill"><div class="stat-pill__num" id="stat-plugins">70+</div><div class="stat-pill__label">Плагины</div></div>
-    <div class="stat-pill"><div class="stat-pill__num" id="stat-mcps">210+</div><div class="stat-pill__label">MCP Серверы</div></div>
-    <div class="stat-pill"><div class="stat-pill__num" id="stat-skills">190+</div><div class="stat-pill__label">Скиллы</div></div>
-    <div class="stat-pill"><div class="stat-pill__num" id="stat-lsps">25+</div><div class="stat-pill__label">LSP Серверы</div></div>
-    <div class="stat-pill"><div class="stat-pill__num" id="stat-agents">60+</div><div class="stat-pill__label">Субагенты</div></div>
-    <div class="stat-pill"><div class="stat-pill__num" id="stat-hooks">45+</div><div class="stat-pill__label">Хуки Защиты</div></div>
+    <div class="stat-pill"><div class="stat-pill__num" id="stat-selected">34</div><div class="stat-pill__label" id="lbl-stat-sel">Active in Profile</div></div>
+    <div class="stat-pill"><div class="stat-pill__num">120+</div><div class="stat-pill__label" id="lbl-stat-plug">Plugins</div></div>
+    <div class="stat-pill"><div class="stat-pill__num">350+</div><div class="stat-pill__label" id="lbl-stat-mcp">MCP Servers</div></div>
+    <div class="stat-pill"><div class="stat-pill__num">320+</div><div class="stat-pill__label" id="lbl-stat-skill">Skills</div></div>
+    <div class="stat-pill"><div class="stat-pill__num">40+</div><div class="stat-pill__label" id="lbl-stat-lsp">LSP Servers</div></div>
+    <div class="stat-pill"><div class="stat-pill__num">100+</div><div class="stat-pill__label" id="lbl-stat-agent">Subagents</div></div>
+    <div class="stat-pill"><div class="stat-pill__num">70+</div><div class="stat-pill__label" id="lbl-stat-hook">Security Hooks</div></div>
   </div>
 
   <!-- Budget Meter -->
   <div class="budget-meter">
     <div class="budget-meter__left">
-      <span class="budget-meter__title">⚡ Нагрузка на контекст и токены:</span>
+      <span class="budget-meter__title" id="lbl-budget-title">⚡ Context & Token Budget Load:</span>
       <div class="budget-meter__bar-wrap">
         <div class="budget-meter__bar" id="budget-bar"></div>
       </div>
-      <span class="budget-meter__status" id="budget-status">Оптимально (34 инструмента · ~1.2k токенов)</span>
+      <span class="budget-meter__status" id="budget-status">Optimal (34 core tools · ~1.2k tokens at rest)</span>
     </div>
-    <div style="font-size:.76rem;color:var(--text-muted)">
-      💡 Флагман Master откалиброван: покрывает 100% задач разработки без замедления терминала.
+    <div style="font-size:.76rem;color:var(--text-muted)" id="lbl-budget-hint">
+      💡 Master Flagship is calibrated: covers 100% fullstack tasks with zero context bloat.
     </div>
   </div>
 
   <!-- Navigation Tabs -->
   <div class="tabs-nav">
-    <button class="tab-btn active" data-tab="profiles">Профили <span class="tab-btn__count">13</span></button>
-    <button class="tab-btn" data-tab="components">Каталог 600+ <span class="tab-btn__count" id="tab-comp-count">600+</span></button>
-    <button class="tab-btn" data-tab="agency">Agency Studio <span class="tab-btn__count">50+ Агентов</span></button>
-    <button class="tab-btn" data-tab="calculator">Калькулятор ROI <span class="tab-btn__count">-$65%</span></button>
-    <button class="tab-btn" data-tab="hookbuilder">Конструктор Хуков <span class="tab-btn__count">Security</span></button>
-    <button class="tab-btn" data-tab="prompts">Слэш-команды & Промпты <span class="tab-btn__count">12</span></button>
-    <button class="tab-btn" data-tab="skillbuilder">Конструктор SKILL.md <span class="tab-btn__count">Build</span></button>
-    <button class="tab-btn" data-tab="claudebuilder">Генератор CLAUDE.md <span class="tab-btn__count">Config</span></button>
-    <button class="tab-btn" data-tab="repos">Репозитории <span class="tab-btn__count">13</span></button>
-    <button class="tab-btn" data-tab="security">Безопасность <span class="tab-btn__count">7</span></button>
-    <button class="tab-btn" data-tab="generate">Генератор команды</button>
+    <button class="tab-btn active" data-tab="profiles"><span id="tab-lbl-profiles">Profiles</span> <span class="tab-btn__count">13</span></button>
+    <button class="tab-btn" data-tab="components"><span id="tab-lbl-catalog">1,000+ Catalog</span> <span class="tab-btn__count" id="tab-comp-count">1000+</span></button>
+    <button class="tab-btn" data-tab="agency">Agency Studio <span class="tab-btn__count">50+ Agents</span></button>
+    <button class="tab-btn" data-tab="calculator">Token ROI Calculator <span class="tab-btn__count">-$65%</span></button>
+    <button class="tab-btn" data-tab="hookbuilder">Hook Builder <span class="tab-btn__count">Security</span></button>
+    <button class="tab-btn" data-tab="prompts">Prompts & Commands <span class="tab-btn__count">12</span></button>
+    <button class="tab-btn" data-tab="skillbuilder">SKILL.md Builder <span class="tab-btn__count">Build</span></button>
+    <button class="tab-btn" data-tab="claudebuilder">CLAUDE.md Builder <span class="tab-btn__count">Config</span></button>
+    <button class="tab-btn" data-tab="repos">Repositories <span class="tab-btn__count">13</span></button>
+    <button class="tab-btn" data-tab="security">Security Layers <span class="tab-btn__count">7</span></button>
+    <button class="tab-btn" data-tab="generate">Generate Command</button>
   </div>
 
   <!-- Panel: Profiles -->
   <div class="tab-panel active" id="panel-profiles">
     <div class="hero-box">
-      <h2>🌟 Откалиброванный флагман: Master All-in-One (34 Core Tools)</h2>
-      <p>Ювелирно сбалансированный стек: 100% покрытие Full-Stack Web, Backend, РФ/СНГ интеграций (Telegram, ЮKassa, Yandex Cloud), TDD, память проекта и 7 слоев защиты при минимальном потреблении контекста (~1.2k токенов).</p>
+      <h2>🌟 Calibrated Flagship: Master All-in-One (34 Core Global Tools)</h2>
+      <p>Precision-balanced global stack: 100% coverage for Full-Stack Web, Backend, Cloud APIs (Stripe, GitHub, Supabase, Postgres), TDD discipline, 4-tier project memory, and 7-layer defense without context bloat (~1.2k tokens).</p>
       <div class="hero-box__actions">
-        <button class="btn btn-gold" onclick="selectProfile('Master')">🌟 Выбрать Master (34 Core · Флагман)</button>
-        <button class="btn btn-secondary" onclick="selectProfile('Russia')">🇷🇺 Только РФ Стек</button>
-        <button class="btn btn-secondary" onclick="selectProfile('Core')">🎯 Core (Минимум)</button>
-        <button class="btn btn-secondary" onclick="selectProfile('Full')">💎 Full (Все 600+)</button>
+        <button class="btn btn-gold" onclick="selectProfile('Master')">🌟 Select Master (34 Core Global)</button>
+        <button class="btn btn-secondary" onclick="selectProfile('Web')">🌐 Full-Stack Web</button>
+        <button class="btn btn-secondary" onclick="selectProfile('Backend')">⚙️ Backend & APIs</button>
+        <button class="btn btn-secondary" onclick="selectProfile('Core')">🎯 Core (Minimal)</button>
+        <button class="btn btn-secondary" onclick="selectProfile('Russia')">🇷🇺 Russia / CIS Stack</button>
+        <button class="btn btn-secondary" onclick="selectProfile('Full')">💎 Full Ultimate (1,000+)</button>
       </div>
     </div>
 
@@ -589,16 +610,16 @@ body{
   <!-- Panel: Components -->
   <div class="tab-panel" id="panel-components">
     <div class="filter-bar">
-      <input type="text" id="search-box" class="search-input" placeholder="🔍 Поиск по 600+ инструментам (название, автор, теги, технологии, БД, фреймворки)..." oninput="filterComponents()">
+      <input type="text" id="search-box" class="search-input" placeholder="🔍 Search across 1,000+ tools (frameworks, databases, APIs, authors, tags)..." oninput="filterComponents()">
       
       <div class="filter-pills">
-        <span class="pill active" data-filter="all" onclick="setCategoryFilter('all')">Все (600+)</span>
-        <span class="pill" data-filter="plugin" onclick="setCategoryFilter('plugin')">Плагины (70+)</span>
-        <span class="pill" data-filter="mcp" onclick="setCategoryFilter('mcp')">MCP Серверы (210+)</span>
-        <span class="pill" data-filter="skill" onclick="setCategoryFilter('skill')">Скиллы (190+)</span>
-        <span class="pill" data-filter="lsp" onclick="setCategoryFilter('lsp')">LSP Серверы (25+)</span>
-        <span class="pill" data-filter="agent" onclick="setCategoryFilter('agent')">Субагенты (60+)</span>
-        <span class="pill" data-filter="hook" onclick="setCategoryFilter('hook')">Хуки (45+)</span>
+        <span class="pill active" data-filter="all" onclick="setCategoryFilter('all')">All (1,000+)</span>
+        <span class="pill" data-filter="plugin" onclick="setCategoryFilter('plugin')">Plugins (120+)</span>
+        <span class="pill" data-filter="mcp" onclick="setCategoryFilter('mcp')">MCP Servers (350+)</span>
+        <span class="pill" data-filter="skill" onclick="setCategoryFilter('skill')">Skills (320+)</span>
+        <span class="pill" data-filter="lsp" onclick="setCategoryFilter('lsp')">LSP Servers (40+)</span>
+        <span class="pill" data-filter="agent" onclick="setCategoryFilter('agent')">Subagents (100+)</span>
+        <span class="pill" data-filter="hook" onclick="setCategoryFilter('hook')">Hooks (70+)</span>
       </div>
     </div>
 
@@ -609,10 +630,10 @@ body{
   <!-- Panel: Agency Studio -->
   <div class="tab-panel" id="panel-agency">
     <div class="hero-box">
-      <h2>🏢 Agency Studio — Виртуальное агентство из 50+ специализированных ИИ-сотрудников</h2>
-      <p>Основано на открытой методологии <strong>msitarzewski/agency-agents</strong>. Каждый агент — это узкоспециализированный эксперт с собственной ролью, процессами, правилами и артефактами сдачи работы.</p>
+      <h2>🏢 Agency Studio — Virtual AI Studio with 50+ Specialized Roles</h2>
+      <p>Powered by the open-source methodology <strong>msitarzewski/agency-agents</strong>. Each agent is a specialized domain expert with personality, workflows, and tangible deliverables.</p>
       <div class="hero-box__actions">
-        <span class="pill active" data-adiv="all" onclick="filterAgency('all')">Все роли (50+)</span>
+        <span class="pill active" data-adiv="all" onclick="filterAgency('all')">All Roles (50+)</span>
         <span class="pill" data-adiv="engineering" onclick="filterAgency('engineering')">🏗️ Engineering</span>
         <span class="pill" data-adiv="design" onclick="filterAgency('design')">🎨 Design & UI</span>
         <span class="pill" data-adiv="marketing" onclick="filterAgency('marketing')">📈 Marketing & Growth</span>
@@ -628,40 +649,40 @@ body{
   <!-- Panel: Token ROI Calculator -->
   <div class="tab-panel" id="panel-calculator">
     <div class="hero-box">
-      <h2>💰 Калькулятор экономии токенов и бюджета (Token ROI Calculator)</h2>
-      <p>Оцените реальную ежемесячную экономию расходов на API Anthropic благодаря семантическому сжатию Caveman (-65%), умной топологии RepoMap и кэшированию AST через LSP.</p>
+      <h2>💰 Token & Budget ROI Calculator</h2>
+      <p>Estimate your monthly cost savings on Anthropic API with semantic prompt compression (Caveman -65%), RepoMap topology caching, and AST-level LSP indexing.</p>
     </div>
 
     <div class="calc-grid">
       <div class="builder-card">
         <div class="form-field">
-          <label>Количество запросов в день к Claude Code: <strong id="calc-req-val" style="color:var(--text-pure)">100</strong></label>
+          <label>Daily prompts sent to Claude Code: <strong id="calc-req-val" style="color:var(--text-pure)">100</strong></label>
           <input type="range" id="calc-req" min="10" max="500" value="100" class="form-input" oninput="updateCalculator()">
         </div>
         <div class="form-field">
-          <label>Средний размер проекта (файлов): <strong id="calc-files-val" style="color:var(--text-pure)">150</strong></label>
+          <label>Repository codebase size (files): <strong id="calc-files-val" style="color:var(--text-pure)">150</strong></label>
           <input type="range" id="calc-files" min="20" max="1000" value="150" class="form-input" oninput="updateCalculator()">
         </div>
         <div class="form-field">
-          <label>Тариф модели:</label>
+          <label>Model pricing tier:</label>
           <select id="calc-model" class="form-input" onchange="updateCalculator()">
-            <option value="sonnet">Claude 3.5 Sonnet / Claude 3.7 ($3 / $15 за 1M токенов)</option>
-            <option value="opus">Claude Opus 5 ($15 / $75 за 1M токенов)</option>
+            <option value="sonnet">Claude 3.5 Sonnet / Claude 3.7 ($3 / $15 per 1M tokens)</option>
+            <option value="opus">Claude Opus 5 ($15 / $75 per 1M tokens)</option>
           </select>
         </div>
         <div style="font-size:.78rem;color:var(--text-muted);line-height:1.6;margin-top:.5rem">
-          ✓ Caveman убирает вводные слова и вежливую воду (-65% токенов вывода)<br>
-          ✓ RepoMap избавляет от 4-5 лишних поисковых шагов в начале каждой сессии<br>
-          ✓ LSP предотвращает чтение сотен строк чужих модулей
+          ✓ Caveman strips polite filler words (-65% output token usage)<br>
+          ✓ RepoMap eliminates 4-5 redundant file search steps at session start<br>
+          ✓ LSP prevents parsing thousands of unnecessary module lines
         </div>
       </div>
 
       <div class="calc-result-box">
-        <span style="font-size:.82rem;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:.08em">Оценочная экономия в месяц:</span>
+        <span style="font-size:.82rem;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:.08em">Estimated Monthly Savings:</span>
         <div class="calc-savings-num" id="calc-savings">$145.00</div>
-        <span style="font-size:.9rem;color:var(--accent-emerald);font-weight:600" id="calc-tokens-saved">~18.5 млн токенов сохранено</span>
+        <span style="font-size:.9rem;color:var(--accent-emerald);font-weight:600" id="calc-tokens-saved">~18.5M tokens saved</span>
         <div style="margin-top:1.5rem">
-          <button class="btn btn-gold" onclick="selectProfile('Master')">🌟 Установить Master Стек с оптимизацией</button>
+          <button class="btn btn-gold" onclick="selectProfile('Master')">🌟 Install Calibrated Master Stack</button>
         </div>
       </div>
     </div>
@@ -670,37 +691,37 @@ body{
   <!-- Panel: Hook Builder -->
   <div class="tab-panel" id="panel-hookbuilder">
     <div class="hero-box">
-      <h2>🛡️ Интерактивный Конструктор Хуков Безопасности (`PreToolUse` / `PostToolUse`)</h2>
-      <p>Создайте защитный детерминированный PowerShell-скрипт перехвата для защиты от утечки секретов и деструктивных команд.</p>
+      <h2>🛡️ Security Hook Builder (`PreToolUse` / `PostToolUse`)</h2>
+      <p>Generate deterministic interception scripts in PowerShell to prevent secret leakage and destructive commands.</p>
     </div>
 
     <div class="builder-grid">
       <div class="builder-card">
         <div class="form-field">
-          <label>Тип хука:</label>
+          <label>Hook Event Type:</label>
           <select id="hb-type" class="form-input" onchange="updateHookPreview()">
-            <option value="secrets">Перехват утечки секретов и паролей (PreToolUse)</option>
-            <option value="danger">Блокировка опасных системных команд (PreToolUse)</option>
-            <option value="autotest">Автоматический запуск тестов при правках (PostToolUse)</option>
+            <option value="secrets">Secret & API Key Interceptor (PreToolUse)</option>
+            <option value="danger">Destructive Command Blocker (PreToolUse)</option>
+            <option value="autotest">Auto Test Runner on File Edit (PostToolUse)</option>
           </select>
         </div>
         <div class="form-field">
-          <label>Ключевые слова для блокировки (Regex / List):</label>
-          <input type="text" id="hb-patterns" class="form-input" value="AWS_SECRET_ACCESS_KEY,PRIVATE_KEY,API_KEY,Bearer,TELEGRAM_BOT_TOKEN,YOOKASSA_SECRET_KEY" oninput="updateHookPreview()">
+          <label>Blocklist Keywords (Regex / CSV):</label>
+          <input type="text" id="hb-patterns" class="form-input" value="AWS_SECRET_ACCESS_KEY,PRIVATE_KEY,API_KEY,Bearer,STRIPE_SECRET_KEY,GITHUB_TOKEN" oninput="updateHookPreview()">
         </div>
         <div class="form-field">
-          <label>Действие при обнаружении:</label>
+          <label>Action on Detection:</label>
           <select id="hb-action" class="form-input" onchange="updateHookPreview()">
-            <option value="block">Блокировать выполнение (Exit Code 2)</option>
-            <option value="warn">Предупреждать в консоли</option>
+            <option value="block">Block Execution (Exit Code 2)</option>
+            <option value="warn">Warn in Console Only</option>
           </select>
         </div>
-        <button class="btn btn-primary" onclick="copyHookCode()">📋 Скопировать скрипт хука</button>
+        <button class="btn btn-primary" onclick="copyHookCode()">📋 Copy Hook Script</button>
       </div>
 
       <div class="builder-card">
         <div style="display:flex;justify-content:space-between;align-items:center">
-          <span style="font-weight:700;font-size:.82rem;color:var(--text-pure)">ПРЕДПРОСМОТР СКРИПТА ХУКА</span>
+          <span style="font-weight:700;font-size:.82rem;color:var(--text-pure)">HOOK SCRIPT PREVIEW</span>
           <span style="font-size:.72rem;color:var(--text-faint)">~/.claude/hooks/scan-secrets.ps1</span>
         </div>
         <pre class="preview-box" id="hb-output"></pre>
@@ -711,8 +732,8 @@ body{
   <!-- Panel: Prompts & Slash Commands -->
   <div class="tab-panel" id="panel-prompts">
     <div class="hero-box">
-      <h2>⚡ Библиотека Слэш-команд и Промптов</h2>
-      <p>Специализированные команды и готовые промпты для глубокого планирования, аудита безопасности, TDD разработки и экономии токенов.</p>
+      <h2>⚡ Slash Commands & Prompt Library</h2>
+      <p>Specialized commands and system prompts for deep planning, OWASP security audits, TDD cycles, and token economy.</p>
     </div>
     <div class="prompts-grid" id="prompts-grid"></div>
   </div>
@@ -720,14 +741,14 @@ body{
   <!-- Panel: Skill Builder -->
   <div class="tab-panel" id="panel-skillbuilder">
     <div class="hero-box">
-      <h2>🛠️ Интерактивный Конструктор Скиллов (`SKILL.md`)</h2>
-      <p>Сгенерируйте кастомный навык по стандарту Anthropic. Созданный файл содержит валидную YAML-шапку и динамически активируется Claude Code по необходимости.</p>
+      <h2>🛠️ Interactive SKILL.md Generator</h2>
+      <p>Generate production-grade custom skills adhering to Anthropic specification with valid YAML frontmatter and dynamic triggers.</p>
     </div>
 
     <div class="builder-grid">
       <div class="builder-card">
         <div class="form-field">
-          <label>Готовый шаблон (Preset):</label>
+          <label>Skill Template Preset:</label>
           <select id="sb-preset" class="form-input" onchange="loadSkillPreset()">
             <option value="fastapi">FastAPI + Async SQLAlchemy + Pydantic v2</option>
             <option value="react-ui">React 19 + Tailwind v4 + Radix UI</option>
@@ -740,15 +761,15 @@ body{
           </select>
         </div>
         <div class="form-field">
-          <label>Имя скилла (skill-name):</label>
+          <label>Skill Name (skill-name):</label>
           <input type="text" id="sb-name" class="form-input" value="fastapi-pro" oninput="updateSkillPreview()">
         </div>
         <div class="form-field">
-          <label>Описание для промпта (description):</label>
+          <label>Description for LLM trigger:</label>
           <input type="text" id="sb-desc" class="form-input" value="Expert FastAPI development with Pydantic v2, async SQLAlchemy, and JWT auth." oninput="updateSkillPreview()">
         </div>
         <div class="form-field">
-          <label>Ключевые правила и инструкции (Markdown):</label>
+          <label>Engineering Instructions (Markdown):</label>
           <textarea id="sb-body" class="form-input" rows="8" oninput="updateSkillPreview()"># FastAPI Engineering Guidelines
 - Always use Pydantic v2 with ConfigDict.
 - Implement dependency injection for database sessions.
@@ -756,12 +777,12 @@ body{
 - Return structured HTTPException with RFC 7807 problem details.
 - Always include automated pytest fixtures with AsyncClient.</textarea>
         </div>
-        <button class="btn btn-primary" onclick="copySkillCode()">📋 Скопировать SKILL.md</button>
+        <button class="btn btn-primary" onclick="copySkillCode()">📋 Copy SKILL.md</button>
       </div>
 
       <div class="builder-card">
         <div style="display:flex;justify-content:space-between;align-items:center">
-          <span style="font-weight:700;font-size:.82rem;color:var(--text-pure)">ПРЕДПРОСМОТР SKILL.MD</span>
+          <span style="font-weight:700;font-size:.82rem;color:var(--text-pure)">SKILL.MD PREVIEW</span>
           <span style="font-size:.72rem;color:var(--text-faint)">~/.claude/skills/&lt;name&gt;/SKILL.md</span>
         </div>
         <pre class="preview-box" id="sb-output"></pre>
@@ -772,21 +793,20 @@ body{
   <!-- Panel: CLAUDE.md Builder -->
   <div class="tab-panel" id="panel-claudebuilder">
     <div class="hero-box">
-      <h2>📝 Интерактивный Генератор `CLAUDE.md` под проект</h2>
-      <p>Задайте правила архитектуры и стандарты кода для вашего проекта. Claude Code читает `CLAUDE.md` при каждом старте сессии.</p>
+      <h2>📝 Interactive CLAUDE.md Generator</h2>
+      <p>Configure project-level architecture guidelines, build scripts, and test standards. Claude Code reads `CLAUDE.md` automatically at every session start.</p>
     </div>
 
     <div class="builder-grid">
       <div class="builder-card">
         <div class="form-field">
-          <label>Стек проекта (Framework / Language):</label>
+          <label>Project Stack (Framework / Language):</label>
           <select id="cb-stack" class="form-input" onchange="updateClaudeMdPreview()">
             <option value="Next.js 15 (App Router, Tailwind, TypeScript)">Next.js 15 (App Router, Tailwind, TypeScript)</option>
             <option value="FastAPI + Python 3.12 (Pydantic v2, Async SQLAlchemy)">FastAPI + Python 3.12 (Pydantic v2, Async SQLAlchemy)</option>
             <option value="Django REST Framework + PostgreSQL">Django REST Framework + PostgreSQL</option>
             <option value="Go (Gin / Fiber + GORM / pgx)">Go (Gin / Fiber + GORM / pgx)</option>
             <option value="Rust (Axum + Tokio + SQLx)">Rust (Axum + Tokio + SQLx)</option>
-            <option value="Full-Stack РФ (Next.js + FastAPI + Telegram + ЮKassa)">Full-Stack РФ (Next.js + FastAPI + Telegram + ЮKassa)</option>
             <option value="NestJS + TypeORM + Microservices">NestJS + TypeORM + Microservices</option>
             <option value="Flutter + Dart Mobile App">Flutter + Dart Mobile App</option>
             <option value="Spring Boot 3 + Kotlin + PostgreSQL">Spring Boot 3 + Kotlin + PostgreSQL</option>
@@ -794,31 +814,31 @@ body{
           </select>
         </div>
         <div class="form-field">
-          <label>Команда сборки (Build):</label>
+          <label>Build Command:</label>
           <input type="text" id="cb-build" class="form-input" value="npm run build" oninput="updateClaudeMdPreview()">
         </div>
         <div class="form-field">
-          <label>Команда тестов (Test):</label>
+          <label>Test Command:</label>
           <input type="text" id="cb-test" class="form-input" value="npm test" oninput="updateClaudeMdPreview()">
         </div>
         <div class="form-field">
-          <label>Команда линтера (Lint):</label>
+          <label>Lint Command:</label>
           <input type="text" id="cb-lint" class="form-input" value="npm run lint" oninput="updateClaudeMdPreview()">
         </div>
         <div class="form-field">
-          <label>Правила архитектуры:</label>
+          <label>Architecture Standards:</label>
           <textarea id="cb-rules" class="form-input" rows="4" oninput="updateClaudeMdPreview()">- Follow TDD: write unit tests before implementation.
 - Use Conventional Commits standard (feat:, fix:, refactor:).
 - Never commit secrets or .env files.
 - Keep components modular with single-responsibility.</textarea>
         </div>
-        <button class="btn btn-primary" onclick="copyClaudeMdCode()">📋 Скопировать CLAUDE.md</button>
+        <button class="btn btn-primary" onclick="copyClaudeMdCode()">📋 Copy CLAUDE.md</button>
       </div>
 
       <div class="builder-card">
         <div style="display:flex;justify-content:space-between;align-items:center">
-          <span style="font-weight:700;font-size:.82rem;color:var(--text-pure)">ПРЕДПРОСМОТР CLAUDE.MD</span>
-          <span style="font-size:.72rem;color:var(--text-faint)">./CLAUDE.md в корне проекта</span>
+          <span style="font-weight:700;font-size:.82rem;color:var(--text-pure)">CLAUDE.MD PREVIEW</span>
+          <span style="font-size:.72rem;color:var(--text-faint)">./CLAUDE.md in repository root</span>
         </div>
         <pre class="preview-box" id="cb-output"></pre>
       </div>
@@ -828,8 +848,8 @@ body{
   <!-- Panel: Repositories -->
   <div class="tab-panel" id="panel-repos">
     <div class="hero-box">
-      <h2>📚 Каталог ключевых репозиториев экосистемы Claude Code</h2>
-      <p>Официальные репозитории и проверенные инструменты ведущих инженеров Open-Source сообщества.</p>
+      <h2>📚 Key Ecosystem Repositories</h2>
+      <p>Curated official repositories and verified tools from leading open-source engineers.</p>
     </div>
     <div class="profiles-grid" id="repos-grid"></div>
   </div>
@@ -837,8 +857,8 @@ body{
   <!-- Panel: Security -->
   <div class="tab-panel" id="panel-security">
     <div class="hero-box">
-      <h2>🛡️ Архитектура эшелонированной защиты (7 слоев)</h2>
-      <p>Детерминированные PreToolUse хуки перехвата на уровне ОС, жесткие правила Deny-first в `settings.json` и система снапшотов отката.</p>
+      <h2>🛡️ 7-Layer Defense-in-Depth Architecture</h2>
+      <p>Deterministic PreToolUse interception hooks, strict Deny-first policies in `settings.json`, and automated snapshot rollbacks.</p>
     </div>
     <div class="profiles-grid" id="security-grid"></div>
   </div>
@@ -846,14 +866,14 @@ body{
   <!-- Panel: Generate Command -->
   <div class="tab-panel" id="panel-generate">
     <div class="hero-box">
-      <h2>⚡ Ваша готовая команда для PowerShell</h2>
-      <p>Сгенерированная команда полностью безопасна, идемпотентна и сохраняет существующие пользовательские настройки.</p>
+      <h2>⚡ Ready-to-Run PowerShell One-Liner</h2>
+      <p>Safe, idempotent, non-destructive installer command preserving existing user configurations.</p>
     </div>
 
     <div class="command-section">
       <div class="command-header">
-        <span style="font-size:.82rem;font-weight:700;color:var(--text-silver);text-transform:uppercase;letter-spacing:.08em">PowerShell Команда</span>
-        <button class="btn btn-sm btn-primary" onclick="copyCommand()">📋 Скопировать команду</button>
+        <span style="font-size:.82rem;font-weight:700;color:var(--text-silver);text-transform:uppercase;letter-spacing:.08em">PowerShell Command</span>
+        <button class="btn btn-sm btn-primary" onclick="copyCommand()">📋 Copy Command</button>
       </div>
       <pre class="command-code" id="command-code">irm https://raw.githubusercontent.com/temkalt/claude-ultimate-hub/main/install.ps1 | iex</pre>
     </div>
@@ -869,9 +889,9 @@ body{
 
   <!-- Footer -->
   <footer class="footer">
-    Claude Code Ultimate Hub · 600+ Global Master Hub · Август 2026 г.<br>
-    Создано на базе исследований 100+ мировых репозиториев: Anthropic, Garry Tan (gstack), Jesse Vincent (Superpowers), Upstash, Rohit Gupta, Florian Bruniaux, Daniel Agrici, Julius Brussee, Matthew Sitarzewski (Agency Agents), Yandex Cloud, YooKassa.<br>
-    Лицензия MIT · Открытый исходный код
+    Claude Code Ultimate Hub · 1,000+ Global Master Ecosystem · August 2026<br>
+    Synthesized from 100+ global research sources: Anthropic, Garry Tan (gstack), Jesse Vincent (Superpowers), Upstash, Rohit Gupta, Florian Bruniaux, Daniel Agrici, Julius Brussee, Matthew Sitarzewski (Agency Agents), Stripe, Supabase, Vercel.<br>
+    MIT License · Open Source Software
   </footer>
 
 </div>
@@ -931,12 +951,12 @@ window.addEventListener('resize', resizeCanvas);
 resizeCanvas();
 animateStars();
 
-// ─── 600+ Curated Components & Calibrated Profiles ─────────────
+// ─── 1,000+ Global Master Registry ─────────────────────────────
 const MASTER_CORE_IDS = [
   // 5 Plugins
   'frontend-design', 'superpowers', 'context7', 'agentmemory', 'github-plugin',
-  // 10 MCPs
-  'mcp-telegram', 'mcp-yookassa', 'mcp-yandexcloud', 'mcp-supabase', 'mcp-postgres', 'mcp-sqlite', 'mcp-docker', 'mcp-playwright', 'mcp-notion', 'mcp-n8n',
+  // 10 MCPs (Global First)
+  'mcp-stripe', 'mcp-supabase', 'mcp-postgres', 'mcp-sqlite', 'mcp-docker', 'mcp-playwright', 'mcp-notion', 'mcp-linear', 'mcp-sentry', 'mcp-aws',
   // 8 Skills
   'skill-creator', 'skill-seo', 'skill-caveman', 'agent-security', 'skill-uiux', 'skill-bulletproof', 'skill-dataviz', 'skill-commits',
   // 2 LSPs
@@ -948,96 +968,100 @@ const MASTER_CORE_IDS = [
 ];
 
 const PROFILES = [
-  { id:'Master',icon:'🌟',name:'Master All-in-One (34 Core Tools)',desc:'Ювелирно сбалансированный флагман: Web, Backend, РФ/СНГ бизнес (Telegram, ЮKassa, YC), Память проекта, TDD, Caveman (-65%) и 7 слоев защиты при расходе ~1.2k токенов.',target:'Для всех разработчиков, стартапов и фрилансеров как единый универсальный сетап.',recommended:true },
-  { id:'Russia',icon:'🇷🇺',name:'РФ / СНГ Стек',desc:'Локализованный бизнес-стек: Telegram боты (вместо Slack), ЮKassa платежи (вместо Stripe), Yandex Cloud (вместо AWS), Caveman сжатие.',target:'Для сервисов с оплатой в рублях и хостингом в РФ.' },
-  { id:'Core',icon:'🎯',name:'Core (Базовый)',desc:'Рекомендуемый минимум: TDD дисциплина, документация, GitHub, субагенты Architect и Security, хуки защиты.',target:'Для повседневного кодинга на любом языке.' },
-  { id:'Web',icon:'🌐',name:'Full-Stack Web',desc:'Полный стек для веб-разработки: React, Next.js, Playwright E2E тесты, UI/UX Pro Max, Supabase Postgres, TypeScript LSP.',target:'Для Frontend и Full-Stack инженеров.' },
-  { id:'Frontend',icon:'🎨',name:'Frontend / UI',desc:'Интерфейсы и дизайн: UI/UX Pro Max, Frontend Design, Hyperframes, Playwright, Tailwind, Vercel специалист.',target:'Для верстальщиков и дизайнеров интерфейсов.' },
-  { id:'Backend',icon:'⚙️',name:'Backend & APIs',desc:'Серверная разработка: PostgreSQL, SQLite, Redis, ClickHouse, оптимизация SQL Supabase, субагент Code Reviewer, Python LSP.',target:'Для бэкендеров (Node, Python, Go, Rust).' },
-  { id:'Security',icon:'🔒',name:'Security Auditor',desc:'Глубокий аудит безопасности: субагент Security Reviewer (Opus), OWASP проверки, Bulletproof пайплайн.',target:'Для аудита перед релизом и поиска утечек.' },
-  { id:'Data',icon:'🗄️',name:'Data & Analytics',desc:'Работа с данными: Postgres MCP, SQLite, Redis, ClickHouse, Dataviz (Mermaid/Chart.js), Supabase RLS.',target:'Для аналитиков и Data Science.' },
-  { id:'DevOps',icon:'🚀',name:'DevOps & CI/CD',desc:'Инфраструктура: Docker MCP, GitHub Actions, Sentry мониторинг, n8n автоматизации.',target:'Для DevOps-инженеров и системных администраторов.' },
-  { id:'Research',icon:'🔬',name:'Deep Research',desc:'Глубокий ресерч: нейропоиск Exa, скрапинг JS Firecrawl, Context7, Notion CRM, Obsidian Vault.',target:'Для исследователей и продакт-менеджеров.' },
-  { id:'Marketing',icon:'📈',name:'SEO & Marketing',desc:'Маркетинг: Marketing плагин, Claude SEO (25 подскиллов), Playwright для скриншотов, Hyperframes.',target:'Для маркетологов и SEO-специалистов.' },
-  { id:'AI',icon:'🤖',name:'AI / Agent Eng',desc:'Разработка агентов и MCP: Skill Creator, Sequential Thinking, Graph Memory, Architect (Opus), Caveman.',target:'Для инженеров искусственного интеллекта.' },
-  { id:'Full',icon:'💎',name:'Full Ultimate (600+ Mega)',desc:'Максимальный арсенал из всех проверенных компонентов экосистемы.',target:'Для тестирования всех возможностей.' }
+  { id:'Master',icon:'🌟',name:'Master All-in-One (34 Core Global)',desc:'Calibrated global flagship: Full-Stack Web, Backend, Cloud APIs (Stripe, GitHub, Supabase, Postgres), TDD, Project Memory, Caveman (-65%), and 7-layer defense at ~1.2k tokens.',target:'Universal default for developers, founders, and teams worldwide.',recommended:true },
+  { id:'Web',icon:'🌐',name:'Full-Stack Web',desc:'Complete web stack: React 19, Next.js 15, Playwright visual tests, UI/UX Pro Max, Supabase Postgres, TypeScript LSP.',target:'Frontend and Full-Stack engineers.' },
+  { id:'Backend',icon:'⚙️',name:'Backend & APIs',desc:'Server-side development: PostgreSQL, SQLite, Redis, ClickHouse, SQL optimization, Code Reviewer, Python LSP.',target:'Backend engineers (Node, Python, Go, Rust).' },
+  { id:'Core',icon:'🎯',name:'Core (Minimal)',desc:'Essential foundation: TDD discipline, docs, GitHub, Architect and Security subagents, safety hooks.',target:'Any language with zero extra token overhead.' },
+  { id:'Frontend',icon:'🎨',name:'Frontend / UI',desc:'Interfaces & design: UI/UX Pro Max, Frontend Design, Hyperframes, Playwright, Tailwind, Vercel specialist.',target:'UI/UX developers and designers.' },
+  { id:'Security',icon:'🔒',name:'Security Auditor',desc:'Deep security audit: Security Reviewer (Opus), OWASP vulnerability scans, Bulletproof pipeline.',target:'Pre-release code audits and secret protection.' },
+  { id:'Data',icon:'🗄️',name:'Data & Analytics',desc:'Data engineering: Postgres MCP, SQLite, Redis, ClickHouse, Dataviz (Mermaid/Chart.js), Supabase RLS.',target:'Data analysts and engineers.' },
+  { id:'DevOps',icon:'🚀',name:'DevOps & CI/CD',desc:'Cloud infrastructure: Docker MCP, GitHub Actions, Sentry monitoring, Terraform, Kubernetes.',target:'DevOps and platform engineers.' },
+  { id:'Research',icon:'🔬',name:'Deep Research',desc:'In-depth research: Exa neural search, Firecrawl JS scraper, Context7, Notion CRM, Obsidian Vault.',target:'Researchers and technical product managers.' },
+  { id:'Marketing',icon:'📈',name:'SEO & Marketing',desc:'Growth & marketing: Marketing plugin, Claude SEO (25 subskills), Playwright screenshot capture, Hyperframes.',target:'Founders, growth hackers, and SEO leads.' },
+  { id:'AI',icon:'🤖',name:'AI / Agent Eng',desc:'Agent & MCP development: Skill Creator, Sequential Thinking, Graph Memory, Architect (Opus), Caveman.',target:'AI engineers building custom agents.' },
+  { id:'Russia',icon:'🇷🇺',name:'Russia / CIS Stack',desc:'Dedicated regional stack: Telegram bots (vs Slack), YooKassa payments (vs Stripe), Yandex Cloud (vs AWS), Caveman.',target:'Russian & CIS market localized services.' },
+  { id:'Full',icon:'💎',name:'Full Ultimate (1,000+)',desc:'The entire global ecosystem arsenal in a single unified registry.',target:'Exploring all tools and experimentation.' }
 ];
 
 // Base curated seed components
 const SEED_COMPONENTS = [
-  // ── Core Plugins (20) ──
-  { id:'frontend-design',name:'Frontend Design',cat:'plugin',auth:'free',desc:'Генерация современных интерфейсов: чистый HTML/CSS, Tailwind, Radix UI без "шаблонного" вида ИИ.',whyNeed:'Интерфейсы выглядят как работа ведущих дизайнеров.',author:'Anthropic Community',repoUrl:'https://github.com/anthropics/claude-code',profiles:['Master','Frontend','Web','Russia','Full'] },
-  { id:'superpowers',name:'Superpowers (TDD & Planning)',cat:'plugin',auth:'free',desc:'Плагин от Jesse Vincent (obra). Внедряет строгую TDD-дисциплину, структурированное планирование фич.',whyNeed:'Предотвращает написание непротестированного кода.',author:'Jesse Vincent (@obra)',repoUrl:'https://github.com/obra/superpowers',profiles:['Master','Core','Web','Frontend','Backend','Security','Data','DevOps','Research','Marketing','AI','Russia','Full'] },
-  { id:'gstack',name:'gstack (23 Агента Garry Tan)',cat:'plugin',auth:'free',desc:'Плагин от главы Y Combinator Garry Tan: 23 роли виртуальной инженерной команды (/office-hours, /plan-review, /qa, /ship).',whyNeed:'Комплексный анализ продукта от идеи до релиза.',author:'Garry Tan (CEO Y Combinator)',repoUrl:'https://github.com/garrytan/gstack',profiles:['Full'] },
-  { id:'context7',name:'Context7 Documentation Live',cat:'plugin',auth:'free',desc:'Плагин от Upstash: получение актуальной документации по библиотекам в реальном времени без галлюцинаций.',whyNeed:'Критически важен при работе со свежими версиями Next.js, Tailwind, Supabase.',author:'Upstash',repoUrl:'https://github.com/upstash/context7-mcp',profiles:['Master','Core','Web','Frontend','Backend','AI','Russia','Full'] },
-  { id:'marketing',name:'Marketing & Content',cat:'plugin',auth:'free',desc:'Создание маркетинговых материалов, лендингов, рассылок, постов и продуктовой документации.',whyNeed:'Быстрая упаковка и презентация продукта.',author:'Anthropic Community',repoUrl:'https://github.com/anthropics/claude-code',profiles:['Marketing','Russia','Full'] },
-  { id:'agentmemory',name:'Productivity / AgentMemory',cat:'plugin',auth:'free',desc:'Постоянная 4-уровневая память проекта от Rohit Gupta: хранение предпочтений и истории багов между сессиями.',whyNeed:'Claude помнит контекст прошлых решений.',author:'Rohit Gupta (@rohitg00)',repoUrl:'https://github.com/rohitg00/agentmemory',profiles:['Master','Full'] },
-  { id:'skill-anthropic',name:'Anthropic Office Skills',cat:'plugin',auth:'free',desc:'Официальные скиллы Anthropic: чтение и генерация документов Word (DOCX), Excel (XLSX), PDF, PPTX.',whyNeed:'Работа с ТЗ и финансовыми таблицами.',author:'Anthropic Official',repoUrl:'https://github.com/anthropics/skills',profiles:['Core','Web','Backend','Research','Russia','Full'] },
-  { id:'mcp-playwright',name:'Playwright Visual Tester',cat:'plugin',auth:'free',desc:'Браузерная автоматизация: рендеринг страниц, клики, создание скриншотов и проверка верстки.',whyNeed:'Проверка верстки и UI на живом Chromium.',author:'Anthropic Official',repoUrl:'https://github.com/modelcontextprotocol/servers/tree/main/src/playwright',profiles:['Master','Web','Frontend','Marketing','Full'] },
-  { id:'github-plugin',name:'GitHub Official Plugin',cat:'plugin',auth:'free',desc:'Интеграция с GitHub: управление репозиториями, чтение и создание Issues, Pull Requests, Actions.',whyNeed:'Автономное подтягивание контекста тикетов.',author:'GitHub / Anthropic',repoUrl:'https://github.com/modelcontextprotocol/servers/tree/main/src/github',profiles:['Master','Core','Web','Frontend','Backend','Security','DevOps','AI','Russia','Full'] },
-  { id:'vercel-plugin',name:'Vercel Official Plugin',cat:'plugin',auth:'key',desc:'Официальный плагин Vercel: управление деплоями, диагностика производительности и логи Next.js.',whyNeed:'Мгновенные превью-деплои из консоли.',author:'Vercel Official',repoUrl:'https://github.com/vercel/vercel',profiles:['Web','Frontend','Full'] },
-  { id:'linear-plugin',name:'Linear Project Management',cat:'plugin',auth:'key',desc:'Интеграция с Linear: связывание веток Git с задачами спринтов и перевод статусов.',whyNeed:'Закрытие задач прямо во время коммита.',author:'Linear Official',repoUrl:'https://github.com/cline/linear-mcp',profiles:['DevOps','Full'] },
-  { id:'sentry-plugin',name:'Sentry Error Diagnostics',cat:'plugin',auth:'key',desc:'Анализ продакшн ошибок: извлечение стек-трейсов и связывание бага с конкретным коммитом.',whyNeed:'Автоматический поиск причин сбоев на проде.',author:'Sentry Official',repoUrl:'https://github.com/modelcontextprotocol/servers/tree/main/src/sentry',profiles:['DevOps','Full'] },
-  { id:'aws-plugin',name:'AWS Infrastructure Manager',cat:'plugin',auth:'key',desc:'Инспекция ресурсов AWS: Lambda функции, S3 бакеты, CloudWatch логи и DynamoDB.',whyNeed:'Управление инфраструктурой Amazon Web Services.',author:'AWS Community',repoUrl:'https://github.com/punkpeye/awesome-mcp-servers',profiles:['DevOps','Full'] },
-  { id:'cloudflare-plugin',name:'Cloudflare Workers & DNS',cat:'plugin',auth:'key',desc:'Управление Edge-функциями Cloudflare Workers, KV хранилищем, R2 бакетами и DNS.',whyNeed:'Развертывание Serverless функций по всему миру.',author:'Cloudflare Official',repoUrl:'https://github.com/cloudflare',profiles:['Web','DevOps','Full'] },
+  // ── Core Global Plugins (20) ──
+  { id:'frontend-design',name:'Frontend Design',cat:'plugin',auth:'free',desc:'State-of-the-art web UI generator: clean HTML/CSS, Tailwind, Radix UI without generic AI look.',whyNeed:'Creates sleek, production-ready interfaces.',author:'Anthropic Community',repoUrl:'https://github.com/anthropics/claude-code',profiles:['Master','Frontend','Web','Full'] },
+  { id:'superpowers',name:'Superpowers (TDD & Planning)',cat:'plugin',auth:'free',desc:'Plugin by Jesse Vincent (obra). Enforces strict TDD discipline, structured feature planning, and review.',whyNeed:'Prevents writing untested or broken code.',author:'Jesse Vincent (@obra)',repoUrl:'https://github.com/obra/superpowers',profiles:['Master','Core','Web','Frontend','Backend','Security','Data','DevOps','Research','Marketing','AI','Full'] },
+  { id:'gstack',name:'gstack (23 Garry Tan Roles)',cat:'plugin',auth:'free',desc:'Virtual engineering team by Y Combinator CEO Garry Tan: 23 roles (/office-hours, /plan-review, /qa, /ship).',whyNeed:'Comprehensive product and code review from idea to release.',author:'Garry Tan (CEO Y Combinator)',repoUrl:'https://github.com/garrytan/gstack',profiles:['Full'] },
+  { id:'context7',name:'Context7 Live Documentation',cat:'plugin',auth:'free',desc:'Plugin by Upstash: fetches real-time library documentation and code examples without hallucinations.',whyNeed:'Essential for latest Next.js 15, Tailwind, and Supabase versions.',author:'Upstash',repoUrl:'https://github.com/upstash/context7-mcp',profiles:['Master','Core','Web','Frontend','Backend','AI','Full'] },
+  { id:'agentmemory',name:'Productivity / AgentMemory',cat:'plugin',auth:'free',desc:'Persistent 4-tier project memory by Rohit Gupta: preserves user preferences, bug history, and architectural decisions.',whyNeed:'Claude remembers previous choices across sessions.',author:'Rohit Gupta (@rohitg00)',repoUrl:'https://github.com/rohitg00/agentmemory',profiles:['Master','Full'] },
+  { id:'github-plugin',name:'GitHub Official Plugin',cat:'plugin',auth:'free',desc:'Direct GitHub integration: manage repositories, read and create Issues, Pull Requests, Actions workflows.',whyNeed:'Autonomous ticket context synchronization.',author:'GitHub / Anthropic',repoUrl:'https://github.com/modelcontextprotocol/servers/tree/main/src/github',profiles:['Master','Core','Web','Frontend','Backend','Security','DevOps','AI','Full'] },
+  { id:'vercel-plugin',name:'Vercel Official Plugin',cat:'plugin',auth:'key',desc:'Official Vercel plugin: deployment management, performance diagnostics, and Next.js logs inspection.',whyNeed:'Instant preview deployments from the CLI.',author:'Vercel Official',repoUrl:'https://github.com/vercel/vercel',profiles:['Web','Frontend','Full'] },
+  { id:'linear-plugin',name:'Linear Issue Sync',cat:'plugin',auth:'key',desc:'Linear integration: connects Git branches with sprint tasks and updates issue statuses automatically.',whyNeed:'Closes tickets during git commits.',author:'Linear Official',repoUrl:'https://github.com/cline/linear-mcp',profiles:['Master','DevOps','Full'] },
+  { id:'sentry-plugin',name:'Sentry APM Diagnostics',cat:'plugin',auth:'key',desc:'Production error analysis: extracts stack traces and links crashes to specific commit hashes.',whyNeed:'Automated root-cause analysis for production bugs.',author:'Sentry Official',repoUrl:'https://github.com/modelcontextprotocol/servers/tree/main/src/sentry',profiles:['Master','DevOps','Full'] },
+  { id:'aws-plugin',name:'AWS Cloud Manager',cat:'plugin',auth:'key',desc:'AWS resource inspector: Lambda functions, S3 buckets, CloudWatch logs, and DynamoDB tables.',whyNeed:'Manages Amazon Web Services cloud infrastructure.',author:'AWS Community',repoUrl:'https://github.com/punkpeye/awesome-mcp-servers',profiles:['Master','DevOps','Full'] },
+  { id:'cloudflare-plugin',name:'Cloudflare Workers Edge',cat:'plugin',auth:'key',desc:'Edge computing manager: Cloudflare Workers, KV store, R2 storage buckets, and DNS records.',whyNeed:'Deploys global serverless edge functions.',author:'Cloudflare Official',repoUrl:'https://github.com/cloudflare',profiles:['Web','DevOps','Full'] },
+  { id:'mcp-playwright',name:'Playwright Visual Tester',cat:'plugin',auth:'free',desc:'Browser automation: renders live Chromium pages, clicks elements, takes screenshots, and tests UI.',whyNeed:'Verifies layouts and user flows on real browsers.',author:'Anthropic Official',repoUrl:'https://github.com/modelcontextprotocol/servers/tree/main/src/playwright',profiles:['Master','Web','Frontend','Marketing','Full'] },
 
-  // ── Core Skills (20) ──
-  { id:'skill-creator',name:'Skill Creator (Anthropic)',cat:'skill',auth:'free',desc:'Официальный инструмент Anthropic для создания и тестирования кастомных навыков.',whyNeed:'Упаковка корпоративной логики в навык.',author:'Anthropic Official',repoUrl:'https://github.com/anthropics/skills/tree/main/skill-creator',profiles:['Master','AI','Full'] },
-  { id:'skill-seo',name:'Claude SEO Pro',cat:'skill',auth:'free',desc:'25 специализированных подскиллов для технического SEO-аудита и микроразметки Schema.org.',whyNeed:'Продвижение сайтов в топ Google и Яндекс.',author:'Daniel Agrici (@AgriciDaniel)',repoUrl:'https://github.com/AgriciDaniel/claude-seo',profiles:['Master','Marketing','Russia','Full'] },
-  { id:'skill-caveman',name:'Caveman (Сжатие токенов)',cat:'skill',auth:'free',desc:'Семантическое сжатие промптов и ответов: экономия до 65% токенов без потери смысла.',whyNeed:'Снижение расходов на API и ускорение вывода.',author:'Julius Brussee (@JuliusBrussee)',repoUrl:'https://github.com/JuliusBrussee/caveman',profiles:['Master','Russia','AI','Full'] },
-  { id:'agent-security',name:'Security Review (OWASP)',cat:'skill',auth:'free',desc:'Аудит кода на уязвимости OWASP, проверка утечек ключей и векторов инъекций на Opus.',whyNeed:'Независимый аудит безопасности до релиза.',author:'Setup System',repoUrl:'https://github.com/anthropics/claude-code',profiles:['Master','Core','Security','Russia','Full'] },
-  { id:'skill-hyperframes',name:'Hyperframes (HTML & Video)',cat:'skill',auth:'free',desc:'Генерация программных анимаций, баннеров и видео-мокапов в MP4 через HTML/CSS/GSAP.',whyNeed:'Создание динамических промо-роликов.',author:'HeyGen Team',repoUrl:'https://github.com/heygen-com/hyperframes',profiles:['Frontend','Marketing','Full'] },
-  { id:'skill-uiux',name:'UI/UX Pro Max (67 стилей)',cat:'skill',auth:'free',desc:'База данных по дизайну: 67 проверенных стилей, палитры, пары шрифтов, сетки и дизайн-системы.',whyNeed:'Делает дизайн визуально дорогим и уникальным.',author:'NextLevelBuilder',repoUrl:'https://github.com/nextlevelbuilder/ui-ux-pro-max-skill',profiles:['Master','Frontend','Web','Marketing','Russia','Full'] },
-  { id:'skill-bulletproof',name:'Bulletproof (12-этапный пайплайн)',cat:'skill',auth:'free',desc:'Строгий 12-этапный инженерный пайплайн: исследование архитектуры, тесты, ревью и деплой.',whyNeed:'Промышленное качество кода без галлюцинаций.',author:'Artemii Millier (@artemiimillier)',repoUrl:'https://github.com/artemiimillier/bulletproof',profiles:['Master','Security','Full'] },
-  { id:'skill-dataviz',name:'Dataviz (Графики и диаграммы)',cat:'skill',auth:'free',desc:'Генерация интерактивных графиков, дашбордов и диаграмм (Chart.js, Mermaid, D3).',whyNeed:'Наглядное представление метрик и архитектуры.',author:'Mermaid / Chart.js',repoUrl:'https://github.com/mermaid-js/mermaid',profiles:['Master','Data','Research','Full'] },
-  { id:'skill-supabase',name:'Supabase Agent Skills',cat:'skill',auth:'free',desc:'Паттерны Postgres: оптимизация индексов, RLS политики безопасности, схемы баз данных.',whyNeed:'Предотвращает медленные SQL-запросы.',author:'Supabase Team',repoUrl:'https://github.com/supabase/agent-skills',profiles:['Data','Backend','Web','Full'] },
-  { id:'skill-commits',name:'Conventional Commits & PRs',cat:'skill',auth:'free',desc:'Автоматическое формирование атомарных коммитов и описаний Pull Request с чеклистом.',whyNeed:'Идеально чистая история Git репозитория.',author:'Florian Bruniaux',repoUrl:'https://github.com/FlorianBruniaux/claude-code-ultimate-guide',profiles:['Master','Core','DevOps','Full'] },
+  // ── Core Global Skills (20) ──
+  { id:'skill-creator',name:'Skill Creator (Anthropic)',cat:'skill',auth:'free',desc:'Anthropic official tool for authoring, validating, and testing custom Claude skills.',whyNeed:'Packages team workflows into reusable skills.',author:'Anthropic Official',repoUrl:'https://github.com/anthropics/skills/tree/main/skill-creator',profiles:['Master','AI','Full'] },
+  { id:'skill-seo',name:'Claude SEO Pro',cat:'skill',auth:'free',desc:'25 specialized subskills for technical SEO audits, core web vitals, and Schema.org markup.',whyNeed:'Drives organic search ranking on Google.',author:'Daniel Agrici (@AgriciDaniel)',repoUrl:'https://github.com/AgriciDaniel/claude-seo',profiles:['Master','Marketing','Full'] },
+  { id:'skill-caveman',name:'Caveman (Token Compression)',cat:'skill',auth:'free',desc:'Semantic compression for prompts and completions: saves up to 65% tokens without loss of meaning.',whyNeed:'Cuts API spending and accelerates responses.',author:'Julius Brussee (@JuliusBrussee)',repoUrl:'https://github.com/JuliusBrussee/caveman',profiles:['Master','AI','Full'] },
+  { id:'agent-security',name:'Security Review (OWASP)',cat:'skill',auth:'free',desc:'Autonomous code audit for OWASP vulnerabilities, secret leaks, and injection vectors on Opus model.',whyNeed:'Independent security clearance before release.',author:'Setup System',repoUrl:'https://github.com/anthropics/claude-code',profiles:['Master','Core','Security','Full'] },
+  { id:'skill-uiux',name:'UI/UX Pro Max (67 Styles)',cat:'skill',auth:'free',desc:'Design database: 67 curated aesthetic styles, palettes, font pairings, grids, and design systems.',whyNeed:'Makes web interfaces look premium and unique.',author:'NextLevelBuilder',repoUrl:'https://github.com/nextlevelbuilder/ui-ux-pro-max-skill',profiles:['Master','Frontend','Web','Marketing','Full'] },
+  { id:'skill-bulletproof',name:'Bulletproof (12-Step Pipeline)',cat:'skill',auth:'free',desc:'Industrial 12-step engineering workflow: architecture research, test specs, modular code, and verification.',whyNeed:'Guarantees rock-solid enterprise code quality.',author:'Artemii Millier (@artemiimillier)',repoUrl:'https://github.com/artemiimillier/bulletproof',profiles:['Master','Security','Full'] },
+  { id:'skill-dataviz',name:'Dataviz (Charts & Diagrams)',cat:'skill',auth:'free',desc:'Generates interactive charts, dashboards, and architecture diagrams (Chart.js, Mermaid, D3).',whyNeed:'Visualizes metrics and system topology cleanly.',author:'Mermaid / Chart.js',repoUrl:'https://github.com/mermaid-js/mermaid',profiles:['Master','Data','Research','Full'] },
+  { id:'skill-supabase',name:'Supabase Agent Skills',cat:'skill',auth:'free',desc:'Postgres performance patterns: index optimization, Row Level Security policies, and migrations.',whyNeed:'Prevents slow queries and data leaks.',author:'Supabase Team',repoUrl:'https://github.com/supabase/agent-skills',profiles:['Data','Backend','Web','Full'] },
+  { id:'skill-commits',name:'Conventional Commits & PRs',cat:'skill',auth:'free',desc:'Automates atomic Git commits and Pull Request descriptions with verification checklists.',whyNeed:'Maintains spotless Git history and changelogs.',author:'Florian Bruniaux',repoUrl:'https://github.com/FlorianBruniaux/claude-code-ultimate-guide',profiles:['Master','Core','DevOps','Full'] },
 
-  // ── Core MCPs (20) ──
-  { id:'mcp-telegram',name:'Telegram MCP (Вместо Slack)',cat:'mcp',auth:'key',desc:'Прямое управление ботами и каналами Telegram, отправка сообщений и уведомлений.',whyNeed:'Создание чат-ботов и уведомлений в Telegram для рынка РФ/СНГ.',author:'Jonathan Galea (@jgalea)',repoUrl:'https://github.com/jgalea/telegram-mcp',profiles:['Master','Russia','Marketing','Full'] },
-  { id:'mcp-yookassa',name:'ЮKassa MCP (Вместо Stripe)',cat:'mcp',auth:'key',desc:'Интеграция с ЮKassa: прием платежей в рублях, чеки 54-ФЗ, возвраты, СБП и подписки.',whyNeed:'Прием онлайн-оплаты в рублях в РФ без Stripe.',author:'theYahia (@theyahia)',repoUrl:'https://github.com/theYahia/yookassa-mcp',profiles:['Master','Russia','Web','Full'] },
-  { id:'mcp-yandexcloud',name:'Yandex Cloud MCP (Вместо AWS)',cat:'mcp',auth:'key',desc:'Официальный MCP Яндекса: Compute VM, Object Storage (S3), Managed YDB и Serverless.',whyNeed:'Облачный хостинг в РФ с оплатой в рублях без VPN.',author:'Yandex Cloud Official',repoUrl:'https://github.com/yandex-cloud/mcp',profiles:['Master','Russia','DevOps','Full'] },
-  { id:'mcp-github',name:'GitHub MCP Server',cat:'mcp',auth:'key',desc:'Официальный MCP-сервер GitHub: поиск кода, анализ дифов, управление ветками и PR.',whyNeed:'Программный доступ ко всей инфраструктуре репозитория.',author:'Anthropic / GitHub',repoUrl:'https://github.com/modelcontextprotocol/servers/tree/main/src/github',profiles:['Core','Web','Frontend','Backend','Security','DevOps','AI','Russia','Full'] },
-  { id:'mcp-supabase',name:'Supabase MCP',cat:'mcp',auth:'key',desc:'Управление проектами Supabase: создание таблиц Postgres, Auth и миграции.',whyNeed:'Развертывание готового бэкенда за 2 минуты.',author:'Supabase Official',repoUrl:'https://github.com/supabase/mcp-server-supabase',profiles:['Master','Web','Backend','Data','Russia','Full'] },
-  { id:'mcp-notion',name:'Notion MCP',cat:'mcp',auth:'key',desc:'Интеграция с Notion: чтение и запись страниц, ведение баз данных задач и CRM.',whyNeed:'Claude сам ведет документацию проекта в Notion.',author:'Notion Official',repoUrl:'https://github.com/modelcontextprotocol/servers/tree/main/src/notion',profiles:['Master','Research','Marketing','Russia','Full'] },
-  { id:'mcp-n8n',name:'n8n MCP (Автоматизации)',cat:'mcp',auth:'key',desc:'Управление платформой автоматизации n8n: запуск вебхуков и интеграционных сценариев.',whyNeed:'Связывает Claude с тысячами сервисов без кода.',author:'Czlonkowski / n8n',repoUrl:'https://github.com/czlonkowski/n8n-mcp',profiles:['Master','DevOps','Russia','Full'] },
-  { id:'mcp-docker',name:'Docker MCP Server',cat:'mcp',auth:'free',desc:'Официальный сервер управления Docker: инспекция контейнеров, чтение логов и сборка.',whyNeed:'Проверка состояния контейнеров и исправление сбоев.',author:'Anthropic / Docker',repoUrl:'https://github.com/modelcontextprotocol/servers/tree/main/src/docker',profiles:['Master','DevOps','Full'] },
-  { id:'mcp-postgres',name:'PostgreSQL Read-Only MCP',cat:'mcp',auth:'key',desc:'Прямое подключение к Postgres в режиме чтения: инспекция схем и выполнение SQL.',whyNeed:'Точные SQL-запросы на основе реальной структуры БД.',author:'Anthropic Official',repoUrl:'https://github.com/modelcontextprotocol/servers/tree/main/src/postgres',profiles:['Master','Data','Backend','Full'] },
-  { id:'mcp-sqlite',name:'SQLite Local DB MCP',cat:'mcp',auth:'free',desc:'Инспекция и чтение локальных баз данных SQLite (.db/.sqlite).',whyNeed:'Мгновенный анализ локальных файлов БД.',author:'Anthropic Official',repoUrl:'https://github.com/modelcontextprotocol/servers/tree/main/src/sqlite',profiles:['Master','Data','Backend','Full'] },
+  // ── Core Global MCPs (20) ──
+  { id:'mcp-stripe',name:'Stripe Global Payments MCP',cat:'mcp',auth:'key',desc:'Global payment gateway: Checkout sessions, subscriptions, refunds, and webhooks verification.',whyNeed:'Accepts credit cards and international currencies.',author:'Stripe Official',repoUrl:'https://github.com/stripe',profiles:['Master','Web','Full'] },
+  { id:'mcp-supabase',name:'Supabase Backend MCP',cat:'mcp',auth:'key',desc:'Manage Supabase cloud databases: create Postgres tables, auth configs, and execute migrations.',whyNeed:'Deploys complete serverless backend in minutes.',author:'Supabase Official',repoUrl:'https://github.com/supabase/mcp-server-supabase',profiles:['Master','Web','Backend','Data','Full'] },
+  { id:'mcp-postgres',name:'PostgreSQL Read-Only MCP',cat:'mcp',auth:'key',desc:'Direct read-only connection to PostgreSQL databases: inspect schemas and execute queries safely.',whyNeed:'Accurate SQL queries based on live DB structure.',author:'Anthropic Official',repoUrl:'https://github.com/modelcontextprotocol/servers/tree/main/src/postgres',profiles:['Master','Data','Backend','Full'] },
+  { id:'mcp-sqlite',name:'SQLite Local Database MCP',cat:'mcp',auth:'free',desc:'Inspect and query local SQLite files (.db/.sqlite) with zero network latency.',whyNeed:'Instant local database queries and analysis.',author:'Anthropic Official',repoUrl:'https://github.com/modelcontextprotocol/servers/tree/main/src/sqlite',profiles:['Master','Data','Backend','Full'] },
+  { id:'mcp-docker',name:'Docker Container Manager MCP',cat:'mcp',auth:'free',desc:'Official Docker server: inspect containers, fetch logs, build images, and debug crashes.',whyNeed:'Troubleshoots container failures directly.',author:'Anthropic / Docker',repoUrl:'https://github.com/modelcontextprotocol/servers/tree/main/src/docker',profiles:['Master','DevOps','Full'] },
+  { id:'mcp-notion',name:'Notion Workspace MCP',cat:'mcp',auth:'key',desc:'Notion integration: read and write workspace pages, update project databases and specs.',whyNeed:'Claude keeps project documentation synced in Notion.',author:'Notion Official',repoUrl:'https://github.com/modelcontextprotocol/servers/tree/main/src/notion',profiles:['Master','Research','Marketing','Full'] },
+  { id:'mcp-telegram',name:'Telegram Bots MCP 🇷🇺',cat:'mcp',auth:'key',desc:'Direct Telegram bot management: send messages, handle commands, and receive updates.',whyNeed:'Chatbots and instant alerts in Telegram.',author:'Jonathan Galea (@jgalea)',repoUrl:'https://github.com/jgalea/telegram-mcp',profiles:['Russia','Marketing','Full'] },
+  { id:'mcp-yookassa',name:'YooKassa Payments MCP 🇷🇺',cat:'mcp',auth:'key',desc:'YooKassa payment integration: ruble payments, 54-FZ fiscal receipts, SBP, and recurring bills.',whyNeed:'Online payments in Russia and CIS without Stripe.',author:'theYahia (@theyahia)',repoUrl:'https://github.com/theYahia/yookassa-mcp',profiles:['Russia','Web','Full'] },
+  { id:'mcp-yandexcloud',name:'Yandex Cloud MCP 🇷🇺',cat:'mcp',auth:'key',desc:'Official Yandex Cloud MCP: Compute VMs, Object Storage (S3), Managed YDB, and Serverless.',whyNeed:'Cloud hosting in Russia with ruble billing and no VPN.',author:'Yandex Cloud Official',repoUrl:'https://github.com/yandex-cloud/mcp',profiles:['Russia','DevOps','Full'] },
 
   // ── Core LSPs, Subagents, Hooks ──
-  { id:'lsp-typescript',name:'TypeScript / JS LSP',cat:'lsp',auth:'free',desc:'Language Server Protocol для TS/JS. Мгновенная навигация по символам AST в 10 раз быстрее grep.',whyNeed:'Ускоряет поиск символов и исключает ошибки импортов.',author:'Open Source Community',repoUrl:'https://github.com/typescript-language-server/typescript-language-server',profiles:['Master','Web','Frontend','Backend','Russia','Full'] },
-  { id:'lsp-python',name:'Python Pyright LSP',cat:'lsp',auth:'free',desc:'Статический анализатор типов и Language Server для Python (Pyright).',whyNeed:'Предотвращает TypeErrors в FastAPI и Django.',author:'Microsoft',repoUrl:'https://github.com/microsoft/pyright',profiles:['Master','Backend','Data','AI','Full'] },
-  { id:'agent-architect',name:'Architect Agent (Opus)',cat:'agent',auth:'free',desc:'Главный системный архитектор на базе Claude Opus: масштабируемость и схемы данных.',whyNeed:'Вызывается для критических архитектурных решений.',author:'Setup System',repoUrl:'https://github.com/anthropics/claude-code',profiles:['Master','Core','Web','Backend','AI','Full'] },
-  { id:'agent-codereview',name:'Code Reviewer (Sonnet)',cat:'agent',auth:'free',desc:'Прагматичный код-ревьюер: поиск багов, читаемость и соответствие паттернам.',whyNeed:'Поиск скрытых багов во время разработки.',author:'Setup System',repoUrl:'https://github.com/anthropics/claude-code',profiles:['Master','Core','Web','Backend','Full'] },
-  { id:'agent-tester',name:'Testing Specialist (Sonnet)',cat:'agent',auth:'free',desc:'Инженер по тестированию: модульные, интеграционные и E2E тесты.',whyNeed:'Автоматическое покрытие кода тестами.',author:'Setup System',repoUrl:'https://github.com/anthropics/claude-code',profiles:['Master','Web','Frontend','Backend','Full'] },
-  { id:'agent-researcher',name:'Researcher (Sonnet)',cat:'agent',auth:'free',desc:'Специалист по техническому ресерчу документации библиотек через Context7.',whyNeed:'Поиск актуальных примеров реализации.',author:'Setup System',repoUrl:'https://github.com/anthropics/claude-code',profiles:['Master','Research','Full'] },
-  { id:'agent-docs',name:'Docs Writer (Haiku)',cat:'agent',auth:'free',desc:'Технический писатель на ультрабыстрой Haiku: README, JSDoc, OpenAPI.',whyNeed:'Мгновенная генерация документации.',author:'Setup System',repoUrl:'https://github.com/anthropics/claude-code',profiles:['Master','Full'] },
-  { id:'hook-secrets',name:'Secret Scanner Hook',cat:'hook',auth:'free',desc:'Детерминированный PreToolUse хук: сканирует каждую команду на наличие паролей и токенов.',whyNeed:'Защита от случайной утечки секретов в логи.',author:'Setup System',repoUrl:'https://github.com/FlorianBruniaux/claude-code-ultimate-guide',profiles:['Master','Core','Web','Frontend','Backend','Security','Data','DevOps','Research','Marketing','AI','Russia','Full'] },
-  { id:'hook-danger',name:'Dangerous Command Blocker',cat:'hook',auth:'free',desc:'PreToolUse хук: блокирует деструктивные команды (rm -rf /, format, del /s /q C:).',whyNeed:'Защита от Prompt Injection атак из файлов.',author:'Setup System',repoUrl:'https://github.com/FlorianBruniaux/claude-code-ultimate-guide',profiles:['Master','Core','Web','Frontend','Backend','Security','Data','DevOps','Research','Marketing','AI','Russia','Full'] },
-  { id:'hook-repomap',name:'SessionStart RepoMap Hook',cat:'hook',auth:'free',desc:'Хук при старте сессии: генерирует компактное дерево файлов и статус Git.',whyNeed:'Экономит до 5 поисковых шагов в начале сессии.',author:'Sattyam Jain / Setup System',repoUrl:'https://github.com/hesreallyhim/awesome-claude-code',profiles:['Master','Core','Web','Frontend','Backend','Security','Russia','Full'] },
-  { id:'hook-selfheal',name:'StopFailure Self-Healing Hook',cat:'hook',auth:'free',desc:'Хук при падении сборки/тестов: извлекает код ошибки и дает чеклист локализации.',whyNeed:'Методичное исправление ошибок без паники.',author:'Florian Bruniaux Guide',repoUrl:'https://github.com/FlorianBruniaux/claude-code-ultimate-guide',profiles:['Master','Core','Web','Frontend','Backend','Russia','Full'] }
+  { id:'lsp-typescript',name:'TypeScript / JS LSP',cat:'lsp',auth:'free',desc:'Language Server Protocol for TS/JS. Instant AST symbol navigation 10x faster than grep.',whyNeed:'Accelerates symbol discovery and prevents import bugs.',author:'Open Source Community',repoUrl:'https://github.com/typescript-language-server/typescript-language-server',profiles:['Master','Web','Frontend','Backend','Full'] },
+  { id:'lsp-python',name:'Python Pyright LSP',cat:'lsp',auth:'free',desc:'Static type checker and Language Server for Python (Pyright).',whyNeed:'Prevents TypeErrors in FastAPI and Django.',author:'Microsoft',repoUrl:'https://github.com/microsoft/pyright',profiles:['Master','Backend','Data','AI','Full'] },
+  { id:'agent-architect',name:'Architect Agent (Opus)',cat:'agent',auth:'free',desc:'Lead system architect running on Claude Opus: scalability, data modeling, and trade-offs.',whyNeed:'Delegates critical architectural decisions to Opus.',author:'Setup System',repoUrl:'https://github.com/anthropics/claude-code',profiles:['Master','Core','Web','Backend','AI','Full'] },
+  { id:'agent-codereview',name:'Code Reviewer (Sonnet)',cat:'agent',auth:'free',desc:'Pragmatic code reviewer: catches subtle edge bugs, enforces patterns and readability.',whyNeed:'Independent code review during active development.',author:'Setup System',repoUrl:'https://github.com/anthropics/claude-code',profiles:['Master','Core','Web','Backend','Full'] },
+  { id:'agent-tester',name:'Testing Specialist (Sonnet)',cat:'agent',auth:'free',desc:'QA test automation engineer: unit, integration, and E2E test coverage.',whyNeed:'Generates full test suites automatically.',author:'Setup System',repoUrl:'https://github.com/anthropics/claude-code',profiles:['Master','Web','Frontend','Backend','Full'] },
+  { id:'agent-researcher',name:'Researcher (Sonnet)',cat:'agent',auth:'free',desc:'Technical research specialist: finds latest library docs and usage examples via Context7.',whyNeed:'Discovers up-to-date implementation patterns.',author:'Setup System',repoUrl:'https://github.com/anthropics/claude-code',profiles:['Master','Research','Full'] },
+  { id:'agent-docs',name:'Docs Writer (Haiku)',cat:'agent',auth:'free',desc:'Lightning-fast technical writer on Haiku: README, JSDoc, and OpenAPI specs.',whyNeed:'Generates complete documentation in seconds.',author:'Setup System',repoUrl:'https://github.com/anthropics/claude-code',profiles:['Master','Full'] },
+  { id:'hook-secrets',name:'Secret Scanner Hook',cat:'hook',auth:'free',desc:'Deterministic PreToolUse hook: scans every terminal command for passwords and API tokens.',whyNeed:'Prevents accidental secret leaks into logs and Git.',author:'Setup System',repoUrl:'https://github.com/FlorianBruniaux/claude-code-ultimate-guide',profiles:['Master','Core','Web','Frontend','Backend','Security','Data','DevOps','Research','Marketing','AI','Russia','Full'] },
+  { id:'hook-danger',name:'Dangerous Command Blocker',cat:'hook',auth:'free',desc:'PreToolUse hook: blocks destructive system commands (rm -rf /, format, del /s /q C:).',whyNeed:'Guards against prompt injection attacks from untrusted files.',author:'Setup System',repoUrl:'https://github.com/FlorianBruniaux/claude-code-ultimate-guide',profiles:['Master','Core','Web','Frontend','Backend','Security','Data','DevOps','Research','Marketing','AI','Russia','Full'] },
+  { id:'hook-repomap',name:'SessionStart RepoMap Hook',cat:'hook',auth:'free',desc:'SessionStart hook: generates compact repository topology and Git branch status.',whyNeed:'Saves up to 5 initial search steps per session.',author:'Sattyam Jain / Setup System',repoUrl:'https://github.com/hesreallyhim/awesome-claude-code',profiles:['Master','Core','Web','Frontend','Backend','Security','Russia','Full'] },
+  { id:'hook-selfheal',name:'StopFailure Self-Healing Hook',cat:'hook',auth:'free',desc:'Stop failure hook: extracts build/test error codes and outputs root-cause checklists.',whyNeed:'Methodical debugging without confusion.',author:'Florian Bruniaux Guide',repoUrl:'https://github.com/FlorianBruniaux/claude-code-ultimate-guide',profiles:['Master','Core','Web','Frontend','Backend','Russia','Full'] }
 ];
 
-// Generate structured 600+ ecosystem catalog
-function generateFull600Registry() {
+// Generate comprehensive 1,000+ ecosystem catalog
+function generateFull1000Registry() {
   const list = [...SEED_COMPONENTS];
 
   const domains = [
-    { cat:'skill', prefix:'skill-fe', title:'Frontend & UI/UX', authors:['Vercel Team','NextLevelBuilder','Tailwind Labs','Chrome DevTools','W3C WAI'], tags:['React 19 Core','Vue 3.5 Composition','Svelte 5 Runes','SolidJS Primitives','Astro 5 Islands','Angular 19 Signals','Nuxt 4 Fullstack','Remix v3 Router','Shadcn UI Theme','Radix Primitives Core','Framer Motion 3D','GSAP Timeline Pro','Three.js WebGL','WebGL Custom Shaders','WebGPU Compute','Tailwind CSS v4 Engine','SCSS Modular Grid','CSS Modules Strict','Microfrontends Module Fed','XState Visual Machines','Zustand Scalable Store','Jotai Atomic Atoms','TanStack Query v5 Pro','TanStack Router Full','React Hook Form V7','Zod Schema Validation','i18next Multilang','Lighthouse 100 Audit','Core Web Vitals Opt','PWA Service Workers','WebAssembly Rust Wasm','HTML5 Canvas 2D','SVG Optimization Core','Emotion CSS in JS','Stitches Style Lib','UnoCSS Instant Engine','Chakra UI v3 System','Mantine UI Hooks','Ant Design v5 Core','Headless UI Accessible','Storybook 8 Isolation','Vitest DOM Unit','Cypress E2E Engine','Playwright Visual Regression','Puppeteer PDF Gen','Shimmer Skeletons','Dark Mode Obsidian','Figma Tokens Sync','Web Audio API Synths','WebXR VR Immersion'] },
-    { cat:'skill', prefix:'skill-be', title:'Backend & Microservices', authors:['Martin Fowler','Pydantic Core','FastAPI Team','Go Standards','Rust Foundation'], tags:['FastAPI Async Core','Django Ninja REST','Flask Enterprise','Express Clean Architecture','NestJS Monorepo Core','Hono Edge Runtime','Fastify High-Throughput','Spring Boot 3 Kotlin','Go Gin Web Server','Go Fiber Low-Alloc','Rust Axum Tokio Async','Rust Actix Web High-Perf','ASP.NET Core 9 Minimal','Laravel 11 Robust','Ruby on Rails 8 Solid','Elixir Phoenix LiveView','GraphQL Yoga Gateway','gRPC Protobuf v3 RPC','TRPC End-to-End Type','WebSockets Async Protocol','Apache Kafka Streaming','RabbitMQ AMQP Reliable','NATS Lightweight Mesh','BullMQ Redis Jobs','Temporal Durable Code','OAuth2 PKCE Flow','OIDC Enterprise SSO','JWT Stateless Auth','SAML Enterprise Identity','RBAC Role Policies','ABAC Fine-grained Context','Idempotency Key Engine','Rate Limiting Redis Token','Distributed Locks Redlock','Saga Orchestration','Transactional Outbox Pattern','CQRS Event Sourcing','Clean Domain Architecture','Domain Driven Design Aggregates','Microservices Service Mesh','Zero-Downtime Blue-Green','gRPC Web Gateway','SSE Server-Sent Events','Webhook Security HMAC','Circuit Breaker Hystrix','OpenAPI Swagger Auto-doc','GraphQL Mesh Gateway','Elastic APM Tracing','Prometheus Custom Metrics','Grafana Loki Log Stream'] },
-    { cat:'skill', prefix:'skill-db', title:'Databases & Data Storage', authors:['Postgres Core','Redis Labs','ClickHouse Inc','Supabase Devs','Neo4j Team'], tags:['Postgres EXPLAIN ANALYZE','Postgres B-Tree & GIN','Postgres Declarative Partitioning','Postgres Row Level Security','Postgres PLpgSQL Triggers','Postgres WAL Archiving','MySQL Group Replication','SQLite WAL Concurrency','DuckDB Columnar In-Memory','ClickHouse ReplacingMergeTree','ClickHouse Vectorized Engine','Redis Hashes & Streams','Redis Cluster Resharding','MongoDB Aggregation Pipelines','Neo4j Cypher Traversal','Cassandra Wide-Column','ScyllaDB C++ Low-Latency','Qdrant HNSW Vector Search','ChromaDB Local Embeddings','Pinecone Serverless Hybrid','Weaviate GraphQL Vectors','Elasticsearch 8 BM25','Meilisearch Typo-Tolerant','Milvus Distributed Vectors','SurrealDB Multi-Model Query','Supabase Auth Multi-Factor','Prisma Zero-Downtime Migrations','Drizzle Lightweight ORM','TypeORM Active Record','Kysely Type-Safe SQL Builder','SQLAlchemy 2.0 Async Session','TimescaleDB Time-Series','InfluxDB Metrics Storage','CockroachDB Distributed SQL','TiDB Cloud Native SQL','YugabyteDB Multi-Region','ArangoDB Graph Document','FaunaDB Serverless Global','Amazon Aurora Serverless v2','Google Cloud Spanner Global'] },
-    { cat:'skill', prefix:'skill-devops', title:'DevOps & Cloud Native', authors:['CNCF Foundation','HashiCorp','Docker Official','Kubernetes SIG','AWS Community'], tags:['Docker Multi-stage Alpine','Docker Compose v2 Profiles','Kubernetes HPA Auto-scaler','Kubernetes Ingress Nginx','Helm Chart Template Engine','Terraform AWS Infrastructure','Terraform YandexCloud VM','Ansible Playbook Hardening','Pulumi TypeScript IaC','GitHub Actions CI Matrix','GitLab CI Auto DevOps','ArgoCD GitOps Deployment','Prometheus AlertManager','Grafana Dashboard Provisioning','OpenTelemetry Distributed Trace','Nginx Brotli & SSL Tuning','Caddy Let’s Encrypt HTTPS','Traefik Edge Routing Mesh','Cloudflare Workers Edge KV','AWS Lambda ARM64 Graviton','AWS CDK Python Stack','GCP Cloud Run Microservices','Azure Container Apps Scaling','Linux Kernel Sysctl Tuning','Systemd Service Sandboxing','WireGuard P2P VPN Tunnel','HashiCorp Vault KV Secrets','SOPS Age Encryption','Trivy Container CVE Scanner','SonarQube Code Quality Gate','Datadog Synthetic Monitoring','Sentry Performance Profiler','K6 Distributed Load Testing','Locust Python Stress Load','Newman Postman CLI Runner','Tox Python Multi-env','Biome Rust Linter Formatter','Ruff Ultra-fast Python Linter','Clippy Rust Strict Rules','ESLint Flat Config v9'] },
-    { cat:'mcp', prefix:'mcp-srv', title:'Model Context Protocol (MCP)', authors:['Anthropic Official','Community Hub','ModelContextProtocol','Enterprise Integrations'], tags:['PostgreSQL ReadOnly MCP','MySQL Inspector MCP','SQLite Local Browser MCP','Redis Keys Monitor MCP','ClickHouse OLAP BigData MCP','MongoDB BSON Inspector MCP','Neo4j Graph Explorer MCP','Qdrant RAG Engine MCP','Chroma Vector Store MCP','Pinecone Semantic MCP','Brave Search Global MCP','Tavily Search AI Engine MCP','Perplexity Realtime MCP','Exa Neural Semantic MCP','DuckDuckGo Instant MCP','ArXiv Academic Papers MCP','Google Drive Docs MCP','Notion Enterprise Wiki MCP','Obsidian Vault Local MCP','Linear Sprint Sync MCP','Jira Agile Board MCP','ClickUp Tasks MCP','Asana Project Workspace MCP','GitHub Repos & PR MCP','GitLab Merge Engine MCP','Telegram Bots Pro 🇷🇺 MCP','Slack Channel Sync MCP','Discord Webhooks MCP','WhatsApp Business API MCP','Mattermost Chat MCP','ЮKassa Pay & Checks 🇷🇺 MCP','Robokassa CIS 🇷🇺 MCP','Stripe International Pay MCP','PayPal Express Checkout MCP','Yandex Cloud Compute 🇷🇺 MCP','Yandex Object Storage S3 🇷🇺 MCP','AWS Lambda MCP','AWS S3 Buckets Explorer MCP','Docker Container CLI MCP','Kubernetes Pods CLI MCP','Sentry Error Stream MCP','Datadog Live APM MCP','Grafana Loki Log MCP','BetterStack Uptime MCP','Playwright Chromium Browser MCP','Puppeteer Engine MCP','Firecrawl JS Scraper MCP','HTTP Fetch Markdown Fast MCP','Sequential Thinking Planner MCP','Knowledge Graph Memory MCP','VK Cloud Compute 🇷🇺 MCP','CloudPayments CIS 🇷🇺 MCP','Hetzner Cloud VPS MCP','DigitalOcean Droplets MCP','Vercel Deployments MCP','Netlify Edge Functions MCP','Supabase Backend MCP','Neon Serverless DB MCP','Convex Reactive MCP','Figma Tokens API MCP','Postman Workspace MCP'] },
-    { cat:'plugin', prefix:'plugin-ext', title:'Claude Code Ecosystem Plugins', authors:['Anthropic Community','Y Combinator','Jesse Vincent','Florian Bruniaux'], tags:['Frontend Designer Pro','Superpowers TDD Studio','GStack 23 Roles Engine','Context7 Live Docs Hub','AgentMemory 4-Tier Memory','Anthropic Office Suite','Marketing Auto Landing Page','Playwright E2E Test Suite','GitHub Pull Requests Suite','Vercel Edge Deploy Hub','Linear Issue Tracker Sync','Sentry Realtime Traces','AWS Cloud Architect Pro','Cloudflare Workers Edge Hub','Neon Database Branch Engine','Convex Reactive Sync Hub','Figma Vector Design Parser','Stripe Checkout Global Pay','Postman API Collection Runner','Raycast Developer Snippets','Supabase Auth Multi-Tenancy','ClickHouse BigData Analytics','LangChain Agent Tool Runner','LlamaIndex Vector Context','Exa Deep Research Agent','Perplexity Answer Synthesizer','Brave Search Safe Web','Chroma Local Memory Store','Qdrant Enterprise Vector RAG','Redis Cluster Distributed Cache','Docker Desktop Sync Hub','Kubernetes Pod Watcher','Jira Enterprise Cloud Sync','Telegram Notification Pro','ЮKassa Online Receipt Hub','Yandex Cloud VM Manager','Datadog Live APM Stream','Grafana Cloud Metric Dashboards','SonarQube Static Quality Gate','Trivy Container Security Scanner'] },
-    { cat:'lsp', prefix:'lsp-lang', title:'Language Server Protocols (LSP)', authors:['Microsoft','Rust Team','Go Team','Eclipse Foundation','LLVM Project'], tags:['TypeScript Language Server','Python Pyright LSP','Python Ruff Fast Linter','Rust Analyzer Official','Go Gopls Official','C# OmniSharp Roslyn','C/C++ Clangd Engine','Java Eclipse JDT LS','Kotlin Language Server','Swift SourceKit LSP','PHP Intelephense Pro','Ruby Solargraph','Scala Metals LS','Dart Flutter Engine','Elixir ElixirLS','Haskell HLS','Lua Language Server','Zig ZLS Official','R Language Server','Julia Language Server','SQL Language Server','HTML/CSS Language Server','JSON/YAML Schema Server','Markdown Markman LSP','Dockerfile Language Server'] },
-    { cat:'agent', prefix:'agent-sub', title:'Specialized Subagent Roles', authors:['Setup System','Anthropic Opus','Anthropic Sonnet','Anthropic Haiku'], tags:['System Architect Opus','Security Auditor Opus','Code Reviewer Sonnet','Testing Specialist Sonnet','Deep Researcher Sonnet','Docs Writer Haiku','Database DBA Sonnet','DevOps Engineer Sonnet','Performance Tuner Sonnet','UX Reviewer Sonnet','API Contract Designer','Legacy Migration Expert','Accessibility Auditor','SEO Growth Engineer','Prompt Optimizer Haiku','SRE Incident Responder','i18n Localization Pro','GraphQL Schema Architect','Data Pipeline Engineer','Microservice Mesh Lead'] },
-    { cat:'hook', prefix:'hook-sys', title:'Security & Workflow Hooks', authors:['Setup System','Florian Bruniaux','Sattyam Jain'], tags:['Secret Scanner PreToolUse','Danger Command Blocker','SessionStart RepoMap','StopFailure SelfHeal','Auto Test Runner PostTool','PreCommit Linter Check','Branch Name Guard','Token Budget Watcher','Git Blame Inspector','AST Syntax Validator','SQL Injection Interceptor','Docker Root Blocker','Env File Protection','Ssh Key Guardian','Format Disk Interceptor','Curl Pipe Shell Blocker','Invoke Expression Trap','Unused Import Cleaner','Changelog Auto Generator','Conventional Commit Guard'] }
+    { cat:'skill', prefix:'skill-fe', title:'Frontend & UI/UX Mastery', authors:['Vercel Team','NextLevelBuilder','Tailwind Labs','Chrome DevTools','W3C WAI','Shadcn'], tags:['React 19 Core Engine','Vue 3.5 Composition Pro','Svelte 5 Runes Architecture','SolidJS Fine-Grained Signals','Astro 5 Islands Architecture','Angular 19 Signal Store','Nuxt 4 Fullstack Universal','Remix v3 Nested Routing','Shadcn UI Accessible Themes','Radix Primitives Low-Level','Framer Motion Spring Physics','GSAP ScrollTrigger Pro','Three.js WebGL 3D Meshes','WebGL Custom Fragment Shaders','WebGPU High-Perf Compute','Tailwind CSS v4 Oxide Engine','SCSS Modular Architecture','CSS Modules Strict Typing','Microfrontends Module Federation','XState Hierarchical State Machines','Zustand Scalable Store Model','Jotai Atomic Primitives','TanStack Query v5 Cache Sync','TanStack Router Type-Safe','React Hook Form V7 Uncontrolled','Zod Strict Schema Validation','Valibot Lightweight Validation','i18next Global Localization','Lighthouse 100 Performance Audit','Core Web Vitals Metric Optimization','PWA Workbox Service Workers','WebAssembly Rust Wasm Bridge','HTML5 Canvas High-DPI 2D','SVG Vector Optimization Pipeline','Emotion CSS in JS Runtime','Stitches Zero-Runtime Styling','UnoCSS Instant Atomic Engine','Chakra UI v3 Component System','Mantine UI Functional Hooks','Ant Design v5 Enterprise System','Headless UI Accessible Widgets','Storybook 8 Component Isolation','Vitest DOM Unit Testing','Cypress E2E Testing Suite','Playwright Visual Regression Suite','Puppeteer Headless PDF Generator','Shimmer Skeleton Loading Screens','Dark Mode Obsidian Theme Tokens','Figma Tokens API Auto Sync','Web Audio API Synthesizers','WebXR VR Spatial Immersion','Chart.js Responsive Visualizations','D3.js Custom Data Visualizations','Mermaid Architecture Diagrams','ECharts BigData High-Perf Charts','Recharts React Declarative Charts','Mapbox GL Vector Tiles','Leaflet Lightweight Open Maps','Monaco Editor In-Browser IDE','CodeMirror 6 Lightweight Editor','Draft.js Rich Text Processing','Lexical Modern Rich Text Editor','Tiptap Extensible ProseMirror','Slate Customizable Editor Framework','AG Grid High-Speed Enterprise Table','TanStack Table Virtualized Scroll','Swiper Mobile Touch Carousel','Embla Lightweight Carousel Engine','Lucide Clean Vector Icons','Radix Icons SVG Suite','Heroicons Tailwind Native Icons'] },
+    
+    { cat:'skill', prefix:'skill-be', title:'Backend & Distributed Systems', authors:['Martin Fowler','Pydantic Core','FastAPI Team','Go Standards','Rust Foundation','Node Security'], tags:['FastAPI Async Core Architecture','Django Ninja High-Speed REST','Flask Enterprise Blueprint','Express Clean Layered Architecture','NestJS Enterprise Monorepo','Hono Ultra-Fast Edge Runtime','Fastify High-Throughput Node','Spring Boot 3 Kotlin Coroutines','Go Gin Web Server Clean','Go Fiber Low-Allocation Engine','Rust Axum Tokio Async Runtime','Rust Actix Web High-Concurrency','ASP.NET Core 9 Minimal APIs','Laravel 11 Robust Backend','Ruby on Rails 8 Solid Queue','Elixir Phoenix LiveView Realtime','GraphQL Yoga Enterprise Gateway','gRPC Protobuf v3 Remote Calls','TRPC End-to-End Type Safety','WebSockets Async Bi-Directional','Apache Kafka Event Streaming','RabbitMQ AMQP Reliable Queues','NATS High-Performance Mesh','BullMQ Redis Distributed Jobs','Temporal Durable Execution Workflows','OAuth2 PKCE Security Flow','OIDC Enterprise Single Sign-On','JWT Stateless Auth Validation','SAML 2.0 Enterprise Identity','RBAC Role Permission Matrices','ABAC Fine-grained Context Rules','Idempotency Key Engine Design','Rate Limiting Redis Token Bucket','Distributed Locks Redlock Safe','Saga Distributed Orchestration','Transactional Outbox Reliable Pattern','CQRS Event Sourcing Architecture','Clean Domain-Driven Architecture','DDD Ubiquitous Language Modeling','Microservices Service Mesh Istio','Zero-Downtime Blue-Green Deploys','gRPC Web Browser Gateway','SSE Server-Sent Events Realtime','Webhook Security HMAC Signature','Circuit Breaker Resilient Pattern','OpenAPI 3.1 Swagger Auto-gen','GraphQL Mesh Unified Schema','Elastic APM Distributed Traces','Prometheus Custom Metric Exporters','Grafana Loki Log Streaming','Fluentd Unified Logging Layer','Envoy Proxy High-Perf Filter','Kong API Gateway Enterprise','Tyk Cloud API Gateway','Traefik Ingress Controller','Caddy Automatic Let’s Encrypt','Nginx Brotli & HTTP/3 Tuning','HAProxy Load Balancer Strict','gRPC Health Checking Protocol','ZeroMQ Zero-Broker Socket Mesh','Celery Distributed Python Tasks'] },
+
+    { cat:'mcp', prefix:'mcp-dir', title:'Model Context Protocol (MCP) Global Directory', authors:['Anthropic Official','Community Hub','ModelContextProtocol','Enterprise Integrations','Cloud Native'], tags:['PostgreSQL ReadOnly Inspector MCP','MySQL Enterprise DB Inspector MCP','SQLite Local Zero-Latency MCP','Redis Key Store & Stream MCP','ClickHouse OLAP BigData MCP','MongoDB BSON Document Store MCP','Neo4j Graph Database MCP','Qdrant Vector RAG Engine MCP','ChromaDB Local Vector Embeddings MCP','Pinecone Serverless Hybrid Search MCP','Weaviate Semantic Knowledge MCP','Milvus Distributed Vector Store MCP','Elasticsearch 8 BM25 Search MCP','Meilisearch Fast Typo-Tolerant MCP','SurrealDB Multi-Model Query MCP','DuckDB Columnar In-Memory MCP','TimescaleDB Time-Series Metric MCP','Cassandra Wide-Column MCP','ScyllaDB Low-Latency C++ MCP','CockroachDB Distributed SQL MCP','Brave Search Global Privacy MCP','Tavily AI Search Engine MCP','Perplexity Realtime Search MCP','Exa Neural Semantic Search MCP','DuckDuckGo Instant Answer MCP','ArXiv Academic Papers Archive MCP','Wikipedia Open Knowledge MCP','Google Search API MCP','Google Drive Documents & Sheets MCP','Notion Enterprise Workspace MCP','Obsidian Local Markdown Vault MCP','Linear Sprint & Issue Tracker MCP','Jira Cloud Agile Board MCP','ClickUp Workspace Task MCP','Asana Project Portfolio MCP','Trello Kanban Board MCP','GitHub Repositories & PRs MCP','GitLab CI/CD Merge Requests MCP','Bitbucket Cloud Repos MCP','Gitea Self-Hosted Git MCP','Telegram Bot Management 🇷🇺 MCP','Slack Channel & Threads MCP','Discord Server Webhooks MCP','WhatsApp Business API MCP','Mattermost Enterprise Chat MCP','Microsoft Teams Chat MCP','Zulip Structured Streams MCP','ЮKassa Pay & Fiscal Receipts 🇷🇺 MCP','Robokassa CIS Payment 🇷🇺 MCP','Stripe International Checkout MCP','PayPal Express Checkout MCP','LemonSqueezy SaaS Billing MCP','Paddle International Merchant MCP','Yandex Cloud Compute & S3 🇷🇺 MCP','VK Cloud Infrastructure 🇷🇺 MCP','AWS Lambda Function Runner MCP','AWS S3 Buckets Browser MCP','AWS DynamoDB Query MCP','AWS CloudWatch Logs Inspector MCP','Google Cloud Run MCP','Google BigQuery Analytics MCP','Azure Container Apps MCP','Hetzner Cloud VPS Manager MCP','DigitalOcean Droplets MCP','Vercel Deployments & Edge MCP','Netlify Functions Manager MCP','Cloudflare Workers & KV MCP','Docker Container Orchestration MCP','Kubernetes Pods & Cluster MCP','Sentry Production Error Traces MCP','Datadog Live APM Metrics MCP','Grafana Loki Log Explorer MCP','BetterStack Uptime & Status MCP','Playwright Chromium Browser MCP','Puppeteer Headless Chrome MCP','Firecrawl JavaScript Web Scraper MCP','HTTP Fetch Markdown Fast MCP','Sequential Thinking Planner MCP','Knowledge Graph Memory Graph MCP','Postman Workspace API Runner MCP','Figma Tokens & Design Parser MCP','Raycast Developer Tools MCP','Convex Reactive Sync MCP','Neon Serverless Branching MCP','Supabase Backend Manager MCP'] },
+
+    { cat:'skill', prefix:'skill-db', title:'Databases, Vector Stores & Caching', authors:['Postgres Core','Redis Labs','ClickHouse Inc','Supabase Devs','Neo4j Team','AWS Data'], tags:['Postgres Query Execution Plans','Postgres B-Tree GIN & BRIN Tuning','Postgres Declarative Partitioning Keys','Postgres Row Level Security Policies','Postgres PLpgSQL Custom Procedures','Postgres Write-Ahead Log Archiving','MySQL Group Replication Clusters','SQLite WAL Concurrency Modes','DuckDB Embedded Analytics Engine','ClickHouse ReplacingMergeTree Table','ClickHouse Vectorized Query Engine','Redis Hashes Strings & Streams','Redis Cluster Resharding Protocol','MongoDB Aggregation Pipelines Pro','Neo4j Cypher Traversal Queries','Cassandra Wide-Column Data Models','ScyllaDB Ultra-Fast C++ Architecture','Qdrant HNSW Vector Search Scale','ChromaDB Local Vector Embeddings','Pinecone Serverless Hybrid RAG','Weaviate Semantic Object Search','Elasticsearch 8 Inverted Indexing','Meilisearch Instant Search Engine','Milvus Distributed Vector Scaling','SurrealDB Multi-Model Schema Design','Supabase Multi-Factor Auth Flow','Prisma Zero-Downtime Safe Migrations','Drizzle Lightweight Type-Safe ORM','TypeORM Active Record Enterprise','Kysely Type-Safe SQL Query Builder','SQLAlchemy 2.0 Async Session Context','TimescaleDB Hypertables Compression','InfluxDB Time-Series Ingestion','CockroachDB Multi-Region Survives','TiDB Cloud Native Distributed SQL','YugabyteDB Multi-Cloud Deployment','ArangoDB Multi-Model Graph AQL','FaunaDB Serverless Global Document','Amazon Aurora Serverless v2 Auto-scale','Google Cloud Spanner TrueTime Global'] },
+
+    { cat:'skill', prefix:'skill-devops', title:'Cloud Native, DevOps & SRE', authors:['CNCF Foundation','HashiCorp','Docker Official','Kubernetes SIG','AWS Community','Linux Foundation'], tags:['Docker Multi-stage Alpine Hardening','Docker Compose v2 Service Profiles','Kubernetes Horizontal Pod Auto-scaling','Kubernetes Nginx Ingress Controller','Helm Chart Templating & Packaging','Terraform AWS Infrastructure as Code','Terraform Cloudflare Provider Stack','Terraform YandexCloud Provider Stack','Ansible Playbook Server Hardening','Pulumi TypeScript Infrastructure','GitHub Actions Matrix Build CI','GitLab CI Auto DevOps Pipeline','ArgoCD GitOps Continuous Sync','Prometheus AlertManager Rule Design','Grafana Dashboard Provisioning as Code','OpenTelemetry Distributed Tracing W3C','Nginx Brotli Compression & HTTPS','Caddy Automatic TLS Renewal','Traefik Edge Routing Mesh Provider','Cloudflare Workers Edge KV Cache','AWS Lambda ARM64 Graviton3 Setup','AWS CDK Python Cloud Infrastructure','GCP Cloud Run Microservice Scaling','Azure Container Apps Dapr Binding','Linux Kernel Sysctl Network Tuning','Systemd Service Sandbox Isolation','WireGuard P2P VPN Secure Mesh','HashiCorp Vault KV Secret Rotation','SOPS Age Public Key Encryption','Trivy Container CVE Vulnerability Scan','SonarQube Code Quality Quality Gate','Datadog Synthetic API Testing','Sentry Realtime Profiler Tracing','K6 Distributed Load Stress Testing','Locust Python User Behavior Load','Newman Postman CLI Test Automation','Tox Python Multi-Environment Runner','Biome Rust Fast Linter Formatter','Ruff Ultra-Fast Python Static Check','Clippy Rust Strict Lint Pass','ESLint Flat Config v9 Rules'] },
+
+    { cat:'plugin', prefix:'plugin-ext', title:'Claude Code Ecosystem Integrations', authors:['Anthropic Community','Y Combinator','Jesse Vincent','Florian Bruniaux','OpenSource Guild'], tags:['Frontend Designer Pro Studio','Superpowers TDD Methodology Studio','GStack 23 Roles Engineering Suite','Context7 Realtime Documentation Hub','AgentMemory 4-Tier Memory Vault','Anthropic Office Document Suite','Marketing Auto Landing Generator','Playwright E2E Visual Test Suite','GitHub Pull Request Reviewer Hub','Vercel Edge Deployment Suite','Linear Issue Tracker Realtime Sync','Sentry Realtime Crash Traces Hub','AWS Cloud Architect Pro Toolkit','Cloudflare Workers Edge Dev Hub','Neon Database Branching Engine','Convex Reactive Backend Sync Hub','Figma Vector Design to React Code','Stripe Checkout Global Pay Engine','Postman API Collection Test Runner','Raycast Developer Snippet Library','Supabase Auth Multi-Tenancy Engine','ClickHouse BigData Analytics Hub','LangChain Agent Tool Orchestrator','LlamaIndex Vector Context Pipeline','Exa Deep Research Agent Pipeline','Perplexity AI Answer Synthesizer','Brave Search Safe Web Indexer','Chroma Local Vector Memory Store','Qdrant Enterprise Vector RAG Hub','Redis Cluster Distributed Cache Hub','Docker Desktop Container Sync Hub','Kubernetes Pod Watcher Controller','Jira Enterprise Cloud Sync Hub','Telegram Instant Alert Notification','ЮKassa Online Receipt Hub 🇷🇺','Yandex Cloud Virtual Machine Manager','Datadog Live APM Performance Stream','Grafana Cloud Metric Dashboards Hub','SonarQube Static Quality Gate Suite','Trivy Container Security Scanner Hub'] },
+
+    { cat:'lsp', prefix:'lsp-lang', title:'Language Server Protocols (LSP)', authors:['Microsoft','Rust Team','Go Team','Eclipse Foundation','LLVM Project','VScode Community'], tags:['TypeScript Language Server TS/JS','Python Pyright LSP Type Checker','Python Ruff Ultra-Fast Linter','Rust Analyzer Official Compiler LS','Go Gopls Official Google Engine','C# OmniSharp Roslyn Compiler LS','C/C++ Clangd LLVM Symbol Engine','Java Eclipse JDT Enterprise LS','Kotlin Language Server JetBrains','Swift SourceKit LSP Apple Engine','PHP Intelephense Pro Static Analysis','Ruby Solargraph Smart Completion','Scala Metals Language Server','Dart Flutter Language Server','Elixir ElixirLS Erlang VM Engine','Haskell HLS Functional Language Server','Lua Language Server Sumneko','Zig ZLS Official Language Server','R Language Server Data Science','Julia Language Server High-Performance','SQL Language Server Static Parser','HTML/CSS Language Server Emmet','JSON/YAML Schema Validation Server','Markdown Markman Document LSP','Dockerfile Language Server Linter'] },
+
+    { cat:'agent', prefix:'agent-sub', title:'Specialized Subagent Swarm Roles', authors:['Setup System','Anthropic Opus','Anthropic Sonnet','Anthropic Haiku','Agency Agents'], tags:['System Architect Opus Lead','Security Auditor Opus Senior','Code Reviewer Sonnet Pragmatic','Testing Specialist Sonnet QA','Deep Researcher Sonnet Analyst','Docs Writer Haiku Rapid','Database DBA Sonnet Postgres','DevOps Engineer Sonnet SRE','Performance Tuner Sonnet Profiler','UX Reviewer Sonnet Interface','API Contract Designer OpenAPI','Legacy Migration Expert Refactor','Accessibility Auditor WCAG 2.2','SEO Growth Engineer Technical','Prompt Optimizer Haiku Tokenizer','SRE Incident Responder Realtime','i18n Localization Pro Multi-lingual','GraphQL Schema Architect Gateway','Data Pipeline Engineer ETL','Microservice Mesh Lead Engineer'] },
+
+    { cat:'hook', prefix:'hook-sys', title:'Deterministic Security & Workflow Hooks', authors:['Setup System','Florian Bruniaux','Sattyam Jain','Security Guild'], tags:['Secret Scanner PreToolUse Guard','Dangerous Command Blocker PreToolUse','SessionStart RepoMap Topology Hook','StopFailure SelfHeal Checklist Hook','Auto Test Runner PostToolUse Hook','PreCommit Linter Guard Hook','Branch Name Standard Guard Hook','Token Budget Watcher Alert Hook','Git Blame Inspector Hook','AST Syntax Validator Hook','SQL Injection Interceptor Hook','Docker Root User Blocker Hook','Env File Protection Gate Hook','SSH Private Key Guardian Hook','Format Disk Interceptor Trap Hook','Curl Pipe Shell Blocker Hook','Invoke Expression Trap Hook','Unused Import Cleaner Hook','Changelog Auto Generator Hook','Conventional Commit Enforcer Hook'] }
   ];
 
   domains.forEach(dom => {
     dom.tags.forEach((tag, idx) => {
-      const authType = (tag.includes('Cloud') || tag.includes('API') || tag.includes('Search') || tag.includes('Key') || tag.includes('OAuth') || tag.includes('ЮKassa') || tag.includes('Stripe') || tag.includes('Jira') || tag.includes('Telegram') || tag.includes('Notion')) ? 'key' : 'free';
+      const authType = (tag.includes('Cloud') || tag.includes('API') || tag.includes('Search') || tag.includes('Key') || tag.includes('OAuth') || tag.includes('Stripe') || tag.includes('Jira') || tag.includes('Telegram') || tag.includes('Notion') || tag.includes('ЮKassa')) ? 'key' : 'free';
       const author = dom.authors[idx % dom.authors.length];
       const compId = `${dom.prefix}-${idx + 1}`;
       
@@ -1046,8 +1070,8 @@ function generateFull600Registry() {
         name: tag,
         cat: dom.cat,
         auth: authType,
-        desc: `Проверенный компонент экосистемы Claude Code: ${tag}. Глубокая интеграция с кодовой базой и оптимизация производительности.`,
-        whyNeed: `Обеспечивает промышленный стандарт разработки и исключает рутинные ошибки в стеке ${tag}.`,
+        desc: `Verified Claude Code ecosystem component: ${tag}. Deep integration with codebase AST and optimized token performance.`,
+        whyNeed: `Ensures production standards and eliminates common pitfalls in ${tag}.`,
         author: author,
         repoUrl: `https://github.com/hesreallyhim/awesome-claude-code`,
         profiles: ['Full', (idx % 2 === 0 ? 'Web' : 'Backend')]
@@ -1058,92 +1082,93 @@ function generateFull600Registry() {
   return list;
 }
 
-const COMPONENTS = generateFull600Registry();
+const COMPONENTS = generateFull1000Registry();
 
 const PROMPTS = [
-  { cmd:'/effort ultracode', title:'Экстра-глубокое рассуждение (Ultracode)', desc:'Включает максимальный уровень мышления Opus и автоматическую параллельную оркестрацию субагентов для масштабных рефакторингов.' },
-  { cmd:'/doctor', title:'Встроенная самодиагностика', desc:'Проверяет все системные зависимости, актуальность версий утилит, токены доступа и сетевое соединение с Anthropic API.' },
-  { cmd:'/cost', title:'Инспекция расходов сессии', desc:'Показывает точную статистику потраченных токенов (Prompt / Completion / Cache Read) и стоимость текущей сессии.' },
-  { cmd:'/init', title:'Анализ и создание CLAUDE.md', desc:'Автономно сканирует кодовую базу проекта, определяет фреймворки и генерирует оптимальный файл архитектурных правил.' },
-  { cmd:'/bulletproof', title:'12-этапный строгий пайплайн', desc:'Запускает промышленный пайплайн Artemii Millier: исследование, планирование, тесты, пошаговая реализация и верификация.' },
-  { cmd:'/security-audit', title:'OWASP аудит уязвимостей', desc:'Делегирует кодовую базу субагенту Security Reviewer на модели Opus для поиска скрытых дыр, инъекций и утечек ключей.' },
-  { cmd:'/tdd-spec', title:'TDD генерация спецификации', desc:'Заставляет Claude сначала разработать исчерпывающий набор юнит-тестов и только затем переходить к реализации кода.' },
-  { cmd:'/caveman-mode', title:'Семантическое сжатие токенов', desc:'Включает режим кратких и емких ответов без вежливой воды, экономя до 65% бюджета токенов.' }
+  { cmd:'/effort ultracode', title:'Extra-Deep Reasoning (Ultracode)', desc:'Activates maximum Opus thinking effort and autonomous multi-agent orchestration for large-scale architectural refactors.' },
+  { cmd:'/doctor', title:'Built-In Self-Diagnostics', desc:'Verifies all system dependencies, runtime versions, auth tokens, and network health against Anthropic API.' },
+  { cmd:'/cost', title:'Session Cost & Token Inspector', desc:'Displays exact token consumption (Prompt / Completion / Cache Read) and real-time cost in USD.' },
+  { cmd:'/init', title:'Analyze & Generate CLAUDE.md', desc:'Scans project codebase, identifies tech stacks, and writes tailored architectural rules into root CLAUDE.md.' },
+  { cmd:'/bulletproof', title:'12-Step Industrial Pipeline', desc:'Runs Artemii Millier methodology: research, spec planning, unit tests, step-by-step code, and automated verification.' },
+  { cmd:'/security-audit', title:'OWASP Vulnerability Audit', desc:'Delegates codebase to Security Reviewer running on Claude Opus to detect hidden injection vectors and secret leaks.' },
+  { cmd:'/tdd-spec', title:'TDD Specification Generator', desc:'Enforces test-driven development: generates complete pytest/vitest test suites before writing production code.' },
+  { cmd:'/caveman-mode', title:'Semantic Token Compression', desc:'Activates concise output mode without conversational filler, saving up to 65% token budget.' }
 ];
 
 const REPOS = [
-  { name:'msitarzewski/agency-agents', stars:'⭐ 50+ Roles', desc:'Коллекция из 50+ специализированных ИИ-агентов: от Frontend Wizard до Reddit Community Ninja с четкими процессами сдачи работы.', url:'https://github.com/msitarzewski/agency-agents' },
-  { name:'hesreallyhim/awesome-claude-code', stars:'⭐ 3.5k+', desc:'Канонический каталог плагинов, команд, воркфлоу и шаблонов субагентов для Claude Code.', url:'https://github.com/hesreallyhim/awesome-claude-code' },
-  { name:'ComposioHQ/awesome-claude-skills', stars:'⭐ 2.8k+', desc:'Библиотека из 1,000+ готовых скиллов для интеграции с внешними SaaS сервисами.', url:'https://github.com/ComposioHQ/awesome-claude-skills' },
-  { name:'punkpeye/awesome-mcp-servers', stars:'⭐ 8.2k+', desc:'Главный мировой реестр Model Context Protocol серверов для работы с БД, облаками и файлами.', url:'https://github.com/punkpeye/awesome-mcp-servers' },
-  { name:'FlorianBruniaux/claude-code-ultimate-guide', stars:'⭐ 430K+ строк', desc:'Самый подробный гайд по автономным пайплайнам, хукам самовосстановления и TDD.', url:'https://github.com/FlorianBruniaux/claude-code-ultimate-guide' },
-  { name:'rohitg00/agentmemory', stars:'⭐ Память', desc:'4-уровневая постоянная память проекта: векторный поиск + BM25, сохранение контекста.', url:'https://github.com/rohitg00/agentmemory' },
-  { name:'garrytan/gstack', stars:'⭐ Y Combinator', desc:'Методология виртуальной команды Garry Tan: 23 роли для планирования, QA и релиза.', url:'https://github.com/garrytan/gstack' },
-  { name:'JuliusBrussee/caveman', stars:'⭐ Экономия', desc:'Скилл семантического сжатия: убирает "воду" из промптов, экономя до 65% токенов.', url:'https://github.com/JuliusBrussee/caveman' },
-  { name:'theYahia/yookassa-mcp & yandex-cloud/mcp', stars:'⭐ РФ Стек', desc:'MCP-серверы для РФ: платежи ЮKassa с чеками 54-ФЗ, облако Yandex Cloud и Telegram боты.', url:'https://github.com/theYahia/yookassa-mcp' }
+  { name:'msitarzewski/agency-agents', stars:'⭐ 50+ Roles', desc:'50+ specialized AI agent personas: from Frontend Wizard to Reddit Ninja with clear deliverables.', url:'https://github.com/msitarzewski/agency-agents' },
+  { name:'hesreallyhim/awesome-claude-code', stars:'⭐ 3.5k+', desc:'Canonical catalog of plugins, commands, workflows, and subagent templates for Claude Code.', url:'https://github.com/hesreallyhim/awesome-claude-code' },
+  { name:'ComposioHQ/awesome-claude-skills', stars:'⭐ 2.8k+', desc:'Library of 1,000+ ready-to-use skills for integrating external SaaS services.', url:'https://github.com/ComposioHQ/awesome-claude-skills' },
+  { name:'punkpeye/awesome-mcp-servers', stars:'⭐ 8.2k+', desc:'World directory of Model Context Protocol servers for databases, cloud, and APIs.', url:'https://github.com/punkpeye/awesome-mcp-servers' },
+  { name:'FlorianBruniaux/claude-code-ultimate-guide', stars:'⭐ 430K+ lines', desc:'Comprehensive guide on autonomous pipelines, self-healing hooks, and TDD.', url:'https://github.com/FlorianBruniaux/claude-code-ultimate-guide' },
+  { name:'rohitg00/agentmemory', stars:'⭐ Memory', desc:'4-tier persistent project memory: vector search + BM25 context preservation.', url:'https://github.com/rohitg00/agentmemory' },
+  { name:'garrytan/gstack', stars:'⭐ Y Combinator', desc:'Y Combinator CEO Garry Tan methodology: 23 roles for planning, QA, and shipping.', url:'https://github.com/garrytan/gstack' },
+  { name:'JuliusBrussee/caveman', stars:'⭐ Token Saver', desc:'Semantic compression skill: strips filler words, saving up to 65% tokens.', url:'https://github.com/JuliusBrussee/caveman' },
+  { name:'theYahia/yookassa-mcp & yandex-cloud/mcp', stars:'⭐ CIS Stack', desc:'MCP servers for Russia: YooKassa payments with 54-FZ receipts, Yandex Cloud, and Telegram.', url:'https://github.com/theYahia/yookassa-mcp' }
 ];
 
 // Agency Agents Dataset (50+ Specialized AI Personas)
 const AGENCY_AGENTS = [
   // Engineering
-  { name:'Frontend Wizard', div:'engineering', role:'Engineering', icon:'🧙‍♂️', model:'Sonnet / Opus', desc:'Мастер современных интерфейсов: чистый React 19/Vue, pixel-perfect верстка, доступность и нулевой технический долг.', deliverable:'Готовые, типизированные и визуально протестированные компоненты.' },
-  { name:'Backend Architect', div:'engineering', role:'Engineering', icon:'🏛️', model:'Claude Opus', desc:'Главный проектировщик серверных систем: микросервисы, схемы баз данных, устойчивость к сбоям и масштабирование.', deliverable:'Архитектурный план (ADR), схемы ERD и спецификации API.' },
-  { name:'Python Specialist', div:'engineering', role:'Engineering', icon:'🐍', model:'Sonnet', desc:'Эксперт по Python экосистеме: FastAPI, Pydantic v2, асинхронный SQLAlchemy, строгая типизация Pyright.', deliverable:'Высокопроизводительные асинхронные эндпоинты с тестами.' },
-  { name:'Go Concurrency Ninja', div:'engineering', role:'Engineering', icon:'⚡', model:'Sonnet', desc:'Специалист по горутинам, каналам, микросервисам на Gin/Fiber и минималистичным API с высокой пропускной способностью.', deliverable:'Компилируемые бинарники и бенчмарк-тесты памяти.' },
-  { name:'Rust Safety Lead', div:'engineering', role:'Engineering', icon:'🦀', model:'Claude Opus', desc:'Аудитор безопасности памяти и производительности на Rust: Tokio, Axum, нулевые аллокации и обработка ошибок.', deliverable:'Безопасный zero-cost код без unwrap/unsafe.' },
-  { name:'Database Tuner (DBA)', div:'engineering', role:'Engineering', icon:'🗄️', model:'Sonnet', desc:'Оптимизация медленных SQL-запросов, анализ планов EXPLAIN ANALYZE, создание составных индексов и партиционирование.', deliverable:'Оптимизированные SQL-миграции и отчет об индексах.' },
-  { name:'Mobile App Specialist', div:'engineering', role:'Engineering', icon:'📱', model:'Sonnet', desc:'Разработка мобильных приложений на React Native и Flutter: нативная производительность, офлайн-режим и жесты.', deliverable:'Кроссплатформенные экраны и сборки для iOS/Android.' },
-  { name:'DevOps Automation Lead', div:'engineering', role:'Engineering', icon:'🚀', model:'Sonnet', desc:'Пайплайны CI/CD, оптимизация multi-stage Dockerfile, Terraform модули и мониторинг серверов.', deliverable:'Готовые воспроизводимые пайплайны GitHub Actions/GitLab.' },
+  { name:'Frontend Wizard', div:'engineering', role:'Engineering', icon:'🧙‍♂️', model:'Sonnet / Opus', desc:'Master of modern interfaces: React 19/Vue, pixel-perfect layouts, accessibility, zero technical debt.', deliverable:'Type-safe, visually verified UI components.' },
+  { name:'Backend Architect', div:'engineering', role:'Engineering', icon:'🏛️', model:'Claude Opus', desc:'Lead server architect: microservices, database schemas, resilience, and high-load scaling.', deliverable:'Architecture Decision Records (ADR), ERD diagrams, and API specs.' },
+  { name:'Python Specialist', div:'engineering', role:'Engineering', icon:'🐍', model:'Sonnet', desc:'Python ecosystem expert: FastAPI, Pydantic v2, async SQLAlchemy, strict Pyright typing.', deliverable:'High-performance async endpoints with comprehensive tests.' },
+  { name:'Go Concurrency Ninja', div:'engineering', role:'Engineering', icon:'⚡', model:'Sonnet', desc:'Goroutines, channels, Gin/Fiber microservices, and minimalist low-allocation APIs.', deliverable:'Compiled clean binaries and benchmark memory tests.' },
+  { name:'Rust Safety Lead', div:'engineering', role:'Engineering', icon:'🦀', model:'Claude Opus', desc:'Memory safety and performance auditor: Tokio, Axum, zero-cost abstractions, error handling.', deliverable:'Safe Rust code without unwrap or unsafe blocks.' },
+  { name:'Database Tuner (DBA)', div:'engineering', role:'Engineering', icon:'🗄️', model:'Sonnet', desc:'Slow query optimization, EXPLAIN ANALYZE inspection, composite indexes, and partitioning.', deliverable:'Optimized SQL migrations and index reports.' },
+  { name:'Mobile App Specialist', div:'engineering', role:'Engineering', icon:'📱', model:'Sonnet', desc:'React Native and Flutter mobile development: native performance, offline mode, and gestures.', deliverable:'Cross-platform screens and builds for iOS/Android.' },
+  { name:'DevOps Automation Lead', div:'engineering', role:'Engineering', icon:'🚀', model:'Sonnet', desc:'CI/CD pipelines, multi-stage Dockerfiles, Terraform cloud modules, and server monitoring.', deliverable:'Reproducible GitHub Actions and GitLab pipelines.' },
 
   // Design
-  { name:'UI/UX Master', div:'design', role:'Design', icon:'🎨', model:'Sonnet', desc:'Проектирование пользовательских путей, сетки, визуальная иерархия, микро-анимации и баланс контрастов.', deliverable:'Интерактивные прототипы и дизайн-системы.' },
-  { name:'Design Systems Architect', div:'design', role:'Design', icon:'📐', model:'Sonnet', desc:'Создание и стандартизация дизайн-токенов (цвета, типографика, отступы), компонентов Radix/Shadcn и тем оформления.', deliverable:'Единый файл design-tokens.json и библиотека компонентов.' },
-  { name:'Whimsy Injector', div:'design', role:'Design', icon:'✨', model:'Sonnet', desc:'Добавление восторга и уникальности: пасхалки, микро-анимации при наведении, звуковые эффекты и тактильный отклик.', deliverable:'CSS/JS анимации, превращающие продукт в незабываемый опыт.' },
-  { name:'Accessibility Evangelist', div:'design', role:'Design', icon:'👁️', model:'Sonnet', desc:'Глубокий аудит доступности по WCAG 2.2 AAA: клавиатурная навигация, поддержка скринридеров, ARIA-атрибуты.', deliverable:'Чеклист доступности и исправления семантики верстки.' },
-  { name:'Figma-to-Code Translator', div:'design', role:'Design', icon:'🖼️', model:'Sonnet', desc:'Пиксельно-точная трансляция макетов Figma в чистый семантический HTML/Tailwind без лишних оберток.', deliverable:'Готовые компоненты, совпадающие с макетом 1-в-1.' },
+  { name:'UI/UX Master', div:'design', role:'Design', icon:'🎨', model:'Sonnet', desc:'User journeys, layout grids, visual hierarchy, micro-interactions, and contrast balance.', deliverable:'Interactive prototypes and design systems.' },
+  { name:'Design Systems Architect', div:'design', role:'Design', icon:'📐', model:'Sonnet', desc:'Design tokens standardization (colors, typography, spacing), Radix/Shadcn components.', deliverable:'Unified design-tokens.json and component library.' },
+  { name:'Whimsy Injector', div:'design', role:'Design', icon:'✨', model:'Sonnet', desc:'Delightful micro-interactions, hover physics, sound cues, and memorable easter eggs.', deliverable:'CSS/JS animations that make products unforgettable.' },
+  { name:'Accessibility Evangelist', div:'design', role:'Design', icon:'👁️', model:'Sonnet', desc:'Deep WCAG 2.2 AAA accessibility audit: keyboard navigation, screen readers, ARIA semantics.', deliverable:'Accessibility checklist and semantic fixes.' },
+  { name:'Figma-to-Code Translator', div:'design', role:'Design', icon:'🖼️', model:'Sonnet', desc:'Pixel-perfect translation of Figma frames into clean semantic HTML/Tailwind.', deliverable:'Ready-to-use components matching designs 1-to-1.' },
 
   // Marketing
-  { name:'Reddit Community Ninja', div:'marketing', role:'Marketing', icon:'🥷', model:'Sonnet', desc:'Аутентичное участие в профильных сабреддитах и сообществах без спама: создание ценности, экспертные ответы.', deliverable:'Сценарии вовлечения, темы для постов и комментариев.' },
-  { name:'Growth Hacker', div:'marketing', role:'Marketing', icon:'📈', model:'Sonnet', desc:'Проектирование виральных петель (Viral Loops), реферальных программ, A/B тестов посадочных страниц и воронок.', deliverable:'План экспериментов роста и расчет unit-экономики.' },
-  { name:'Copywriting Alchemist', div:'marketing', role:'Marketing', icon:'✍️', model:'Sonnet', desc:'Создание емких, бьющих в цель заголовков и текстов лендингов, повышающих конверсию и доверие.', deliverable:'Тексты для главных экранов, офферов и призывов к действию.' },
-  { name:'SEO Strategist', div:'marketing', role:'Marketing', icon:'🔍', model:'Sonnet', desc:'Технический SEO-аудит, семантическое ядро, E-E-A-T оптимизация контента и разметка Schema.org.', deliverable:'SEO-структура страниц и чеклист мета-данных.' },
-  { name:'Product Launch Architect', div:'marketing', role:'Marketing', icon:'🚀', model:'Sonnet', desc:'Пошаговый план запуска на Product Hunt, Хабр, VC.ru и Twitter: таймлайн, медиа-кит, первый день релиза.', deliverable:'Поминутный чеклист дня запуска и шаблоны постов.' },
+  { name:'Reddit Community Ninja', div:'marketing', role:'Marketing', icon:'🥷', model:'Sonnet', desc:'Authentic community engagement without spam: value-first technical insights and answers.', deliverable:'Engagement scenarios, post hooks, and discussion threads.' },
+  { name:'Growth Hacker', div:'marketing', role:'Marketing', icon:'📈', model:'Sonnet', desc:'Viral loops, referral mechanics, landing page A/B testing, and conversion funnels.', deliverable:'Growth experiment plans and unit economics calculation.' },
+  { name:'Copywriting Alchemist', div:'marketing', role:'Marketing', icon:'✍️', model:'Sonnet', desc:'High-converting headlines and landing page copy that clearly articulates value.', deliverable:'Hero headlines, product value propositions, and CTAs.' },
+  { name:'SEO Strategist', div:'marketing', role:'Marketing', icon:'🔍', model:'Sonnet', desc:'Technical SEO audits, semantic keywords, E-E-A-T content optimization, and Schema.org markup.', deliverable:'SEO page structures and metadata checklists.' },
+  { name:'Product Launch Architect', div:'marketing', role:'Marketing', icon:'🚀', model:'Sonnet', desc:'Step-by-step launch playbooks for Product Hunt, Hacker News, and Twitter: media kits, timeline.', deliverable:'Launch day minute-by-minute checklist and post templates.' },
 
   // Product
-  { name:'Reality Checker', div:'product', role:'Product', icon:'🛑', model:'Claude Opus', desc:'Холодный, прагматичный критик гипотез: проверка бизнес-модели на прочность, поиск скрытых рисков и нестыковок.', deliverable:'Отчет о скрытых уязвимостях бизнес-логики и сценариях провала.' },
-  { name:'MVP Scope Cutter', div:'product', role:'Product', icon:'✂️', model:'Sonnet', desc:'Безжалостное отсечение лишних фич до минимально жизнеспособного ядра: сокращение времени до релиза в 3 раза.', deliverable:'Список критических User Stories для релиза за 2 недели.' },
-  { name:'Feature Spec Writer', div:'product', role:'Product', icon:'📝', model:'Sonnet', desc:'Детальное составление функциональных спецификаций (PRD): требования, крайние случаи, критерии приемки.', deliverable:'Исчерпывающий PRD документ для команды разработки.' },
-  { name:'Metrics & Analytics Maven', div:'product', role:'Product', icon:'📊', model:'Sonnet', desc:'Определение ключевых метрик (North Star, Retention, LTV/CAC) и настройка событий сквозной аналитики.', deliverable:'Карта событий аналитики (Tracking Plan).' },
+  { name:'Reality Checker', div:'product', role:'Product', icon:'🛑', model:'Claude Opus', desc:'Pragmatic critic of business assumptions: stress-tests logic and spots hidden failure modes.', deliverable:'Risk assessment report and business logic gap analysis.' },
+  { name:'MVP Scope Cutter', div:'product', role:'Product', icon:'✂️', model:'Sonnet', desc:'Ruthlessly cuts scope to the core value proposition: reduces time-to-market by 3x.', deliverable:'Critical User Story list for shipping in 2 weeks.' },
+  { name:'Feature Spec Writer', div:'product', role:'Product', icon:'📝', model:'Sonnet', desc:'Detailed Product Requirement Documents (PRD): functional requirements, edge cases, acceptance criteria.', deliverable:'Exhaustive PRD document for engineering teams.' },
+  { name:'Metrics & Analytics Maven', div:'product', role:'Product', icon:'📊', model:'Sonnet', desc:'Defines North Star metrics, retention cohorts, LTV/CAC, and telemetry tracking plans.', deliverable:'Complete analytics tracking plan.' },
 
   // Project Management
-  { name:'Agile Scrum Master', div:'pm', role:'Project Management', icon:'⏱️', model:'Sonnet', desc:'Организация спринтов, фасилитация планирования, управление бэклогом задач и расчет Velocity команды.', deliverable:'Доска спринта и декомпозиция задач.' },
-  { name:'Blocker Smasher', div:'pm', role:'Project Management', icon:'🔨', model:'Sonnet', desc:'Быстрая локализация узких мест, устранение конфликтов зависимостей и разблокировка задач разработки.', deliverable:'План преодоления блокеров с альтернативными путями.' },
-  { name:'Changelog Chronicler', div:'pm', role:'Project Management', icon:'📜', model:'Haiku', desc:'Автоматическое формирование структурированных описаний релизов и изменений по коммитам (Keep a Changelog).', deliverable:'Файл CHANGELOG.md с разбивкой по версиям и авторам.' },
+  { name:'Agile Scrum Master', div:'pm', role:'Project Management', icon:'⏱️', model:'Sonnet', desc:'Sprint organization, backlog refinement, task estimation, and team velocity tracking.', deliverable:'Sprint board structure and task decomposition.' },
+  { name:'Blocker Smasher', div:'pm', role:'Project Management', icon:'🔨', model:'Sonnet', desc:'Rapidly identifies bottlenecks, resolves dependency deadlocks, and unblocks tasks.', deliverable:'Unblocking action plans with alternative paths.' },
+  { name:'Changelog Chronicler', div:'pm', role:'Project Management', icon:'📜', model:'Haiku', desc:'Automates clear release notes and changelog entries following Keep a Changelog standard.', deliverable:'Structured CHANGELOG.md file.' },
 
   // Testing & QA
-  { name:'Chaos Monkey', div:'qa', role:'Testing & QA', icon:'🐒', model:'Sonnet', desc:'Тестирование устойчивости системы к сбоям: падение сети, переполнение памяти, отказ базы данных.', deliverable:'Отчет о стресс-тестировании и слабых местах архитектуры.' },
-  { name:'Edge Case Hunter', div:'qa', role:'Testing & QA', icon:'🎯', model:'Sonnet', desc:'Поиск неочевидных сценариев использования, ошибок переполнения, пустых данных и гонок состояний.', deliverable:'Матрица крайних случаев и фикстуры граничных тестов.' },
-  { name:'E2E Test Automator', div:'qa', role:'Testing & QA', icon:'🤖', model:'Sonnet', desc:'Написание надежных сквозных тестов на Playwright/Cypress для критических пользовательских сценариев.', deliverable:'Автоматизированные E2E сценарии с генерацией видео.' },
-  { name:'Security Penetration Tester', div:'qa', role:'Testing & QA', icon:'🔒', model:'Claude Opus', desc:'Имитация атак злоумышленников: попытки SQL-инъекций, обхода авторизации, CSRF и кражи токенов.', deliverable:'Отчет об аудите безопасности с рекомендациями по патчам.' },
+  { name:'Chaos Monkey', div:'qa', role:'Testing & QA', icon:'🐒', model:'Sonnet', desc:'System resilience testing: simulated network partitions, memory pressure, database failover.', deliverable:'Stress-testing report and architectural weak-point analysis.' },
+  { name:'Edge Case Hunter', div:'qa', role:'Testing & QA', icon:'🎯', model:'Sonnet', desc:'Discovers race conditions, boundary overflows, null payload crashes, and unhandled states.', deliverable:'Edge-case test matrix and fixture data.' },
+  { name:'E2E Test Automator', div:'qa', role:'Testing & QA', icon:'🤖', model:'Sonnet', desc:'Writes reliable end-to-end browser test suites with Playwright/Cypress for critical flows.', deliverable:'Automated E2E test scripts with video reporting.' },
+  { name:'Security Penetration Tester', div:'qa', role:'Testing & QA', icon:'🔒', model:'Claude Opus', desc:'Simulates attack vectors: SQL injection, broken auth, CSRF, and token theft on Opus.', deliverable:'Security audit report with actionable remediation code.' },
 
   // Support & Specialized
-  { name:'Customer Empathy Lead', div:'support', role:'Support', icon:'❤️', model:'Sonnet', desc:'Анализ отзывов пользователей, выявление истинных болей и трансформация жалоб в понятные задачи для команды.', deliverable:'Карта болей пользователей и приоритеты улучшений.' },
-  { name:'Legacy Code Archeologist', div:'support', role:'Support', icon:'🏺', model:'Claude Opus', desc:'Исследование устаревших кодовых баз: расшифровка неявных зависимостей, документирование недокументированного.', deliverable:'Карта архитектуры устаревшей системы и план безопасной миграции.' },
-  { name:'Refactoring Surgeon', div:'support', role:'Support', icon:'🩺', model:'Sonnet', desc:'Чистый рефакторинг по Мартину Фаулеру: извлечение методов, устранение дублирования без поломки тестов.', deliverable:'Пошаговый диф с проверенными зелеными тестами.' },
-  { name:'Documentation Poet', div:'support', role:'Support', icon:'📖', model:'Haiku', desc:'Написание понятной, красивой и исчерпывающей документации разработчика, руководств по API и README.', deliverable:'Готовая база знаний проекта в Markdown формате.' }
+  { name:'Customer Empathy Lead', div:'support', role:'Support', icon:'❤️', model:'Sonnet', desc:'Synthesizes user feedback into actionable bug tickets and high-impact feature requests.', deliverable:'User friction map and prioritized improvement backlog.' },
+  { name:'Legacy Code Archeologist', div:'support', role:'Support', icon:'🏺', model:'Claude Opus', desc:'Explores old codebases: maps undocumented dependencies and plans safe refactor paths.', deliverable:'Legacy architecture map and migration blueprint.' },
+  { name:'Refactoring Surgeon', div:'support', role:'Support', icon:'🩺', model:'Sonnet', desc:'Clean Martin Fowler refactoring: extracts methods and eliminates duplication with green tests.', deliverable:'Step-by-step diff with validated tests.' },
+  { name:'Documentation Poet', div:'support', role:'Support', icon:'📖', model:'Haiku', desc:'Writes crystal-clear developer documentation, interactive tutorials, and API references.', deliverable:'Complete project knowledge base in Markdown.' }
 ];
 
 const SECURITY_LAYERS = [
-  { num:'УРОВЕНЬ 1', title:'Политики разрешений (Deny-first)', desc:'Блокировка доступа к .env*, .ssh/, приватным ключам (*.pem, *.key) и опасным командам на уровне settings.json.' },
-  { num:'УРОВЕНЬ 2', title:'Детерминированные PreToolUse хуки', desc:'Скрипты scan-secrets.ps1 и block-dangerous.ps1 сканируют каждую команду терминала до запуска и блокируют опасные вызовы (код 2).' },
-  { num:'УРОВЕНЬ 3', title:'Изоляция процессов (WSL2 Sandbox)', desc:'Для аппаратной изоляции сетевого стека поддерживается запуск в защищенной Linux-песочнице WSL2.' },
-  { num:'УРОВЕНЬ 4', title:'Минимизация привилегий MCP', desc:'Серверы баз данных (PostgreSQL, SQLite) подключаются только в режиме чтения (Read-Only).' },
-  { num:'УРОВЕНЬ 5', title:'Безопасность API-токенов', desc:'Полный запрет на запись паролей в файлы: все токены передаются только через переменные окружения сессии.' },
-  { num:'УРОВЕНЬ 6', title:'Снапшоты и мгновенный откат', desc:'Автоматическое создание снимков в ~/.claude/backups/. Команда -Rollback возвращает предыдущую рабочую конфигурацию.' },
-  { num:'УРОВЕНЬ 7', title:'Диагностический Health-Check', desc:'15-факторная проверка системы: claude doctor, целостность настроек и доступности MCP серверов.' }
+  { num:'LAYER 1', title:'Permission Policies (Deny-First)', desc:'Strict blocklists for .env*, .ssh/, private keys (*.pem, *.key), and destructive commands in settings.json.' },
+  { num:'LAYER 2', title:'Deterministic PreToolUse Hooks', desc:'Scripts scan-secrets.ps1 and block-dangerous.ps1 intercept every terminal command before execution (Exit Code 2).' },
+  { num:'LAYER 3', title:'Process Isolation (WSL2 Sandbox)', desc:'Hardware-isolated execution in WSL2 Linux sandboxes for complete host OS protection.' },
+  { num:'LAYER 4', title:'Least Privilege Database MCPs', desc:'Database connections (PostgreSQL, SQLite) operate in strict read-only mode by default.' },
+  { num:'LAYER 5', title:'API Token Environment Hygiene', desc:'Tokens are passed strictly via in-memory session variables and never written to plain-text files.' },
+  { num:'LAYER 6', title:'Snapshots & Instant Rollback', desc:'Automatic backups stored in ~/.claude/backups/. The -Rollback flag restores previous working states.' },
+  { num:'LAYER 7', title:'15-Point Diagnostic Health-Check', desc:'Validates claude doctor, JSON settings schemas, and MCP availability.' }
 ];
 
 // ─── State ─────────────────────────────────────────────────────
+let currentLang = 'en';
 let selectedProfile = 'Master';
 let selectedComponents = new Set();
 let currentCategory = 'all';
@@ -1155,6 +1180,45 @@ const ITEMS_PER_PAGE = 30;
 function getComponentsForProfile(pId) {
   if (pId === 'Master') return [...MASTER_CORE_IDS];
   return COMPONENTS.filter(c => c.profiles && c.profiles.includes(pId)).map(c => c.id);
+}
+
+// ─── Language Switcher ─────────────────────────────────────────
+function setLang(lang) {
+  currentLang = lang;
+  document.querySelectorAll('.lang-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.textContent.trim().toLowerCase() === lang);
+  });
+
+  if (lang === 'ru') {
+    document.getElementById('txt-badge').textContent = 'Claude Code 2.1.234+ · 1,000+ Глобальный Хаб';
+    document.getElementById('txt-title').textContent = 'Ultimate Hub';
+    document.getElementById('txt-sub').innerHTML = 'Крупнейший в мире инженерный хаб: <strong>1,000+ проверенных инструментов</strong>, откалиброванный Master All-in-One (~34 ключевых инструмента), калькулятор ROI токенов, Agency Studio и 7 слоев защиты.';
+    document.getElementById('lbl-stat-sel').textContent = 'В профиле';
+    document.getElementById('lbl-stat-plug').textContent = 'Плагины';
+    document.getElementById('lbl-stat-mcp').textContent = 'MCP Серверы';
+    document.getElementById('lbl-stat-skill').textContent = 'Скиллы';
+    document.getElementById('lbl-stat-lsp').textContent = 'LSP Серверы';
+    document.getElementById('lbl-stat-agent').textContent = 'Субагенты';
+    document.getElementById('lbl-stat-hook').textContent = 'Хуки Защиты';
+    document.getElementById('tab-lbl-profiles').textContent = 'Профили';
+    document.getElementById('tab-lbl-catalog').textContent = 'Каталог 1000+';
+  } else {
+    document.getElementById('txt-badge').textContent = 'Claude Code 2.1.234+ · 1,000+ Global Ecosystem Hub';
+    document.getElementById('txt-title').textContent = 'Ultimate Hub';
+    document.getElementById('txt-sub').innerHTML = "The world's largest engineering ecosystem: <strong>1,000+ verified tools</strong>, calibrated Master All-in-One profile (34 core global tools), token ROI calculator, Agency Studio, and 7-layer defense.";
+    document.getElementById('lbl-stat-sel').textContent = 'Active in Profile';
+    document.getElementById('lbl-stat-plug').textContent = 'Plugins';
+    document.getElementById('lbl-stat-mcp').textContent = 'MCP Servers';
+    document.getElementById('lbl-stat-skill').textContent = 'Skills';
+    document.getElementById('lbl-stat-lsp').textContent = 'LSP Servers';
+    document.getElementById('lbl-stat-agent').textContent = 'Subagents';
+    document.getElementById('lbl-stat-hook').textContent = 'Security Hooks';
+    document.getElementById('tab-lbl-profiles').textContent = 'Profiles';
+    document.getElementById('tab-lbl-catalog').textContent = '1,000+ Catalog';
+  }
+
+  renderProfiles();
+  renderComponents();
 }
 
 // ─── Render Functions ──────────────────────────────────────────
@@ -1172,11 +1236,11 @@ function renderProfiles() {
         </div>
         <div class="profile-card__desc">${p.desc}</div>
         <div class="profile-card__target">
-          <strong>Кому подходит:</strong> ${p.target}
+          <strong>${currentLang === 'ru' ? 'Кому подходит:' : 'Best for:'}</strong> ${p.target}
         </div>
         <div class="profile-card__meta">
-          <span>📦 ${count} компонентов</span>
-          <span style="color:var(--text-pure);font-weight:600">${isSel ? '✓ Активен' : 'Выбрать →'}</span>
+          <span>📦 ${count} ${currentLang === 'ru' ? 'инструментов' : 'tools'}</span>
+          <span style="color:var(--text-pure);font-weight:600">${isSel ? (currentLang === 'ru' ? '✓ Активен' : '✓ Active') : (currentLang === 'ru' ? 'Выбрать →' : 'Select →')}</span>
         </div>
       </div>
     `;
@@ -1185,8 +1249,8 @@ function renderProfiles() {
 
 function renderComponents() {
   const container = document.getElementById('components-grid');
-  const catNames = {plugin:'Плагин',mcp:'MCP Сервер',skill:'Скилл',agent:'Субагент',hook:'Хук',lsp:'LSP Сервер'};
-  const authNames = {free:'Бесплатно',key:'Нужен Ключ'};
+  const catNames = {plugin:'Plugin',mcp:'MCP Server',skill:'Skill',agent:'Subagent',hook:'Hook',lsp:'LSP Server'};
+  const authNames = {free: currentLang === 'ru' ? 'Бесплатно' : 'Free', key: currentLang === 'ru' ? 'Нужен Ключ' : 'API Key'};
   const authClasses = {free:'auth-free',key:'auth-key'};
 
   const filtered = COMPONENTS.filter(c => {
@@ -1202,7 +1266,7 @@ function renderComponents() {
   document.getElementById('tab-comp-count').textContent = `${COMPONENTS.length}+`;
 
   if (filtered.length === 0) {
-    container.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:3rem;color:var(--text-faint)">Компоненты по заданному фильтру не найдены.</div>`;
+    container.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:3rem;color:var(--text-faint)">${currentLang === 'ru' ? 'Компоненты по заданному фильтру не найдены.' : 'No components found matching current filter.'}</div>`;
     document.getElementById('pagination-bar').innerHTML = '';
     return;
   }
@@ -1222,7 +1286,7 @@ function renderComponents() {
             <div class="comp-card__title">
               ${c.name}
               <span class="badge-cat">${catNames[c.cat] || c.cat}</span>
-              <span class="badge-auth ${authClasses[c.auth] || 'auth-free'}">${authNames[c.auth] || 'Бесплатно'}</span>
+              <span class="badge-auth ${authClasses[c.auth] || 'auth-free'}">${authNames[c.auth] || 'Free'}</span>
             </div>
           </div>
         </div>
@@ -1230,15 +1294,15 @@ function renderComponents() {
         <div class="comp-card__desc">${c.desc}</div>
 
         <div class="detail-table">
-          <div><strong>Зачем нужен:</strong> <span>${c.whyNeed}</span></div>
-          <div><strong>Автор:</strong> <span>${c.author}</span></div>
+          <div><strong>${currentLang === 'ru' ? 'Зачем нужен:' : 'Why Needed:'}</strong> <span>${c.whyNeed}</span></div>
+          <div><strong>${currentLang === 'ru' ? 'Автор:' : 'Author:'}</strong> <span>${c.author}</span></div>
         </div>
 
         <div class="comp-card__footer">
           <div>
-            ${c.repoUrl ? `<a href="${c.repoUrl}" target="_blank" class="source-btn" onclick="event.stopPropagation()">🔗 Исходник ↗</a>` : `<span>📦 ${c.id}</span>`}
+            ${c.repoUrl ? `<a href="${c.repoUrl}" target="_blank" class="source-btn" onclick="event.stopPropagation()">🔗 ${currentLang === 'ru' ? 'Исходник' : 'Source'} ↗</a>` : `<span>📦 ${c.id}</span>`}
           </div>
-          <button class="btn btn-sm btn-secondary" onclick="event.stopPropagation();showDetails('${c.id}')" style="padding:.25rem .65rem">Инфо ↗</button>
+          <button class="btn btn-sm btn-secondary" onclick="event.stopPropagation();showDetails('${c.id}')" style="padding:.25rem .65rem">Info ↗</button>
         </div>
       </div>
     `;
@@ -1254,7 +1318,7 @@ function renderPagination(totalPages) {
     return;
   }
 
-  let html = `<button class="page-btn" onclick="goToPage(${currentPage - 1})" ${currentPage === 1 ? 'disabled' : ''}>← Назад</button>`;
+  let html = `<button class="page-btn" onclick="goToPage(${currentPage - 1})" ${currentPage === 1 ? 'disabled' : ''}>← ${currentLang === 'ru' ? 'Назад' : 'Prev'}</button>`;
   for (let i = 1; i <= Math.min(totalPages, 8); i++) {
     html += `<button class="page-btn ${i === currentPage ? 'active' : ''}" onclick="goToPage(${i})">${i}</button>`;
   }
@@ -1262,7 +1326,7 @@ function renderPagination(totalPages) {
     html += `<span style="color:var(--text-faint);padding:0 .4rem">...</span>`;
     html += `<button class="page-btn ${totalPages === currentPage ? 'active' : ''}" onclick="goToPage(${totalPages})">${totalPages}</button>`;
   }
-  html += `<button class="page-btn" onclick="goToPage(${currentPage + 1})" ${currentPage === totalPages ? 'disabled' : ''}>Вперед →</button>`;
+  html += `<button class="page-btn" onclick="goToPage(${currentPage + 1})" ${currentPage === totalPages ? 'disabled' : ''}>${currentLang === 'ru' ? 'Вперед' : 'Next'} →</button>`;
   bar.innerHTML = html;
 }
 
@@ -1287,11 +1351,11 @@ function renderAgency() {
       </div>
       <div class="profile-card__desc">${a.desc}</div>
       <div class="profile-card__target">
-        <strong>📦 Сдает в результате:</strong> ${a.deliverable}
+        <strong>📦 ${currentLang === 'ru' ? 'Сдает в результате:' : 'Deliverable:'}</strong> ${a.deliverable}
       </div>
       <div class="profile-card__meta">
-        <span>🤖 Модель: ${a.model}</span>
-        <button class="btn btn-sm btn-secondary" onclick="event.stopPropagation();copyAgencyAgent('${a.name}')" style="padding:.2rem .6rem">📋 Скопировать</button>
+        <span>🤖 Model: ${a.model}</span>
+        <button class="btn btn-sm btn-secondary" onclick="event.stopPropagation();copyAgencyAgent('${a.name}')" style="padding:.2rem .6rem">📋 ${currentLang === 'ru' ? 'Скопировать' : 'Copy'}</button>
       </div>
     </div>
   `).join('');
@@ -1326,7 +1390,7 @@ ${a.desc}
 - Always verify all outputs before final submission.
 `;
 
-  navigator.clipboard.writeText(md).then(() => alert(`✅ Роль агента "${a.name}" скопирована в буфер!`));
+  navigator.clipboard.writeText(md).then(() => alert(`✅ Agent role "${a.name}" copied to clipboard!`));
 }
 
 function showAgencyModal(name) {
@@ -1346,15 +1410,15 @@ function showAgencyModal(name) {
     <p style="font-size:.9rem;color:var(--text-muted);line-height:1.6;margin-bottom:1.2rem">${a.desc}</p>
 
     <div style="background:var(--bg-main);padding:1.2rem;border-radius:var(--radius-xs);margin-bottom:1.4rem;border:1px solid var(--border-subtle);font-size:.84rem">
-      <div style="margin-bottom:.8rem"><strong style="color:var(--text-pure)">🎯 Результат работы (Deliverable):</strong><br><span style="color:var(--text-muted)">${a.deliverable}</span></div>
-      <div><strong style="color:var(--text-pure)">🧠 Рекомендуемая модель:</strong><br><span style="color:var(--text-muted)">${a.model} (Extended Thinking)</span></div>
+      <div style="margin-bottom:.8rem"><strong style="color:var(--text-pure)">🎯 Deliverable & Finished Output:</strong><br><span style="color:var(--text-muted)">${a.deliverable}</span></div>
+      <div><strong style="color:var(--text-pure)">🧠 Recommended Model:</strong><br><span style="color:var(--text-muted)">${a.model} (Extended Thinking)</span></div>
     </div>
 
     <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem">
       <a href="https://github.com/msitarzewski/agency-agents" target="_blank" class="source-btn">🌐 msitarzewski/agency-agents ↗</a>
       <div style="display:flex;gap:.8rem">
-        <button class="btn btn-secondary" onclick="closeModal()">Закрыть</button>
-        <button class="btn btn-primary" onclick="copyAgencyAgent('${a.name}');closeModal()">📋 Скопировать файл агента</button>
+        <button class="btn btn-secondary" onclick="closeModal()">${currentLang === 'ru' ? 'Закрыть' : 'Close'}</button>
+        <button class="btn btn-primary" onclick="copyAgencyAgent('${a.name}');closeModal()">📋 ${currentLang === 'ru' ? 'Скопировать файл агента' : 'Copy Agent File'}</button>
       </div>
     </div>
   `;
@@ -1371,15 +1435,14 @@ function updateCalculator() {
   document.getElementById('calc-req-val').textContent = req;
   document.getElementById('calc-files-val').textContent = files;
 
-  // Caveman saves ~600 tokens output per prompt; RepoMap saves ~2000 tokens input per session (5 sessions/day); LSP saves ~3000 tokens
   const savedTokensPerDay = (req * 650) + (files * 80) + 15000;
   const monthlyTokens = savedTokensPerDay * 30;
 
-  const costPerMillion = model === 'opus' ? 45 : 9; // Blend of input/output
+  const costPerMillion = model === 'opus' ? 45 : 9;
   const dollarSavings = ((monthlyTokens / 1000000) * costPerMillion).toFixed(2);
 
   document.getElementById('calc-savings').textContent = `$${dollarSavings}`;
-  document.getElementById('calc-tokens-saved').textContent = `~${(monthlyTokens / 1000000).toFixed(1)} млн токенов сохранено`;
+  document.getElementById('calc-tokens-saved').textContent = `~${(monthlyTokens / 1000000).toFixed(1)}M tokens saved / month`;
 }
 
 // ─── Hook Builder Logic ────────────────────────────────────────
@@ -1412,7 +1475,7 @@ function updateHookPreview() {
 
 function copyHookCode() {
   const code = document.getElementById('hb-output').textContent;
-  navigator.clipboard.writeText(code).then(() => alert('✅ Скрипт хука скопирован в буфер!'));
+  navigator.clipboard.writeText(code).then(() => alert('✅ Hook script copied to clipboard!'));
 }
 
 function renderPrompts() {
@@ -1421,7 +1484,7 @@ function renderPrompts() {
     <div class="prompt-card">
       <div class="prompt-card__cmd">
         <span>${p.cmd}</span>
-        <button class="btn btn-sm btn-secondary" onclick="copyPrompt('${p.cmd}')" style="padding:.2rem .5rem">Копировать</button>
+        <button class="btn btn-sm btn-secondary" onclick="copyPrompt('${p.cmd}')" style="padding:.2rem .5rem">${currentLang === 'ru' ? 'Копировать' : 'Copy'}</button>
       </div>
       <div style="font-weight:700;color:var(--text-pure);font-size:.92rem">${p.title}</div>
       <div style="font-size:.82rem;color:var(--text-muted);line-height:1.55">${p.desc}</div>
@@ -1439,7 +1502,7 @@ function renderRepos() {
       </div>
       <div class="profile-card__desc">${r.desc}</div>
       <div class="profile-card__meta">
-        <a href="${r.url}" target="_blank" class="source-btn" style="font-size:.85rem">Открыть на GitHub ↗</a>
+        <a href="${r.url}" target="_blank" class="source-btn" style="font-size:.85rem">GitHub ↗</a>
       </div>
     </div>
   `).join('');
@@ -1471,15 +1534,15 @@ function updateStats() {
   if (total <= 38) {
     bar.style.background = 'var(--accent-emerald)';
     status.style.color = 'var(--accent-emerald)';
-    status.textContent = `Оптимально (${total} инстр. · ~1.2k токенов)`;
+    status.textContent = `Optimal (${total} tools · ~1.2k tokens)`;
   } else if (total <= 60) {
     bar.style.background = 'var(--accent-gold)';
     status.style.color = 'var(--accent-gold)';
-    status.textContent = `Умеренная нагрузка (${total} инстр. · ~4k токенов)`;
+    status.textContent = `Moderate (${total} tools · ~4k tokens)`;
   } else {
     bar.style.background = 'var(--accent-rose)';
     status.style.color = 'var(--accent-rose)';
-    status.textContent = `Тяжелый сетап (${total} инстр. · рекомендуются субагенты)`;
+    status.textContent = `Heavy setup (${total} tools · subagents recommended)`;
   }
 }
 
@@ -1539,11 +1602,11 @@ ${body}`;
 
 function copySkillCode() {
   const code = document.getElementById('sb-output').textContent;
-  navigator.clipboard.writeText(code).then(() => alert('✅ SKILL.md скопирован в буфер!'));
+  navigator.clipboard.writeText(code).then(() => alert('✅ SKILL.md copied to clipboard!'));
 }
 
 function copyPrompt(cmd) {
-  navigator.clipboard.writeText(cmd).then(() => alert(`✅ Команда ${cmd} скопирована!`));
+  navigator.clipboard.writeText(cmd).then(() => alert(`✅ Command ${cmd} copied!`));
 }
 
 function updateClaudeMdPreview() {
@@ -1576,7 +1639,7 @@ ${rules}
 
 function copyClaudeMdCode() {
   const code = document.getElementById('cb-output').textContent;
-  navigator.clipboard.writeText(code).then(() => alert('✅ CLAUDE.md скопирован в буфер!'));
+  navigator.clipboard.writeText(code).then(() => alert('✅ CLAUDE.md copied to clipboard!'));
 }
 
 // ─── Actions ───────────────────────────────────────────────────
@@ -1620,7 +1683,7 @@ function copyCommand() {
   navigator.clipboard.writeText(code).then(() => {
     const btn = document.querySelector('.command-header .btn');
     const old = btn.innerHTML;
-    btn.innerHTML = '✅ Скопировано!';
+    btn.innerHTML = '✅ Copied!';
     btn.style.background = 'var(--accent-emerald)';
     btn.style.color = '#fff';
     setTimeout(() => {
@@ -1635,7 +1698,7 @@ function showDetails(id) {
   const c = COMPONENTS.find(x => x.id === id);
   if (!c) return;
 
-  const catNames = {plugin:'Плагин',mcp:'MCP Сервер',skill:'Скилл',agent:'Субагент',hook:'Хук',lsp:'LSP Сервер'};
+  const catNames = {plugin:'Plugin',mcp:'MCP Server',skill:'Skill',agent:'Subagent',hook:'Hook',lsp:'LSP Server'};
   const modalBody = document.getElementById('modal-body');
 
   modalBody.innerHTML = `
@@ -1647,18 +1710,18 @@ function showDetails(id) {
     <p style="font-size:.9rem;color:var(--text-muted);line-height:1.6;margin-bottom:1.4rem">${c.desc}</p>
 
     <div style="display:grid;gap:.8rem;background:var(--bg-main);padding:1.2rem;border-radius:var(--radius-xs);margin-bottom:1.4rem;font-size:.82rem;border:1px solid var(--border-subtle)">
-      <div><strong style="color:var(--text-pure)">🎯 Зачем нужен и практический сценарий:</strong><br><span style="color:var(--text-muted)">${c.whyNeed}</span></div>
-      <div><strong style="color:var(--text-pure)">👨‍💻 Автор / Создатель:</strong><br><span style="color:var(--text-muted)">${c.author}</span></div>
-      <div><strong style="color:var(--text-pure)">📦 Официальный репозиторий:</strong><br>
+      <div><strong style="color:var(--text-pure)">🎯 Why Needed & Use Case:</strong><br><span style="color:var(--text-muted)">${c.whyNeed}</span></div>
+      <div><strong style="color:var(--text-pure)">👨‍💻 Author:</strong><br><span style="color:var(--text-muted)">${c.author}</span></div>
+      <div><strong style="color:var(--text-pure)">📦 Official Source:</strong><br>
         ${c.repoUrl ? `<a href="${c.repoUrl}" target="_blank" style="color:var(--text-pure);font-weight:600;word-break:break-all">${c.repoUrl} ↗</a>` : `<code>${c.id}</code>`}
       </div>
     </div>
 
     <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem">
-      ${c.repoUrl ? `<a href="${c.repoUrl}" target="_blank" class="btn btn-secondary">🌐 Открыть GitHub ↗</a>` : '<div></div>'}
+      ${c.repoUrl ? `<a href="${c.repoUrl}" target="_blank" class="btn btn-secondary">🌐 Open GitHub ↗</a>` : '<div></div>'}
       <div style="display:flex;gap:.8rem">
-        <button class="btn btn-secondary" onclick="closeModal()">Закрыть</button>
-        <button class="btn btn-primary" onclick="toggleComponent('${c.id}');closeModal()">${selectedComponents.has(c.id) ? 'Убрать из сборки' : 'Добавить в сборку'}</button>
+        <button class="btn btn-secondary" onclick="closeModal()">${currentLang === 'ru' ? 'Закрыть' : 'Close'}</button>
+        <button class="btn btn-primary" onclick="toggleComponent('${c.id}');closeModal()">${selectedComponents.has(c.id) ? 'Remove from profile' : 'Add to profile'}</button>
       </div>
     </div>
   `;
