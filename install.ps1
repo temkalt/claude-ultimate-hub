@@ -106,14 +106,17 @@ switch ($choice.Trim().ToUpper()) {
         powershell -NoProfile -ExecutionPolicy Bypass -File $scriptPath -Rollback
     }
     '0' {
-        Write-Host "`n[>>] Launching Claude Code Ultimate Web Hub..." -ForegroundColor Cyan
+        Write-Host "`n[>>] Launching Claude Code Control Center Studio..." -ForegroundColor Cyan
         $targetHtml = $null
 
         $candidates = @(
+            (Join-Path $PSScriptRoot "app.html"),
+            ".\app.html",
+            "D:\claude optimiz\app.html",
             (Join-Path $PSScriptRoot "index.html"),
             ".\index.html",
             "D:\claude optimiz\index.html",
-            (Join-Path $env:TEMP "claude-ultimate-hub.html")
+            (Join-Path $env:TEMP "claude-control-center.html")
         )
 
         foreach ($cand in $candidates) {
@@ -124,17 +127,17 @@ switch ($choice.Trim().ToUpper()) {
         }
 
         if (-not $targetHtml) {
-            $tempPath = Join-Path $env:TEMP "claude-ultimate-hub.html"
-            Write-Host "[>>] Downloading latest Web UI to $tempPath..." -ForegroundColor DarkGray
+            $tempPath = Join-Path $env:TEMP "claude-control-center.html"
+            Write-Host "[>>] Downloading Control Center to $tempPath..." -ForegroundColor DarkGray
             try {
-                Invoke-WebRequest -Uri "https://raw.githubusercontent.com/temkalt/claude-ultimate-hub/main/index.html" -OutFile $tempPath -UseBasicParsing
+                Invoke-WebRequest -Uri "https://raw.githubusercontent.com/temkalt/claude-ultimate-hub/main/app.html" -OutFile $tempPath -UseBasicParsing
                 $targetHtml = (Resolve-Path $tempPath).Path
             } catch {
                 $targetHtml = "https://github.com/temkalt/claude-ultimate-hub"
             }
         }
 
-        Write-Host "[OK] Opening: $targetHtml" -ForegroundColor Green
+        Write-Host "[OK] Opening Control Center: $targetHtml" -ForegroundColor Green
         Start-Process $targetHtml
     }
     'Q' {
