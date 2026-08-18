@@ -1,5 +1,5 @@
 # ==============================================================================
-#  Claude Code Ultimate Hub — 1-Click Interactive TUI Installer (Onyx Edition)
+#  Claude Code Ultimate Hub -- 1-Click Interactive TUI Installer (Onyx Edition)
 #  Repository: https://github.com/temkalt/claude-ultimate-hub
 # ==============================================================================
 
@@ -12,15 +12,15 @@ function Show-Header {
   ██████╗██╗      █████╗ ██╗   ██╗██████╗ ███████╗    ██╗  ██╗██╗   ██╗██████╗ 
  ██╔════╝██║     ██╔══██╗██║   ██║██╔══██╗██╔════╝    ██║  ██║██║   ██║██╔══██╗
  ██║     ██║     ███████║██║   ██║██║  ██║█████╗      ███████║██║   ██║██████╔╝
- ██║     ██║     ██╔══██║██║   ██║██║  ██║██╔══╝       ██╔══██║██║   ██║██╔══██╗
- ╚██████╗███████╗██║  ██║╚██████╔╝██████╔╝███████╗     ██║  ██║╚██████╔╝██████╔╝
-  ╚═════╝╚══════╝╚═╝  ╚═╝ ╚═════╝ ╚═════╝ ╚══════╝     ╚═╝  ╚═╝ ╚═════╝ ╚═════╝ 
-                 CLAUDE CODE ULTIMATE HUB — ONYX EDITION (1,000+ TOOLS)
+ ██║     ██║     ██╔══██║██║   ██║██║  ██║██╔══╝      ██╔══██║██║   ██║██╔══██╗
+ ╚██████╗███████╗██║  ██║╚██████╔╝██████╔╝███████╗    ██║  ██║╚██████╔╝██████╔╝
+  ╚═════╝╚══════╝╚═╝  ╚═╝ ╚═════╝ ╚═════╝ ╚══════╝    ╚═╝  ╚═╝ ╚═════╝ ╚═════╝ 
+                 CLAUDE CODE ULTIMATE HUB -- ONYX EDITION (1,000+ TOOLS)
 "@ -ForegroundColor White
 
-    Write-Host "  ─────────────────────────────────────────────────────────────────────────────" -ForegroundColor DarkGray
+    Write-Host "  -----------------------------------------------------------------------------" -ForegroundColor DarkGray
     Write-Host "  Repository: https://github.com/temkalt/claude-ultimate-hub" -ForegroundColor DarkGray
-    Write-Host "  ─────────────────────────────────────────────────────────────────────────────`n" -ForegroundColor DarkGray
+    Write-Host "  -----------------------------------------------------------------------------`n" -ForegroundColor DarkGray
 }
 
 $tempDir = Join-Path $env:TEMP ("claude-hub-" + [Guid]::NewGuid().ToString().Substring(0,8))
@@ -29,8 +29,11 @@ $scriptPath = Join-Path $tempDir "setup-claude-code-ultimate.ps1"
 $scriptUrl = "https://raw.githubusercontent.com/temkalt/claude-ultimate-hub/main/setup-claude-code-ultimate.ps1"
 
 # Download or locate script
-if (Test-Path "$PSScriptRoot\setup-claude-code-ultimate.ps1") {
-    Copy-Item "$PSScriptRoot\setup-claude-code-ultimate.ps1" $scriptPath -Force
+$localSetup = "setup-claude-code-ultimate.ps1"
+if (Test-Path $localSetup) {
+    Copy-Item $localSetup $scriptPath -Force
+} elseif ($PSScriptRoot -and (Test-Path (Join-Path $PSScriptRoot $localSetup))) {
+    Copy-Item (Join-Path $PSScriptRoot $localSetup) $scriptPath -Force
 } else {
     try {
         Invoke-RestMethod -Uri $scriptUrl -OutFile $scriptPath
@@ -44,18 +47,18 @@ Show-Header
 
 Write-Host "  Select installation profile or action:`n" -ForegroundColor Yellow
 
-Write-Host "  [1] 🌟 Master All-in-One (Calibrated Global Flagship: 34 Core Tools)" -ForegroundColor Green
-Write-Host "  [2] 🌐 Full-Stack Web (Next.js 15, Playwright, UI/UX Pro, TS LSP, Supabase)" -ForegroundColor White
-Write-Host "  [3] ⚙️ Backend & APIs (PostgreSQL, SQLite, Redis, Python Pyright, AST-Grep)" -ForegroundColor White
-Write-Host "  [4] 🎯 Core (Minimal zero-bloat foundation)" -ForegroundColor White
-Write-Host "  [5] 🔒 Security Auditor (OWASP, Bulletproof, Opus Reviewer)" -ForegroundColor White
-Write-Host "  [6] 🇷🇺 Russia / CIS Stack (Telegram, YooKassa, Yandex Cloud, Caveman)" -ForegroundColor Cyan
-Write-Host "  [7] 💎 Full Ultimate (All 1,000+ Tools)" -ForegroundColor Magenta
-Write-Host "  ─────────────────────────────────────────────────────────────────────────────" -ForegroundColor DarkGray
-Write-Host "  [8] 🩺 Run System Health-Check Diagnostics" -ForegroundColor Yellow
-Write-Host "  [9] 🔧 Repair & Reset Safety Hooks" -ForegroundColor Yellow
-Write-Host "  [R] ⏪ Rollback to Previous Snapshot" -ForegroundColor Red
-Write-Host "  [0] 🌐 Open Interactive Web Hub in Browser" -ForegroundColor Cyan
+Write-Host "  [1] * Master All-in-One (Calibrated Global Flagship: 34 Core Tools)" -ForegroundColor Green
+Write-Host "  [2] > Full-Stack Web (Next.js 15, Playwright, UI/UX Pro, TS LSP, Supabase)" -ForegroundColor White
+Write-Host "  [3] > Backend and APIs (PostgreSQL, SQLite, Redis, Python Pyright, Docker)" -ForegroundColor White
+Write-Host "  [4] > Core Minimal (11 Tools, Zero-Bloat Foundation, ~480 tokens)" -ForegroundColor White
+Write-Host "  [5] > Security Auditor (OWASP, Bulletproof, Opus Reviewer)" -ForegroundColor White
+Write-Host "  [6] > Russia / CIS Stack (Telegram, YooKassa, Yandex Cloud, Caveman)" -ForegroundColor Cyan
+Write-Host "  [7] > Full Ultimate (All 1,000+ Tools)" -ForegroundColor Magenta
+Write-Host "  -----------------------------------------------------------------------------" -ForegroundColor DarkGray
+Write-Host "  [8] # Run System Health-Check Diagnostics" -ForegroundColor Yellow
+Write-Host "  [9] # Repair and Reset Safety Hooks" -ForegroundColor Yellow
+Write-Host "  [R] < Rollback to Previous Snapshot" -ForegroundColor Red
+Write-Host "  [0] @ Open Interactive Web Hub in Browser" -ForegroundColor Cyan
 Write-Host "  [Q] Exit`n" -ForegroundColor DarkGray
 
 $choice = Read-Host "  Enter option [1-9, R, 0, Q] (default: 1)"
@@ -71,11 +74,11 @@ switch ($choice.Trim().ToUpper()) {
         powershell -NoProfile -ExecutionPolicy Bypass -File $scriptPath -Profile Web
     }
     '3' {
-        Write-Host "`n[>>] Installing Backend & APIs Profile..." -ForegroundColor White
+        Write-Host "`n[>>] Installing Backend and APIs Profile..." -ForegroundColor White
         powershell -NoProfile -ExecutionPolicy Bypass -File $scriptPath -Profile Backend
     }
     '4' {
-        Write-Host "`n[>>] Installing Core Profile..." -ForegroundColor White
+        Write-Host "`n[>>] Installing Core Minimal Profile..." -ForegroundColor White
         powershell -NoProfile -ExecutionPolicy Bypass -File $scriptPath -Profile Core
     }
     '5' {
@@ -87,7 +90,7 @@ switch ($choice.Trim().ToUpper()) {
         powershell -NoProfile -ExecutionPolicy Bypass -File $scriptPath -Profile Russia
     }
     '7' {
-        Write-Host "`n[>>] Installing Full Ultimate (1,000+ Tools) Profile..." -ForegroundColor Magenta
+        Write-Host "`n[>>] Installing Full Ultimate Profile (1,000+ Tools)..." -ForegroundColor Magenta
         powershell -NoProfile -ExecutionPolicy Bypass -File $scriptPath -Profile Full
     }
     '8' {
@@ -103,10 +106,36 @@ switch ($choice.Trim().ToUpper()) {
         powershell -NoProfile -ExecutionPolicy Bypass -File $scriptPath -Rollback
     }
     '0' {
-        $webUrl = "https://temkalt.github.io/claude-ultimate-hub/"
-        if (Test-Path "$PSScriptRoot\index.html") { $webUrl = "$PSScriptRoot\index.html" }
-        Write-Host "`n[>>] Opening Claude Code Ultimate Hub in browser..." -ForegroundColor Cyan
-        Start-Process $webUrl
+        Write-Host "`n[>>] Launching Claude Code Ultimate Web Hub..." -ForegroundColor Cyan
+        $targetHtml = $null
+
+        $candidates = @(
+            (Join-Path $PSScriptRoot "index.html"),
+            ".\index.html",
+            "D:\claude optimiz\index.html",
+            (Join-Path $env:TEMP "claude-ultimate-hub.html")
+        )
+
+        foreach ($cand in $candidates) {
+            if (-not [string]::IsNullOrWhiteSpace($cand) -and (Test-Path $cand)) {
+                $targetHtml = (Resolve-Path $cand).Path
+                break
+            }
+        }
+
+        if (-not $targetHtml) {
+            $tempPath = Join-Path $env:TEMP "claude-ultimate-hub.html"
+            Write-Host "[>>] Downloading latest Web UI to $tempPath..." -ForegroundColor DarkGray
+            try {
+                Invoke-WebRequest -Uri "https://raw.githubusercontent.com/temkalt/claude-ultimate-hub/main/index.html" -OutFile $tempPath -UseBasicParsing
+                $targetHtml = (Resolve-Path $tempPath).Path
+            } catch {
+                $targetHtml = "https://github.com/temkalt/claude-ultimate-hub"
+            }
+        }
+
+        Write-Host "[OK] Opening: $targetHtml" -ForegroundColor Green
+        Start-Process $targetHtml
     }
     'Q' {
         Write-Host "`n[!] Setup cancelled by user." -ForegroundColor DarkGray
