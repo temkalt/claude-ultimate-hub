@@ -546,10 +546,11 @@ body{
   <div class="tabs-nav">
     <button class="tab-btn active" data-tab="profiles">Профили <span class="tab-btn__count">13</span></button>
     <button class="tab-btn" data-tab="components">Каталог 500+ <span class="tab-btn__count" id="tab-comp-count">500+</span></button>
+    <button class="tab-btn" data-tab="agency">Agency Studio <span class="tab-btn__count">50+ Агентов</span></button>
     <button class="tab-btn" data-tab="prompts">Слэш-команды & Промпты <span class="tab-btn__count">12</span></button>
     <button class="tab-btn" data-tab="skillbuilder">Конструктор SKILL.md <span class="tab-btn__count">Build</span></button>
     <button class="tab-btn" data-tab="claudebuilder">Генератор CLAUDE.md <span class="tab-btn__count">Config</span></button>
-    <button class="tab-btn" data-tab="repos">Репозитории <span class="tab-btn__count">12</span></button>
+    <button class="tab-btn" data-tab="repos">Репозитории <span class="tab-btn__count">13</span></button>
     <button class="tab-btn" data-tab="security">Безопасность <span class="tab-btn__count">7</span></button>
     <button class="tab-btn" data-tab="generate">Генератор команды</button>
   </div>
@@ -588,6 +589,25 @@ body{
 
     <div class="components-grid" id="components-grid"></div>
     <div class="pagination-bar" id="pagination-bar"></div>
+  </div>
+
+  <!-- Panel: Agency Studio (msitarzewski/agency-agents) -->
+  <div class="tab-panel" id="panel-agency">
+    <div class="hero-box">
+      <h2>🏢 Agency Studio — Виртуальное агентство из 50+ специализированных ИИ-сотрудников</h2>
+      <p>Основано на открытой методологии <strong>msitarzewski/agency-agents</strong>. Каждый агент — это узкоспециализированный эксперт с собственной ролью, процессами, правилами и артефактами сдачи работы.</p>
+      <div class="hero-box__actions">
+        <span class="pill active" data-adiv="all" onclick="filterAgency('all')">Все роли (50+)</span>
+        <span class="pill" data-adiv="engineering" onclick="filterAgency('engineering')">🏗️ Engineering</span>
+        <span class="pill" data-adiv="design" onclick="filterAgency('design')">🎨 Design & UI</span>
+        <span class="pill" data-adiv="marketing" onclick="filterAgency('marketing')">📈 Marketing & Growth</span>
+        <span class="pill" data-adiv="product" onclick="filterAgency('product')">🎯 Product & Reality</span>
+        <span class="pill" data-adiv="pm" onclick="filterAgency('pm')">📋 Project Management</span>
+        <span class="pill" data-adiv="qa" onclick="filterAgency('qa')">🧪 Testing & QA</span>
+        <span class="pill" data-adiv="support" onclick="filterAgency('support')">🤝 Support & Legacy</span>
+      </div>
+    </div>
+    <div class="profiles-grid" id="agency-grid"></div>
   </div>
 
   <!-- Panel: Prompts & Slash Commands -->
@@ -940,6 +960,7 @@ const PROMPTS = [
 ];
 
 const REPOS = [
+  { name:'msitarzewski/agency-agents', stars:'⭐ 50+ Roles', desc:'Коллекция из 50+ специализированных ИИ-агентов: от Frontend Wizard до Reddit Community Ninja с четкими процессами сдачи работы.', url:'https://github.com/msitarzewski/agency-agents' },
   { name:'hesreallyhim/awesome-claude-code', stars:'⭐ 3.5k+', desc:'Канонический каталог плагинов, команд, воркфлоу и шаблонов субагентов для Claude Code.', url:'https://github.com/hesreallyhim/awesome-claude-code' },
   { name:'ComposioHQ/awesome-claude-skills', stars:'⭐ 2.8k+', desc:'Библиотека из 1,000+ готовых скиллов для интеграции с внешними SaaS сервисами.', url:'https://github.com/ComposioHQ/awesome-claude-skills' },
   { name:'punkpeye/awesome-mcp-servers', stars:'⭐ 8.2k+', desc:'Главный мировой реестр Model Context Protocol серверов для работы с БД, облаками и файлами.', url:'https://github.com/punkpeye/awesome-mcp-servers' },
@@ -949,6 +970,148 @@ const REPOS = [
   { name:'JuliusBrussee/caveman', stars:'⭐ Экономия', desc:'Скилл семантического сжатия: убирает "воду" из промптов, экономя до 65% токенов.', url:'https://github.com/JuliusBrussee/caveman' },
   { name:'theYahia/yookassa-mcp & yandex-cloud/mcp', stars:'⭐ РФ Стек', desc:'MCP-серверы для РФ: платежи ЮKassa с чеками 54-ФЗ, облако Yandex Cloud и Telegram боты.', url:'https://github.com/theYahia/yookassa-mcp' }
 ];
+
+// Agency Agents Dataset (50+ Specialized AI Personas)
+const AGENCY_AGENTS = [
+  // Engineering
+  { name:'Frontend Wizard', div:'engineering', role:'Engineering', icon:'🧙‍♂️', model:'Sonnet / Opus', desc:'Мастер современных интерфейсов: чистый React 19/Vue, pixel-perfect верстка, доступность и нулевой технический долг.', deliverable:'Готовые, типизированные и визуально протестированные компоненты.' },
+  { name:'Backend Architect', div:'engineering', role:'Engineering', icon:'🏛️', model:'Claude Opus', desc:'Главный проектировщик серверных систем: микросервисы, схемы баз данных, устойчивость к сбоям и масштабирование.', deliverable:'Архитектурный план (ADR), схемы ERD и спецификации API.' },
+  { name:'Python Specialist', div:'engineering', role:'Engineering', icon:'🐍', model:'Sonnet', desc:'Эксперт по Python экосистеме: FastAPI, Pydantic v2, асинхронный SQLAlchemy, строгая типизация Pyright.', deliverable:'Высокопроизводительные асинхронные эндпоинты с тестами.' },
+  { name:'Go Concurrency Ninja', div:'engineering', role:'Engineering', icon:'⚡', model:'Sonnet', desc:'Специалист по горутинам, каналам, микросервисам на Gin/Fiber и минималистичным API с высокой пропускной способностью.', deliverable:'Компилируемые бинарники и бенчмарк-тесты памяти.' },
+  { name:'Rust Safety Lead', div:'engineering', role:'Engineering', icon:'🦀', model:'Claude Opus', desc:'Аудитор безопасности памяти и производительности на Rust: Tokio, Axum, нулевые аллокации и обработка ошибок.', deliverable:'Безопасный zero-cost код без unwrap/unsafe.' },
+  { name:'Database Tuner (DBA)', div:'engineering', role:'Engineering', icon:'🗄️', model:'Sonnet', desc:'Оптимизация медленных SQL-запросов, анализ планов EXPLAIN ANALYZE, создание составных индексов и партиционирование.', deliverable:'Оптимизированные SQL-миграции и отчет об индексах.' },
+  { name:'Mobile App Specialist', div:'engineering', role:'Engineering', icon:'📱', model:'Sonnet', desc:'Разработка мобильных приложений на React Native и Flutter: нативная производительность, офлайн-режим и жесты.', deliverable:'Кроссплатформенные экраны и сборки для iOS/Android.' },
+  { name:'DevOps Automation Lead', div:'engineering', role:'Engineering', icon:'🚀', model:'Sonnet', desc:'Пайплайны CI/CD, оптимизация multi-stage Dockerfile, Terraform модули и мониторинг серверов.', deliverable:'Готовые воспроизводимые пайплайны GitHub Actions/GitLab.' },
+
+  // Design
+  { name:'UI/UX Master', div:'design', role:'Design', icon:'🎨', model:'Sonnet', desc:'Проектирование пользовательских путей, сетки, визуальная иерархия, микро-анимации и баланс контрастов.', deliverable:'Интерактивные прототипы и дизайн-системы.' },
+  { name:'Design Systems Architect', div:'design', role:'Design', icon:'📐', model:'Sonnet', desc:'Создание и стандартизация дизайн-токенов (цвета, типографика, отступы), компонентов Radix/Shadcn и тем оформления.', deliverable:'Единый файл design-tokens.json и библиотека компонентов.' },
+  { name:'Whimsy Injector', div:'design', role:'Design', icon:'✨', model:'Sonnet', desc:'Добавление восторга и уникальности: пасхалки, микро-анимации при наведении, звуковые эффекты и тактильный отклик.', deliverable:'CSS/JS анимации, превращающие продукт в незабываемый опыт.' },
+  { name:'Accessibility Evangelist', div:'design', role:'Design', icon:'👁️', model:'Sonnet', desc:'Глубокий аудит доступности по WCAG 2.2 AAA: клавиатурная навигация, поддержка скринридеров, ARIA-атрибуты.', deliverable:'Чеклист доступности и исправления семантики верстки.' },
+  { name:'Figma-to-Code Translator', div:'design', role:'Design', icon:'🖼️', model:'Sonnet', desc:'Пиксельно-точная трансляция макетов Figma в чистый семантический HTML/Tailwind без лишних оберток.', deliverable:'Готовые компоненты, совпадающие с макетом 1-в-1.' },
+
+  // Marketing
+  { name:'Reddit Community Ninja', div:'marketing', role:'Marketing', icon:'🥷', model:'Sonnet', desc:'Аутентичное участие в профильных сабреддитах и сообществах без спама: создание ценности, экспертные ответы.', deliverable:'Сценарии вовлечения, темы для постов и комментариев.' },
+  { name:'Growth Hacker', div:'marketing', role:'Marketing', icon:'📈', model:'Sonnet', desc:'Проектирование виральных петель (Viral Loops), реферальных программ, A/B тестов посадочных страниц и воронок.', deliverable:'План экспериментов роста и расчет unit-экономики.' },
+  { name:'Copywriting Alchemist', div:'marketing', role:'Marketing', icon:'✍️', model:'Sonnet', desc:'Создание емких, бьющих в цель заголовков и текстов лендингов, повышающих конверсию и доверие.', deliverable:'Тексты для главных экранов, офферов и призывов к действию.' },
+  { name:'SEO Strategist', div:'marketing', role:'Marketing', icon:'🔍', model:'Sonnet', desc:'Технический SEO-аудит, семантическое ядро, E-E-A-T оптимизация контента и разметка Schema.org.', deliverable:'SEO-структура страниц и чеклист мета-данных.' },
+  { name:'Product Launch Architect', div:'marketing', role:'Marketing', icon:'🚀', model:'Sonnet', desc:'Пошаговый план запуска на Product Hunt, Хабр, VC.ru и Twitter: таймлайн, медиа-кит, первый день релиза.', deliverable:'Поминутный чеклист дня запуска и шаблоны постов.' },
+
+  // Product
+  { name:'Reality Checker', div:'product', role:'Product', icon:'🛑', model:'Claude Opus', desc:'Холодный, прагматичный критик гипотез: проверка бизнес-модели на прочность, поиск скрытых рисков и нестыковок.', deliverable:'Отчет о скрытых уязвимостях бизнес-логики и сценариях провала.' },
+  { name:'MVP Scope Cutter', div:'product', role:'Product', icon:'✂️', model:'Sonnet', desc:'Безжалостное отсечение лишних фич до минимально жизнеспособного ядра: сокращение времени до релиза в 3 раза.', deliverable:'Список критических User Stories для релиза за 2 недели.' },
+  { name:'Feature Spec Writer', div:'product', role:'Product', icon:'📝', model:'Sonnet', desc:'Детальное составление функциональных спецификаций (PRD): требования, крайние случаи, критерии приемки.', deliverable:'Исчерпывающий PRD документ для команды разработки.' },
+  { name:'Metrics & Analytics Maven', div:'product', role:'Product', icon:'📊', model:'Sonnet', desc:'Определение ключевых метрик (North Star, Retention, LTV/CAC) и настройка событий сквозной аналитики.', deliverable:'Карта событий аналитики (Tracking Plan).' },
+
+  // Project Management
+  { name:'Agile Scrum Master', div:'pm', role:'Project Management', icon:'⏱️', model:'Sonnet', desc:'Организация спринтов, фасилитация планирования, управление бэклогом задач и расчет Velocity команды.', deliverable:'Доска спринта и декомпозиция задач.' },
+  { name:'Blocker Smasher', div:'pm', role:'Project Management', icon:'🔨', model:'Sonnet', desc:'Быстрая локализация узких мест, устранение конфликтов зависимостей и разблокировка задач разработки.', deliverable:'План преодоления блокеров с альтернативными путями.' },
+  { name:'Changelog Chronicler', div:'pm', role:'Project Management', icon:'📜', model:'Haiku', desc:'Автоматическое формирование структурированных описаний релизов и изменений по коммитам (Keep a Changelog).', deliverable:'Файл CHANGELOG.md с разбивкой по версиям и авторам.' },
+
+  // Testing & QA
+  { name:'Chaos Monkey', div:'qa', role:'Testing & QA', icon:'🐒', model:'Sonnet', desc:'Тестирование устойчивости системы к сбоям: падение сети, переполнение памяти, отказ базы данных.', deliverable:'Отчет о стресс-тестировании и слабых местах архитектуры.' },
+  { name:'Edge Case Hunter', div:'qa', role:'Testing & QA', icon:'🎯', model:'Sonnet', desc:'Поиск неочевидных сценариев использования, ошибок переполнения, пустых данных и гонок состояний.', deliverable:'Матрица крайних случаев и фикстуры граничных тестов.' },
+  { name:'E2E Test Automator', div:'qa', role:'Testing & QA', icon:'🤖', model:'Sonnet', desc:'Написание надежных сквозных тестов на Playwright/Cypress для критических пользовательских сценариев.', deliverable:'Автоматизированные E2E сценарии с генерацией видео.' },
+  { name:'Security Penetration Tester', div:'qa', role:'Testing & QA', icon:'🔒', model:'Claude Opus', desc:'Имитация атак злоумышленников: попытки SQL-инъекций, обхода авторизации, CSRF и кражи токенов.', deliverable:'Отчет об аудите безопасности с рекомендациями по патчам.' },
+
+  // Support & Specialized
+  { name:'Customer Empathy Lead', div:'support', role:'Support', icon:'❤️', model:'Sonnet', desc:'Анализ отзывов пользователей, выявление истинных болей и трансформация жалоб в понятные задачи для команды.', deliverable:'Карта болей пользователей и приоритеты улучшений.' },
+  { name:'Legacy Code Archeologist', div:'support', role:'Support', icon:'🏺', model:'Claude Opus', desc:'Исследование устаревших кодовых баз: расшифровка неявных зависимостей, документирование недокументированного.', deliverable:'Карта архитектуры устаревшей системы и план безопасной миграции.' },
+  { name:'Refactoring Surgeon', div:'support', role:'Support', icon:'🩺', model:'Sonnet', desc:'Чистый рефакторинг по Мартину Фаулеру: извлечение методов, устранение дублирования без поломки тестов.', deliverable:'Пошаговый диф с проверенными зелеными тестами.' },
+  { name:'Documentation Poet', div:'support', role:'Support', icon:'📖', model:'Haiku', desc:'Написание понятной, красивой и исчерпывающей документации разработчика, руководств по API и README.', deliverable:'Готовая база знаний проекта в Markdown формате.' }
+];
+
+let currentAgencyDiv = 'all';
+
+function renderAgency() {
+  const container = document.getElementById('agency-grid');
+  if (!container) return;
+
+  const filtered = AGENCY_AGENTS.filter(a => currentAgencyDiv === 'all' || a.div === currentAgencyDiv);
+
+  container.innerHTML = filtered.map(a => `
+    <div class="profile-card" onclick="showAgencyModal('${a.name}')">
+      <div class="profile-card__header">
+        <span class="profile-card__icon">${a.icon}</span>
+        <span class="profile-card__name">${a.name}</span>
+        <span class="profile-card__tag">${a.role}</span>
+      </div>
+      <div class="profile-card__desc">${a.desc}</div>
+      <div class="profile-card__target">
+        <strong>📦 Сдает в результате:</strong> ${a.deliverable}
+      </div>
+      <div class="profile-card__meta">
+        <span>🤖 Модель: ${a.model}</span>
+        <button class="btn btn-sm btn-secondary" onclick="event.stopPropagation();copyAgencyAgent('${a.name}')" style="padding:.2rem .6rem">📋 Скопировать</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+function filterAgency(div) {
+  currentAgencyDiv = div;
+  document.querySelectorAll('#panel-agency .pill').forEach(p => {
+    p.classList.toggle('active', p.dataset.adiv === div);
+  });
+  renderAgency();
+}
+
+function copyAgencyAgent(name) {
+  const a = AGENCY_AGENTS.find(x => x.name === name);
+  if (!a) return;
+
+  const md = `---
+name: ${a.name.toLowerCase().replace(/[^a-z0-9]/g, '-')}
+model: ${a.model.includes('Opus') ? 'claude-opus-5' : 'claude-sonnet-4'}
+description: ${a.desc}
+---
+
+# Role: ${a.name} (${a.role})
+
+## Mission
+${a.desc}
+
+## Deliverables & Standards
+- ${a.deliverable}
+- Adhere to strict production-quality standards without placeholders.
+- Always verify all outputs before final submission.
+`;
+
+  navigator.clipboard.writeText(md).then(() => alert(`✅ Роль агента "${a.name}" скопирована в буфер!`));
+}
+
+function showAgencyModal(name) {
+  const a = AGENCY_AGENTS.find(x => x.name === name);
+  if (!a) return;
+
+  const modalBody = document.getElementById('modal-body');
+  modalBody.innerHTML = `
+    <div style="display:flex;align-items:center;gap:.8rem;margin-bottom:1rem">
+      <span style="font-size:2rem">${a.icon}</span>
+      <div>
+        <h3 style="font-size:1.35rem;font-weight:700;color:var(--text-pure)">${a.name}</h3>
+        <span class="badge-cat">${a.role}</span>
+      </div>
+    </div>
+
+    <p style="font-size:.9rem;color:var(--text-muted);line-height:1.6;margin-bottom:1.2rem">${a.desc}</p>
+
+    <div style="background:var(--bg-main);padding:1.2rem;border-radius:var(--radius-xs);margin-bottom:1.4rem;border:1px solid var(--border-subtle);font-size:.84rem">
+      <div style="margin-bottom:.8rem"><strong style="color:var(--text-pure)">🎯 Результат работы (Deliverable):</strong><br><span style="color:var(--text-muted)">${a.deliverable}</span></div>
+      <div><strong style="color:var(--text-pure)">🧠 Рекомендуемая модель:</strong><br><span style="color:var(--text-muted)">${a.model} (Extended Thinking)</span></div>
+    </div>
+
+    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem">
+      <a href="https://github.com/msitarzewski/agency-agents" target="_blank" class="source-btn">🌐 msitarzewski/agency-agents ↗</a>
+      <div style="display:flex;gap:.8rem">
+        <button class="btn btn-secondary" onclick="closeModal()">Закрыть</button>
+        <button class="btn btn-primary" onclick="copyAgencyAgent('${a.name}');closeModal()">📋 Скопировать файл агента</button>
+      </div>
+    </div>
+  `;
+
+  document.getElementById('modal-overlay').style.display = 'flex';
+}
 
 const SECURITY_LAYERS = [
   { num:'УРОВЕНЬ 1', title:'Политики разрешений (Deny-first)', desc:'Блокировка доступа к .env*, .ssh/, приватным ключам (*.pem, *.key) и опасным командам на уровне settings.json.' },
@@ -1370,6 +1533,7 @@ document.querySelectorAll('.tab-btn').forEach(tab => {
 
 // ─── Init ──────────────────────────────────────────────────────
 selectProfile('Master');
+renderAgency();
 renderPrompts();
 renderRepos();
 renderSecurity();
