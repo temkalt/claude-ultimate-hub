@@ -3,285 +3,508 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Claude Code Ultimate Hub — Мировая Экосистема Инструментов (80+ Компонентов)</title>
-<meta name="description" content="Полная интерактивная экосистема инструментов для Claude Code: 80+ проверенных MCP серверов, скиллов, плагинов, субагентов, TDD, РФ-локализация (Telegram, ЮKassa, Yandex Cloud), конструктор SKILL.md и CLAUDE.md.">
+<title>Claude Code Ultimate Hub — Onyx Edition</title>
+<meta name="description" content="Минималистичная инженерная экосистема для Claude Code: 80+ проверенных инструментов, РФ-локализация, интерактивный конструктор SKILL.md и CLAUDE.md.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --bg-primary:#07080c;--bg-secondary:#0d0e15;--bg-tertiary:#141622;--bg-card:#11121d;
-  --border:#222438;--border-hover:#383b58;--border-active:#6366f1;
-  --text-primary:#f5f6fa;--text-secondary:#9ea3be;--text-muted:#656986;
-  --accent:#6366f1;--accent-hover:#818cf8;--accent-glow:rgba(99,102,241,.18);
-  --success:#10b981;--warning:#f59e0b;--danger:#ef4444;--info:#06b6d4;--purple:#a855f7;--pink:#ec4899;--gold:#fbbf24;
-  --gradient-brand:linear-gradient(135deg,#6366f1 0%,#8b5cf6 50%,#d946ef 100%);
-  --gradient-gold:linear-gradient(135deg,#f59e0b 0%,#d97706 50%,#b45309 100%);
-  --gradient-card:linear-gradient(145deg,rgba(17,18,29,.9) 0%,rgba(20,22,34,.7) 100%);
-  --glass:rgba(13,14,21,.78);--glass-border:rgba(99,102,241,.15);
-  --radius-sm:8px;--radius:14px;--radius-lg:22px;--radius-full:9999px;
-  --shadow:0 10px 36px rgba(0,0,0,.5);--shadow-glow:0 0 45px rgba(99,102,241,.22);
-  --transition:all .22s cubic-bezier(.4,0,.2,1);
-}
-html{font-size:15px;scroll-behavior:smooth}
-body{font-family:'Inter',system-ui,sans-serif;background:var(--bg-primary);color:var(--text-primary);min-height:100vh;overflow-x:hidden;line-height:1.6}
-body::before{content:'';position:fixed;top:-40%;left:-40%;width:180%;height:180%;background:radial-gradient(circle at 20% 15%,rgba(99,102,241,.09) 0%,transparent 45%),radial-gradient(circle at 80% 75%,rgba(217,70,239,.07) 0%,transparent 50%),radial-gradient(circle at 50% 50%,rgba(6,182,212,.04) 0%,transparent 50%);z-index:0;pointer-events:none}
+  --bg-main:#050507;
+  --bg-surface:#0a0a0f;
+  --bg-card:#101017;
+  --bg-card-hover:#151520;
+  --bg-elevated:#1a1a26;
+  --border-subtle:rgba(255,255,255,.07);
+  --border-hover:rgba(255,255,255,.18);
+  --border-active:rgba(255,255,255,.35);
+  
+  --text-pure:#ffffff;
+  --text-main:#e4e4ed;
+  --text-muted:#8a8d9f;
+  --text-faint:#505364;
 
-::-webkit-scrollbar{width:6px;height:6px}
-::-webkit-scrollbar-track{background:var(--bg-secondary)}
-::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
+  --accent-gold:#e5c07b;
+  --accent-silver:#d1d5db;
+  --accent-emerald:#10b981;
+  --accent-cyan:#38bdf8;
+  --accent-amber:#f59e0b;
+  --accent-rose:#f43f5e;
+
+  --radius-xs:6px;
+  --radius-sm:10px;
+  --radius:16px;
+  --radius-lg:24px;
+  --radius-full:9999px;
+
+  --ease-smooth:cubic-bezier(0.16, 1, 0.3, 1);
+  --transition:all .28s var(--ease-smooth);
+  --shadow-subtle:0 12px 40px rgba(0,0,0,.6);
+  --shadow-hover:0 20px 50px rgba(0,0,0,.85);
+}
+
+html{font-size:15px;scroll-behavior:smooth}
+body{
+  font-family:'Plus Jakarta Sans',system-ui,sans-serif;
+  background:var(--bg-main);
+  color:var(--text-main);
+  min-height:100vh;
+  overflow-x:hidden;
+  line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+}
+
+/* Background Canvas Particles */
+#star-canvas{
+  position:fixed;top:0;left:0;width:100%;height:100%;
+  pointer-events:none;z-index:0;
+}
+
+/* Subtle Vignette & Grid */
+.bg-overlay{
+  position:fixed;top:0;left:0;width:100%;height:100%;
+  background:radial-gradient(circle at 50% 0%,rgba(255,255,255,.02) 0%,transparent 65%),
+             radial-gradient(circle at 50% 100%,rgba(0,0,0,.9) 0%,transparent 80%);
+  pointer-events:none;z-index:1;
+}
+
+::-webkit-scrollbar{width:5px;height:5px}
+::-webkit-scrollbar-track{background:var(--bg-main)}
+::-webkit-scrollbar-thumb{background:var(--border-subtle);border-radius:4px}
 ::-webkit-scrollbar-thumb:hover{background:var(--border-hover)}
 
-.app{position:relative;z-index:1;max-width:1600px;margin:0 auto;padding:1.8rem 1.8rem 6rem}
+.app{
+  position:relative;z-index:2;
+  max-width:1560px;margin:0 auto;
+  padding:2.5rem 2rem 6rem;
+}
 
 /* Header */
-.header{text-align:center;margin-bottom:2.2rem;position:relative}
-.header__badge{display:inline-flex;align-items:center;gap:.6rem;padding:.45rem 1.3rem;background:rgba(99,102,241,.12);border:1px solid var(--glass-border);border-radius:var(--radius-full);font-size:.78rem;font-weight:800;color:var(--accent-hover);text-transform:uppercase;letter-spacing:.08em;margin-bottom:1.1rem;box-shadow:0 2px 20px rgba(99,102,241,.18)}
-.header__badge .dot{width:8px;height:8px;border-radius:50%;background:var(--success);box-shadow:0 0 10px var(--success);animation:pulse 2s infinite}
-@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.85)}}
-.header h1{font-size:3.3rem;font-weight:900;background:var(--gradient-brand);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:-.035em;line-height:1.12;margin-bottom:.75rem}
-.header__sub{font-size:1.15rem;color:var(--text-secondary);max-width:1050px;margin:0 auto;font-weight:400;line-height:1.6}
-.header__meta{display:flex;gap:1.4rem;justify-content:center;margin-top:1.1rem;font-size:.82rem;color:var(--text-muted);font-family:'JetBrains Mono',monospace;flex-wrap:wrap}
+.header{text-align:center;margin-bottom:3rem;position:relative}
+.header__badge{
+  display:inline-flex;align-items:center;gap:.65rem;
+  padding:.4rem 1.1rem;
+  background:rgba(255,255,255,.03);
+  border:1px solid var(--border-subtle);
+  border-radius:var(--radius-full);
+  font-size:.76rem;font-weight:600;
+  color:var(--accent-silver);
+  letter-spacing:.06em;text-transform:uppercase;
+  margin-bottom:1.4rem;
+  backdrop-filter:blur(16px);
+  transition:var(--transition);
+}
+.header__badge:hover{border-color:var(--border-hover);background:rgba(255,255,255,.05)}
+.header__badge .status-dot{
+  width:7px;height:7px;border-radius:50%;
+  background:var(--accent-emerald);
+  box-shadow:0 0 10px rgba(16,185,129,.7);
+  animation:glowDot 2.4s infinite;
+}
+@keyframes glowDot{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.85)}}
 
-/* Golden Matrix Banner */
-.matrix-banner{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:1.2rem;margin-bottom:2.2rem}
-.matrix-card{padding:1.5rem;background:linear-gradient(145deg,rgba(99,102,241,.09) 0%,rgba(168,85,247,.04) 100%);border:1px solid var(--glass-border);border-radius:var(--radius);position:relative}
-.matrix-card__title{font-size:1.05rem;font-weight:800;color:var(--accent-hover);margin-bottom:.7rem;display:flex;align-items:center;gap:.5rem}
-.matrix-card__list{list-style:none;font-size:.82rem;color:var(--text-secondary);line-height:1.75}
-.matrix-card__list li{display:flex;align-items:baseline;gap:.5rem}
-.matrix-card__list li strong{color:var(--text-primary)}
+.header h1{
+  font-size:3.5rem;font-weight:800;
+  color:var(--text-pure);
+  letter-spacing:-.04em;line-height:1.08;
+  margin-bottom:.9rem;
+}
+.header h1 span{
+  background:linear-gradient(180deg,#fff 30%,#8a8d9f 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+}
+.header__sub{
+  font-size:1.15rem;color:var(--text-muted);
+  max-width:880px;margin:0 auto;
+  font-weight:400;line-height:1.65;
+}
+.header__meta{
+  display:flex;gap:1.8rem;justify-content:center;
+  margin-top:1.4rem;font-size:.8rem;color:var(--text-faint);
+  font-family:'JetBrains Mono',monospace;flex-wrap:wrap;
+}
 
-/* Stats Ribbon */
-.stats-ribbon{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:.9rem;margin-bottom:2.2rem}
-.stat-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:1.1rem 1.2rem;text-align:center;transition:var(--transition)}
-.stat-card:hover{border-color:var(--border-hover);transform:translateY(-2px);box-shadow:var(--shadow)}
-.stat-card__num{font-size:1.85rem;font-weight:900;font-family:'JetBrains Mono',monospace;line-height:1}
-.stat-card__label{font-size:.72rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:.06em;margin-top:.45rem;font-weight:700}
-.c-brand{color:var(--accent-hover)}.c-success{color:var(--success)}.c-warning{color:var(--warning)}.c-info{color:var(--info)}.c-purple{color:var(--purple)}.c-pink{color:var(--pink)}.c-gold{color:var(--gold)}
+/* Quick Stats Bar */
+.stats-bar{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));
+  gap:.8rem;margin-bottom:2.6rem;
+}
+.stat-pill{
+  background:var(--bg-surface);
+  border:1px solid var(--border-subtle);
+  border-radius:var(--radius-sm);
+  padding:1rem 1.2rem;text-align:center;
+  transition:var(--transition);
+  position:relative;overflow:hidden;
+}
+.stat-pill:hover{
+  border-color:var(--border-hover);
+  background:var(--bg-card);
+  transform:translateY(-2px);
+  box-shadow:var(--shadow-subtle);
+}
+.stat-pill__num{
+  font-size:1.75rem;font-weight:700;
+  font-family:'JetBrains Mono',monospace;
+  color:var(--text-pure);line-height:1;
+}
+.stat-pill__label{
+  font-size:.7rem;color:var(--text-muted);
+  text-transform:uppercase;letter-spacing:.08em;
+  margin-top:.45rem;font-weight:600;
+}
 
-/* Navigation Tabs */
-.tabs{display:flex;gap:.5rem;margin-bottom:2rem;border-bottom:1px solid var(--border);overflow-x:auto;padding-bottom:2px}
-.tab{padding:.85rem 1.6rem;font-size:.9rem;font-weight:700;color:var(--text-muted);background:none;border:none;cursor:pointer;position:relative;transition:var(--transition);white-space:nowrap;border-radius:var(--radius) var(--radius) 0 0;display:flex;align-items:center;gap:.65rem}
-.tab:hover{color:var(--text-secondary);background:var(--bg-tertiary)}
-.tab.active{color:var(--text-primary);background:var(--bg-tertiary)}
-.tab.active::after{content:'';position:absolute;bottom:-3px;left:0;right:0;height:3px;background:var(--gradient-brand);border-radius:3px 3px 0 0}
-.tab__count{font-size:.7rem;padding:.15rem .55rem;background:var(--bg-secondary);border-radius:var(--radius-full);color:var(--accent-hover);font-weight:800}
+/* Tab Navigation */
+.tabs-nav{
+  display:flex;gap:.5rem;margin-bottom:2.2rem;
+  border-bottom:1px solid var(--border-subtle);
+  overflow-x:auto;padding-bottom:2px;
+}
+.tab-btn{
+  padding:.85rem 1.5rem;font-size:.88rem;font-weight:600;
+  color:var(--text-muted);background:none;border:none;
+  cursor:pointer;position:relative;transition:var(--transition);
+  white-space:nowrap;border-radius:var(--radius-sm) var(--radius-sm) 0 0;
+  display:flex;align-items:center;gap:.65rem;font-family:inherit;
+}
+.tab-btn:hover{color:var(--text-main);background:rgba(255,255,255,.02)}
+.tab-btn.active{color:var(--text-pure);background:rgba(255,255,255,.04)}
+.tab-btn.active::after{
+  content:'';position:absolute;bottom:-2px;left:0;right:0;height:2px;
+  background:var(--text-pure);box-shadow:0 0 12px rgba(255,255,255,.6);
+}
+.tab-btn__count{
+  font-size:.68rem;padding:.15rem .5rem;
+  background:rgba(255,255,255,.06);border-radius:var(--radius-full);
+  color:var(--text-silver);font-family:'JetBrains Mono',monospace;
+}
 
 /* Panels */
-.panel{display:none}
-.panel.active{display:block;animation:fadeUp .25s ease-out}
-@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.tab-panel{display:none}
+.tab-panel.active{display:block;animation:fadePanel .3s var(--ease-smooth)}
+@keyframes fadePanel{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
 
-/* Callouts & Hero */
-.hero-box{padding:1.8rem 2.2rem;background:linear-gradient(135deg,rgba(99,102,241,.11) 0%,rgba(168,85,247,.05) 100%);border:1px solid var(--glass-border);border-radius:var(--radius-lg);margin-bottom:2rem;position:relative;overflow:hidden}
-.hero-box h2{font-size:1.35rem;font-weight:800;color:var(--accent-hover);margin-bottom:.55rem;display:flex;align-items:center;gap:.65rem}
-.hero-box p{font-size:.9rem;color:var(--text-secondary);line-height:1.65;max-width:1050px}
-.hero-box__actions{display:flex;gap:1rem;margin-top:1.3rem;flex-wrap:wrap}
+/* Minimal Box / Hero */
+.hero-box{
+  padding:2rem 2.4rem;
+  background:var(--bg-surface);
+  border:1px solid var(--border-subtle);
+  border-radius:var(--radius);
+  margin-bottom:2.2rem;position:relative;
+  transition:var(--transition);
+}
+.hero-box:hover{border-color:var(--border-hover)}
+.hero-box h2{
+  font-size:1.35rem;font-weight:700;color:var(--text-pure);
+  margin-bottom:.55rem;display:flex;align-items:center;gap:.7rem;
+}
+.hero-box p{
+  font-size:.9rem;color:var(--text-muted);
+  line-height:1.65;max-width:980px;
+}
+.hero-box__actions{display:flex;gap:.9rem;margin-top:1.4rem;flex-wrap:wrap}
+
+/* Button System */
+.btn{
+  display:inline-flex;align-items:center;gap:.6rem;
+  padding:.7rem 1.4rem;font-size:.85rem;font-weight:600;
+  font-family:inherit;border:none;border-radius:var(--radius-sm);
+  cursor:pointer;transition:var(--transition);white-space:nowrap;
+  text-decoration:none;
+}
+.btn-primary{
+  background:var(--text-pure);color:#000;
+  box-shadow:0 4px 20px rgba(255,255,255,.15);
+}
+.btn-primary:hover{
+  background:#f0f0f5;transform:translateY(-2px);
+  box-shadow:0 6px 28px rgba(255,255,255,.25);
+}
+.btn-gold{
+  background:var(--accent-gold);color:#101014;
+  font-weight:700;box-shadow:0 4px 20px rgba(229,192,123,.2);
+}
+.btn-gold:hover{
+  background:#f0cd8a;transform:translateY(-2px);
+  box-shadow:0 6px 28px rgba(229,192,123,.35);
+}
+.btn-secondary{
+  background:var(--bg-elevated);color:var(--text-main);
+  border:1px solid var(--border-subtle);
+}
+.btn-secondary:hover{
+  border-color:var(--border-hover);color:var(--text-pure);
+  background:var(--bg-card-hover);
+}
+.btn-sm{padding:.45rem .85rem;font-size:.76rem}
 
 /* Profiles Grid */
-.profiles-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:1.3rem;margin-bottom:2.5rem}
-.profile-card{position:relative;padding:1.6rem;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);cursor:pointer;transition:var(--transition);display:flex;flex-direction:column}
-.profile-card:hover{border-color:var(--border-hover);transform:translateY(-3px);box-shadow:var(--shadow)}
-.profile-card.selected{border-color:var(--accent);background:linear-gradient(145deg,rgba(99,102,241,.15) 0%,rgba(168,85,247,.08) 100%);box-shadow:0 0 32px rgba(99,102,241,.22)}
-.profile-card.featured{border-color:var(--warning);background:linear-gradient(145deg,rgba(245,158,11,.13) 0%,rgba(217,70,239,.06) 100%)}
-.profile-card__header{display:flex;align-items:center;gap:.8rem;margin-bottom:.8rem}
-.profile-card__icon{font-size:2.2rem;line-height:1}
-.profile-card__name{font-weight:800;font-size:1.05rem}
-.profile-card__badge{font-size:.65rem;font-weight:800;padding:.2rem .6rem;border-radius:var(--radius-full);background:rgba(16,185,129,.15);color:var(--success);text-transform:uppercase;margin-left:auto}
-.badge-gold{background:rgba(245,158,11,.2);color:var(--warning);border:1px solid rgba(245,158,11,.35)}
-.profile-card__desc{font-size:.83rem;color:var(--text-secondary);line-height:1.55;margin-bottom:.9rem}
-.profile-card__target{font-size:.76rem;background:var(--bg-secondary);padding:.65rem .85rem;border-radius:var(--radius-sm);margin-bottom:.8rem;color:var(--text-muted);border-left:3px solid var(--accent)}
-.profile-card__target strong{color:var(--text-primary)}
-.profile-card__meta{display:flex;align-items:center;justify-content:space-between;margin-top:auto;padding-top:.8rem;border-top:1px solid rgba(255,255,255,.05);font-size:.75rem;color:var(--text-muted)}
+.profiles-grid{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));
+  gap:1.2rem;margin-bottom:2.5rem;
+}
+.profile-card{
+  padding:1.6rem;background:var(--bg-surface);
+  border:1px solid var(--border-subtle);
+  border-radius:var(--radius);cursor:pointer;
+  transition:var(--transition);display:flex;flex-direction:column;
+  position:relative;
+}
+.profile-card:hover{
+  border-color:var(--border-hover);
+  background:var(--bg-card);
+  transform:translateY(-3px);
+  box-shadow:var(--shadow-subtle);
+}
+.profile-card.selected{
+  border-color:var(--border-active);
+  background:linear-gradient(160deg,rgba(255,255,255,.05) 0%,rgba(16,16,23,.8) 100%);
+  box-shadow:0 0 35px rgba(255,255,255,.06);
+}
+.profile-card__header{display:flex;align-items:center;gap:.85rem;margin-bottom:.8rem}
+.profile-card__icon{font-size:1.8rem;line-height:1}
+.profile-card__name{font-weight:700;font-size:1.05rem;color:var(--text-pure)}
+.profile-card__tag{
+  font-size:.65rem;font-weight:700;padding:.2rem .6rem;
+  border-radius:var(--radius-full);
+  background:rgba(229,192,123,.12);color:var(--accent-gold);
+  border:1px solid rgba(229,192,123,.25);
+  text-transform:uppercase;margin-left:auto;
+}
+.profile-card__desc{font-size:.84rem;color:var(--text-muted);line-height:1.55;margin-bottom:1rem}
+.profile-card__target{
+  font-size:.78rem;background:var(--bg-main);
+  padding:.7rem .9rem;border-radius:var(--radius-xs);
+  margin-bottom:.9rem;color:var(--text-faint);
+  border-left:2px solid var(--border-hover);
+}
+.profile-card__target strong{color:var(--text-main)}
+.profile-card__meta{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-top:auto;padding-top:.85rem;border-top:1px solid var(--border-subtle);
+  font-size:.76rem;color:var(--text-faint);
+}
 
 /* Filter Bar */
-.filter-bar{display:flex;gap:.8rem;align-items:center;flex-wrap:wrap;margin-bottom:1.5rem;padding:1.2rem 1.6rem;background:var(--glass);backdrop-filter:blur(24px);border:1px solid var(--glass-border);border-radius:var(--radius-lg);position:sticky;top:1rem;z-index:90}
-.search-input{flex:1;min-width:240px;background:var(--bg-secondary);border:1px solid var(--border);border-radius:var(--radius-sm);padding:.65rem 1rem;font-size:.85rem;color:var(--text-primary);font-family:inherit;transition:var(--transition)}
-.search-input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 16px rgba(99,102,241,.25)}
+.filter-bar{
+  display:flex;gap:.8rem;align-items:center;flex-wrap:wrap;
+  margin-bottom:1.6rem;padding:1.1rem 1.4rem;
+  background:var(--bg-surface);border:1px solid var(--border-subtle);
+  border-radius:var(--radius);position:sticky;top:1rem;z-index:80;
+  backdrop-filter:blur(24px);
+}
+.search-input{
+  flex:1;min-width:240px;background:var(--bg-main);
+  border:1px solid var(--border-subtle);border-radius:var(--radius-xs);
+  padding:.65rem 1rem;font-size:.85rem;color:var(--text-pure);
+  font-family:inherit;transition:var(--transition);
+}
+.search-input:focus{outline:none;border-color:var(--border-hover);box-shadow:0 0 20px rgba(255,255,255,.05)}
 .filter-pills{display:flex;gap:.4rem;flex-wrap:wrap}
-.pill{padding:.4rem .9rem;font-size:.75rem;font-weight:700;background:var(--bg-secondary);border:1px solid var(--border);border-radius:var(--radius-full);color:var(--text-secondary);cursor:pointer;transition:var(--transition)}
-.pill:hover{border-color:var(--border-hover);color:var(--text-primary)}
-.pill.active{background:var(--accent);border-color:var(--accent);color:#fff}
-
-/* Buttons */
-.btn{display:inline-flex;align-items:center;gap:.6rem;padding:.65rem 1.3rem;font-size:.85rem;font-weight:700;font-family:inherit;border:none;border-radius:var(--radius-sm);cursor:pointer;transition:var(--transition);white-space:nowrap;text-decoration:none}
-.btn-primary{background:var(--gradient-brand);color:#fff;box-shadow:0 4px 20px rgba(99,102,241,.35)}
-.btn-primary:hover{transform:translateY(-1px);box-shadow:0 6px 28px rgba(99,102,241,.5)}
-.btn-gold{background:var(--gradient-gold);color:#fff;box-shadow:0 4px 20px rgba(245,158,11,.35)}
-.btn-secondary{background:var(--bg-tertiary);color:var(--text-primary);border:1px solid var(--border)}
-.btn-secondary:hover{border-color:var(--border-hover);background:var(--bg-card)}
-.btn-sm{padding:.45rem .85rem;font-size:.75rem}
-
-/* Toggle Switch */
-.toggle-group{display:flex;align-items:center;gap:.7rem}
-.toggle{position:relative;width:44px;height:24px;background:var(--border);border-radius:12px;cursor:pointer;transition:var(--transition)}
-.toggle.active{background:var(--accent)}
-.toggle::after{content:'';position:absolute;top:2px;left:2px;width:20px;height:20px;background:#fff;border-radius:50%;transition:var(--transition)}
-.toggle.active::after{left:22px}
-.toggle-label{font-size:.82rem;color:var(--text-secondary);font-weight:600;user-select:none}
+.pill{
+  padding:.4rem .85rem;font-size:.75rem;font-weight:600;
+  background:var(--bg-main);border:1px solid var(--border-subtle);
+  border-radius:var(--radius-full);color:var(--text-muted);
+  cursor:pointer;transition:var(--transition);
+}
+.pill:hover{border-color:var(--border-hover);color:var(--text-pure)}
+.pill.active{background:var(--text-pure);border-color:var(--text-pure);color:#000;font-weight:700}
 
 /* Components Grid */
-.components-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(360px,1fr));gap:1.3rem}
-.component-card{padding:1.5rem;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);transition:var(--transition);position:relative;display:flex;flex-direction:column;cursor:pointer}
-.component-card:hover{border-color:var(--border-hover);transform:translateY(-2px);box-shadow:var(--shadow)}
-.component-card.selected{border-color:var(--accent);background:linear-gradient(145deg,rgba(99,102,241,.08) 0%,rgba(168,85,247,.04) 100%)}
-.component-card.selected .check-box{background:var(--accent);border-color:var(--accent);color:#fff}
-.component-card__top{display:flex;align-items:flex-start;gap:.9rem;margin-bottom:.8rem}
-.check-box{width:22px;height:22px;min-width:22px;border:2px solid var(--border);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:.75rem;transition:var(--transition);margin-top:2px}
-.component-card__title-row{flex:1}
-.component-card__title{font-weight:800;font-size:.95rem;display:flex;align-items:center;gap:.6rem;flex-wrap:wrap}
-.badge-category{font-size:.65rem;font-weight:700;padding:.15rem .5rem;border-radius:4px;text-transform:uppercase;letter-spacing:.05em}
-.badge-cat-plugin{background:rgba(99,102,241,.15);color:#a5b4fc}
-.badge-cat-mcp{background:rgba(6,182,212,.15);color:#67e8f9}
-.badge-cat-skill{background:rgba(245,158,11,.15);color:#fcd34d}
-.badge-cat-agent{background:rgba(217,70,239,.15);color:#f0abfc}
-.badge-cat-hook{background:rgba(16,185,129,.15);color:#6ee7b7}
-.badge-cat-lsp{background:rgba(59,130,246,.15);color:#93c5fd}
+.components-grid{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(360px,1fr));
+  gap:1.2rem;
+}
+.comp-card{
+  padding:1.4rem 1.5rem;background:var(--bg-surface);
+  border:1px solid var(--border-subtle);border-radius:var(--radius);
+  transition:var(--transition);position:relative;display:flex;flex-direction:column;
+  cursor:pointer;
+}
+.comp-card:hover{
+  border-color:var(--border-hover);
+  background:var(--bg-card);
+  transform:translateY(-2px);
+  box-shadow:var(--shadow-subtle);
+}
+.comp-card.selected{
+  border-color:var(--border-active);
+  background:linear-gradient(150deg,rgba(255,255,255,.04) 0%,rgba(16,16,23,.9) 100%);
+}
+.comp-card.selected .check-box{
+  background:var(--text-pure);border-color:var(--text-pure);color:#000;
+}
+.comp-card__top{display:flex;align-items:flex-start;gap:.85rem;margin-bottom:.75rem}
+.check-box{
+  width:20px;height:20px;min-width:20px;border:1.5px solid var(--border-hover);
+  border-radius:5px;display:flex;align-items:center;justify-content:center;
+  font-size:.7rem;font-weight:bold;transition:var(--transition);margin-top:2px;
+}
+.comp-card__title-wrap{flex:1}
+.comp-card__title{
+  font-weight:700;font-size:.96rem;color:var(--text-pure);
+  display:flex;align-items:center;gap:.6rem;flex-wrap:wrap;
+}
+.badge-cat{
+  font-size:.65rem;font-weight:700;padding:.15rem .5rem;
+  border-radius:4px;text-transform:uppercase;letter-spacing:.05em;
+  background:rgba(255,255,255,.06);color:var(--text-silver);
+  border:1px solid var(--border-subtle);
+}
+.badge-auth{
+  font-size:.65rem;font-weight:700;padding:.15rem .5rem;
+  border-radius:var(--radius-full);text-transform:uppercase;margin-left:auto;
+}
+.auth-free{background:rgba(16,185,129,.1);color:var(--accent-emerald);border:1px solid rgba(16,185,129,.2)}
+.auth-key{background:rgba(245,158,11,.1);color:var(--accent-amber);border:1px solid rgba(245,158,11,.2)}
 
-.badge-security{font-size:.65rem;font-weight:800;padding:.2rem .55rem;border-radius:var(--radius-full);text-transform:uppercase;letter-spacing:.05em;margin-left:auto}
-.sec-safe{background:rgba(16,185,129,.15);color:var(--success)}
-.sec-auth{background:rgba(245,158,11,.15);color:var(--warning)}
-.sec-exp{background:rgba(239,68,68,.15);color:var(--danger)}
+.comp-card__desc{font-size:.83rem;color:var(--text-muted);line-height:1.55;margin-bottom:.9rem;flex:1}
 
-.component-card__desc{font-size:.82rem;color:var(--text-secondary);line-height:1.55;margin-bottom:.8rem;flex:1}
+.detail-table{
+  display:grid;grid-template-columns:1fr 1fr;gap:.6rem;
+  padding:.7rem .85rem;background:var(--bg-main);
+  border-radius:var(--radius-xs);font-size:.73rem;margin-bottom:.9rem;
+}
+.detail-table strong{color:var(--text-main);display:block;margin-bottom:.1rem}
+.detail-table span{color:var(--text-faint)}
 
-.detail-row{display:grid;grid-template-columns:1fr 1fr;gap:.6rem;padding:.7rem .8rem;background:var(--bg-secondary);border-radius:var(--radius-sm);font-size:.72rem;margin-bottom:.8rem}
-.detail-item strong{color:var(--text-primary);display:block;margin-bottom:.1rem}
-.detail-item span{color:var(--text-muted)}
+.comp-card__footer{
+  display:flex;align-items:center;justify-content:space-between;
+  font-size:.73rem;color:var(--text-faint);
+  border-top:1px solid var(--border-subtle);padding-top:.75rem;
+}
+.source-btn{
+  color:var(--accent-silver);text-decoration:none;font-weight:600;
+  display:inline-flex;align-items:center;gap:.3rem;transition:var(--transition);
+}
+.source-btn:hover{color:var(--text-pure);text-decoration:underline}
 
-.component-card__footer{display:flex;align-items:center;justify-content:space-between;font-size:.72rem;color:var(--text-muted);border-top:1px solid rgba(255,255,255,.05);padding-top:.8rem}
-.footer-tags{display:flex;gap:.6rem;align-items:center;flex-wrap:wrap}
-.source-link{color:var(--accent-hover);text-decoration:none;font-weight:700}
-.source-link:hover{text-decoration:underline}
+/* Builder Forms */
+.builder-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.8rem;margin-top:1.5rem}
+.builder-card{
+  background:var(--bg-surface);border:1px solid var(--border-subtle);
+  border-radius:var(--radius);padding:1.8rem;display:flex;flex-direction:column;gap:1.1rem;
+}
+.form-field{display:flex;flex-direction:column;gap:.4rem}
+.form-field label{font-size:.8rem;font-weight:600;color:var(--text-main)}
+.form-input{
+  background:var(--bg-main);border:1px solid var(--border-subtle);
+  border-radius:var(--radius-xs);padding:.65rem .85rem;color:var(--text-pure);
+  font-family:inherit;font-size:.84rem;transition:var(--transition);
+}
+.form-input:focus{outline:none;border-color:var(--border-hover)}
+.preview-box{
+  flex:1;background:var(--bg-main);border:1px solid var(--border-subtle);
+  border-radius:var(--radius-xs);padding:1.2rem;font-family:'JetBrains Mono',monospace;
+  font-size:.8rem;color:var(--accent-silver);overflow-y:auto;white-space:pre-wrap;
+  line-height:1.6;max-height:460px;
+}
 
-/* Builders Form (Skill & CLAUDE.md) */
-.builder-grid{display:grid;grid-template-columns:1fr 1fr;gap:2rem;margin-top:1.5rem}
-.builder-form{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:2rem;display:flex;flex-direction:column;gap:1.2rem}
-.builder-preview{background:var(--bg-secondary);border:1px solid var(--border);border-radius:var(--radius-lg);padding:2rem;display:flex;flex-direction:column}
-.form-group{display:flex;flex-direction:column;gap:.4rem}
-.form-group label{font-size:.82rem;font-weight:700;color:var(--text-primary)}
-.form-control{background:var(--bg-primary);border:1px solid var(--border);border-radius:var(--radius-sm);padding:.65rem .9rem;color:var(--text-primary);font-family:inherit;font-size:.85rem}
-.form-control:focus{outline:none;border-color:var(--accent)}
-.code-preview-box{flex:1;background:var(--bg-primary);border:1px solid var(--border);border-radius:var(--radius);padding:1.2rem;font-family:'JetBrains Mono',monospace;font-size:.82rem;color:var(--success);overflow-y:auto;white-space:pre-wrap;line-height:1.6;max-height:450px}
-
-/* Command Output Box */
-.command-container{margin-top:2rem;padding:1.8rem;background:var(--bg-secondary);border:1px solid var(--border);border-radius:var(--radius-lg);position:relative}
+/* Command Box */
+.command-section{
+  margin-top:2rem;padding:1.8rem 2rem;
+  background:var(--bg-surface);border:1px solid var(--border-subtle);
+  border-radius:var(--radius);position:relative;
+}
 .command-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem}
-.command-title{font-size:.85rem;font-weight:800;color:var(--accent-hover);text-transform:uppercase;letter-spacing:.08em}
-.command-box{font-family:'JetBrains Mono',monospace;font-size:.88rem;color:var(--success);background:var(--bg-primary);padding:1.2rem 1.4rem;border-radius:var(--radius);overflow-x:auto;white-space:pre-wrap;word-break:break-all;line-height:1.7;border:1px solid var(--border)}
+.command-code{
+  font-family:'JetBrains Mono',monospace;font-size:.88rem;
+  color:var(--text-pure);background:var(--bg-main);
+  padding:1.2rem 1.4rem;border-radius:var(--radius-xs);
+  overflow-x:auto;white-space:pre-wrap;word-break:break-all;
+  border:1px solid var(--border-subtle);line-height:1.7;
+}
 
 /* Modal */
-.modal-backdrop{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.75);backdrop-filter:blur(8px);z-index:999;display:none;align-items:center;justify-content:center;padding:1.5rem}
-.modal{background:var(--bg-card);border:1px solid var(--border-active);border-radius:var(--radius-lg);max-width:760px;width:100%;max-height:88vh;overflow-y:auto;padding:2.2rem;position:relative;box-shadow:var(--shadow-glow)}
-.modal__close{position:absolute;top:1.5rem;right:1.5rem;background:none;border:none;color:var(--text-muted);font-size:1.5rem;cursor:pointer}
-.modal__close:hover{color:var(--text-primary)}
+.modal-overlay{
+  position:fixed;top:0;left:0;width:100%;height:100%;
+  background:rgba(0,0,0,.85);backdrop-filter:blur(12px);
+  z-index:999;display:none;align-items:center;justify-content:center;
+  padding:1.5rem;
+}
+.modal-box{
+  background:var(--bg-surface);border:1px solid var(--border-hover);
+  border-radius:var(--radius-lg);max-width:720px;width:100%;
+  max-height:88vh;overflow-y:auto;padding:2.2rem;position:relative;
+  box-shadow:var(--shadow-hover);animation:fadePanel .25s var(--ease-smooth);
+}
+.modal-close{
+  position:absolute;top:1.4rem;right:1.4rem;
+  background:none;border:none;color:var(--text-muted);
+  font-size:1.4rem;cursor:pointer;transition:var(--transition);
+}
+.modal-close:hover{color:var(--text-pure)}
 
 /* Footer */
-.footer{text-align:center;margin-top:5rem;padding-top:2.2rem;border-top:1px solid var(--border);color:var(--text-muted);font-size:.82rem;line-height:1.7}
+.footer{
+  text-align:center;margin-top:5rem;padding-top:2rem;
+  border-top:1px solid var(--border-subtle);color:var(--text-faint);
+  font-size:.8rem;line-height:1.7;
+}
 
 @media(max-width:992px){
   .builder-grid{grid-template-columns:1fr}
 }
 @media(max-width:768px){
-  .app{padding:1rem}
-  .header h1{font-size:2.2rem}
-  .matrix-banner{grid-template-columns:1fr}
+  .app{padding:1.2rem}
+  .header h1{font-size:2.4rem}
   .profiles-grid{grid-template-columns:1fr}
   .components-grid{grid-template-columns:1fr}
   .filter-bar{flex-direction:column;position:static}
-  .toggle-group{margin-left:0;width:100%;justify-content:space-between}
 }
 </style>
 </head>
 <body>
+
+<!-- Canvas Starfield -->
+<canvas id="star-canvas"></canvas>
+<div class="bg-overlay"></div>
+
 <div class="app">
 
   <!-- Header -->
   <header class="header">
-    <div class="header__badge"><span class="dot"></span> Claude Code v2.1.234+ Global Hub · Ready for Vercel / GitHub</div>
-    <h1>Claude Code Ultimate Hub</h1>
-    <p class="header__sub">Мировая экосистема инструментов для Claude Code: <strong>80+ проверенных компонентов</strong>, TDD-дисциплина, память проекта, локализация под РФ/СНГ (Telegram, ЮKassa, Yandex Cloud), интерактивный конструктор SKILL.md и генератор CLAUDE.md.</p>
+    <div class="header__badge">
+      <span class="status-dot"></span>
+      <span>Claude Code 2.1.234+ · Onyx Edition · Master Hub</span>
+    </div>
+    <h1>Claude Code <span>Ultimate Hub</span></h1>
+    <p class="header__sub">Минималистичная инженерная среда для Claude Code: <strong>80+ проверенных инструментов</strong>, память проекта, TDD-пайплайны, локализация под РФ/СНГ (Telegram, ЮKassa, YC), интерактивный конструктор SKILL.md и генератор CLAUDE.md.</p>
     <div class="header__meta">
-      <span>🌟 Master All-in-One</span>
-      <span>📦 80+ Проверенных инструментов</span>
-      <span>🇷🇺 Полная локализация РФ/СНГ</span>
-      <span>🛡️ 7 Уровней защиты</span>
-      <span>⚡ Vercel & Web Ready</span>
+      <span>● Onyx Black Minimalist</span>
+      <span>● 80+ Verified Tools</span>
+      <span>● Russia / CIS Native</span>
+      <span>● Vercel & GitHub Ready</span>
     </div>
   </header>
 
-  <!-- Golden 8+8+8 Matrix Ribbon -->
-  <div class="matrix-banner">
-    <div class="matrix-card">
-      <div class="matrix-card__title">🔌 ТОП-ПЛАГИНЫ</div>
-      <ul class="matrix-card__list">
-        <li><strong>frontend-design</strong> — интерфейсы без «нейросетевого» вида</li>
-        <li><strong>superpowers</strong> — TDD дисциплина от Jesse Vincent</li>
-        <li><strong>gstack</strong> — 23 роли команды от Garry Tan (YC)</li>
-        <li><strong>context7</strong> — свежая документация без галлюцинаций</li>
-        <li><strong>agentmemory</strong> — 4-уровневая постоянная память проекта</li>
-        <li><strong>anthropic/skills</strong> — чтение/генерация Word, Excel, PDF</li>
-        <li><strong>playwright</strong> — E2E тестирование на живом Chromium</li>
-        <li><strong>github/vercel</strong> — мгновенный деплой и управление PR</li>
-      </ul>
-    </div>
-
-    <div class="matrix-card">
-      <div class="matrix-card__title">🎯 ТОП-СКИЛЛЫ (Skills)</div>
-      <ul class="matrix-card__list">
-        <li><strong>skill-creator</strong> — официальный конструктор навыков Anthropic</li>
-        <li><strong>claude-seo</strong> — SEO-аудит по живым данным (25 подскиллов)</li>
-        <li><strong>caveman</strong> — экономия до 65% токенов за счет сжатия</li>
-        <li><strong>security-review</strong> — глубокий аудит OWASP на Opus</li>
-        <li><strong>hyperframes</strong> — генерация HTML/GSAP анимаций в MP4</li>
-        <li><strong>ui-ux-pro-max</strong> — 67 стилей дизайна, палитры и сетки</li>
-        <li><strong>bulletproof</strong> — 12-этапный строгий инженерный пайплайн</li>
-        <li><strong>ast-grep</strong> — структурный синтаксический рефакторинг AST</li>
-      </ul>
-    </div>
-
-    <div class="matrix-card">
-      <div class="matrix-card__title">🌐 ТОП-MCP (С заменами под РФ)</div>
-      <ul class="matrix-card__list">
-        <li><strong>telegram</strong> — продажи и боты в Телеге (вместо Slack)</li>
-        <li><strong>ЮKassa (YooKassa)</strong> — платежи и чеки 54-ФЗ (вместо Stripe)</li>
-        <li><strong>yandex cloud</strong> — хостинг в РФ без VPN (вместо AWS/GCP)</li>
-        <li><strong>github</strong> — программный доступ к репозиториям и CI/CD</li>
-        <li><strong>supabase</strong> — Postgres бэкенд с Auth и Realtime</li>
-        <li><strong>notion</strong> — корпоративная база знаний и CRM компании</li>
-        <li><strong>docker</strong> — управление локальными контейнерами и логами</li>
-        <li><strong>n8n</strong> — автоматизация бизнес-сценариев без кода</li>
-      </ul>
-    </div>
+  <!-- Quick Stats Bar -->
+  <div class="stats-bar">
+    <div class="stat-pill"><div class="stat-pill__num" id="stat-selected">0</div><div class="stat-pill__label">Выбрано</div></div>
+    <div class="stat-pill"><div class="stat-pill__num" id="stat-plugins">0</div><div class="stat-pill__label">Плагины</div></div>
+    <div class="stat-pill"><div class="stat-pill__num" id="stat-mcps">0</div><div class="stat-pill__label">MCP Серверы</div></div>
+    <div class="stat-pill"><div class="stat-pill__num" id="stat-skills">0</div><div class="stat-pill__label">Скиллы</div></div>
+    <div class="stat-pill"><div class="stat-pill__num" id="stat-lsps">0</div><div class="stat-pill__label">LSP Серверы</div></div>
+    <div class="stat-pill"><div class="stat-pill__num" id="stat-agents">0</div><div class="stat-pill__label">Субагенты</div></div>
+    <div class="stat-pill"><div class="stat-pill__num" id="stat-hooks">0</div><div class="stat-pill__label">Хуки Защиты</div></div>
   </div>
 
-  <!-- Stats Ribbon -->
-  <div class="stats-ribbon">
-    <div class="stat-card"><div class="stat-card__num c-brand" id="stat-selected">0</div><div class="stat-card__label">Выбрано</div></div>
-    <div class="stat-card"><div class="stat-card__num c-purple" id="stat-plugins">0</div><div class="stat-card__label">Плагины</div></div>
-    <div class="stat-card"><div class="stat-card__num c-info" id="stat-mcps">0</div><div class="stat-card__label">MCP Серверы</div></div>
-    <div class="stat-card"><div class="stat-card__num c-warning" id="stat-skills">0</div><div class="stat-card__label">Скиллы</div></div>
-    <div class="stat-card"><div class="stat-card__num c-pink" id="stat-lsps">0</div><div class="stat-card__label">LSP Серверы</div></div>
-    <div class="stat-card"><div class="stat-card__num c-brand" id="stat-agents">0</div><div class="stat-card__label">Субагенты</div></div>
-    <div class="stat-card"><div class="stat-card__num c-success" id="stat-hooks">0</div><div class="stat-card__label">Хуки защиты</div></div>
+  <!-- Navigation Tabs -->
+  <div class="tabs-nav">
+    <button class="tab-btn active" data-tab="profiles">Профили <span class="tab-btn__count">13</span></button>
+    <button class="tab-btn" data-tab="components">Каталог инструментов <span class="tab-btn__count" id="tab-comp-count">80+</span></button>
+    <button class="tab-btn" data-tab="skillbuilder">Конструктор SKILL.md <span class="tab-btn__count">Build</span></button>
+    <button class="tab-btn" data-tab="claudebuilder">Генератор CLAUDE.md <span class="tab-btn__count">Config</span></button>
+    <button class="tab-btn" data-tab="repos">Репозитории <span class="tab-btn__count">12</span></button>
+    <button class="tab-btn" data-tab="security">Безопасность <span class="tab-btn__count">7</span></button>
+    <button class="tab-btn" data-tab="generate">Генератор команды</button>
   </div>
 
-  <!-- Tabs Navigation -->
-  <div class="tabs">
-    <button class="tab active" data-tab="profiles">🎯 Профили и Сценарии <span class="tab__count">13</span></button>
-    <button class="tab" data-tab="components">🧩 Каталог инструментов <span class="tab__count" id="tab-comp-count">80+</span></button>
-    <button class="tab" data-tab="skillbuilder">🛠️ Конструктор SKILL.md <span class="tab__count">New</span></button>
-    <button class="tab" data-tab="claudebuilder">📝 Генератор CLAUDE.md <span class="tab__count">New</span></button>
-    <button class="tab" data-tab="repos">📚 Каталог репозиториев <span class="tab__count">12 хабов</span></button>
-    <button class="tab" data-tab="security">🔒 Безопасность <span class="tab__count">7 слоев</span></button>
-    <button class="tab" data-tab="generate">⚡ Генератор команды</button>
-  </div>
-
-  <!-- Panel 1: Profiles -->
-  <div class="panel active" id="panel-profiles">
+  <!-- Panel: Profiles -->
+  <div class="tab-panel active" id="panel-profiles">
     <div class="hero-box">
-      <h2>🌟 Рекомендуемый профиль: Master All-in-One (Флагман)</h2>
-      <p>Сбалансированная флагманская сборка: 100% покрытие Full-Stack Web, Backend, РФ/СНГ локализации (Telegram, ЮKassa, YC), TDD-пайплайна и памяти проекта без замедления терминала.</p>
+      <h2>🌟 Рекомендуемый профиль: Master All-in-One</h2>
+      <p>Флагманский сбалансированный стек: 100% покрытие Full-Stack Web, Backend, РФ/СНГ интеграций (Telegram, ЮKassa, Yandex Cloud), TDD и постоянной памяти проекта без перегрузки контекста.</p>
       <div class="hero-box__actions">
         <button class="btn btn-gold" onclick="selectProfile('Master')">🌟 Выбрать Master (Флагман)</button>
         <button class="btn btn-secondary" onclick="selectProfile('Russia')">🇷🇺 Только РФ Стек</button>
@@ -293,8 +516,8 @@ body::before{content:'';position:fixed;top:-40%;left:-40%;width:180%;height:180%
     <div class="profiles-grid" id="profiles-grid"></div>
   </div>
 
-  <!-- Panel 2: Components Catalog -->
-  <div class="panel" id="panel-components">
+  <!-- Panel: Components -->
+  <div class="tab-panel" id="panel-components">
     <div class="filter-bar">
       <input type="text" id="search-box" class="search-input" placeholder="🔍 Поиск по 80+ инструментам (название, автор, теги, технологии)..." oninput="filterComponents()">
       
@@ -307,46 +530,31 @@ body::before{content:'';position:fixed;top:-40%;left:-40%;width:180%;height:180%
         <span class="pill" data-filter="agent" onclick="setCategoryFilter('agent')">Субагенты</span>
         <span class="pill" data-filter="hook" onclick="setCategoryFilter('hook')">Хуки</span>
       </div>
-
-      <div class="toggle-group" style="margin-left:auto">
-        <span class="toggle-label">Только проверенные</span>
-        <div class="toggle active" id="toggle-safeonly" onclick="this.classList.toggle('active');filterComponents()"></div>
-      </div>
     </div>
 
     <div class="components-grid" id="components-grid"></div>
   </div>
 
-  <!-- Panel 3: Skill Builder -->
-  <div class="panel" id="panel-skillbuilder">
+  <!-- Panel: Skill Builder -->
+  <div class="tab-panel" id="panel-skillbuilder">
     <div class="hero-box">
       <h2>🛠️ Интерактивный Конструктор Скиллов (`SKILL.md`)</h2>
-      <p>Создайте свой собственный навык по официальному стандарту Anthropic. Сгенерированный файл `SKILL.md` содержит валидную YAML-шапку и активируется Claude Code автоматически при необходимости.</p>
+      <p>Сгенерируйте кастомный навык по стандарту Anthropic. Созданный файл содержит валидную YAML-шапку и динамически активируется Claude Code по необходимости.</p>
     </div>
 
     <div class="builder-grid">
-      <div class="builder-form">
-        <div class="form-group">
+      <div class="builder-card">
+        <div class="form-field">
           <label>Имя скилла (skill-name):</label>
-          <input type="text" id="sb-name" class="form-control" value="fastapi-pro" oninput="updateSkillPreview()">
+          <input type="text" id="sb-name" class="form-input" value="fastapi-pro" oninput="updateSkillPreview()">
         </div>
-        <div class="form-group">
-          <label>Краткое описание для промпта (description):</label>
-          <input type="text" id="sb-desc" class="form-control" value="Expert FastAPI development with Pydantic v2, async SQLAlchemy, and JWT authentication." oninput="updateSkillPreview()">
+        <div class="form-field">
+          <label>Описание для промпта (description):</label>
+          <input type="text" id="sb-desc" class="form-input" value="Expert FastAPI development with Pydantic v2, async SQLAlchemy, and JWT auth." oninput="updateSkillPreview()">
         </div>
-        <div class="form-group">
-          <label>Категория скилла:</label>
-          <select id="sb-cat" class="form-control" onchange="updateSkillPreview()">
-            <option value="backend">Backend & APIs</option>
-            <option value="frontend">Frontend & UI</option>
-            <option value="devops">DevOps & Cloud</option>
-            <option value="security">Security & Audit</option>
-            <option value="data">Data & Analytics</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label>Ключевые инструкции и правила (Markdown):</label>
-          <textarea id="sb-body" class="form-control" rows="8" oninput="updateSkillPreview()"># FastAPI Engineering Guidelines
+        <div class="form-field">
+          <label>Ключевые правила и инструкции (Markdown):</label>
+          <textarea id="sb-body" class="form-input" rows="8" oninput="updateSkillPreview()"># FastAPI Engineering Guidelines
 - Always use Pydantic v2 with ConfigDict.
 - Implement dependency injection for database sessions.
 - Enforce strict typing with Pyright/Mypy.
@@ -356,991 +564,364 @@ body::before{content:'';position:fixed;top:-40%;left:-40%;width:180%;height:180%
         <button class="btn btn-primary" onclick="copySkillCode()">📋 Скопировать SKILL.md</button>
       </div>
 
-      <div class="builder-preview">
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem">
-          <span style="font-weight:800;font-size:.85rem;color:var(--accent-hover)">ПРЕДПРОСМОТР SKILL.MD</span>
-          <span style="font-size:.75rem;color:var(--text-muted)">~/.claude/skills/&lt;name&gt;/SKILL.md</span>
+      <div class="builder-card">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <span style="font-weight:700;font-size:.82rem;color:var(--text-pure)">ПРЕДПРОСМОТР SKILL.MD</span>
+          <span style="font-size:.72rem;color:var(--text-faint)">~/.claude/skills/&lt;name&gt;/SKILL.md</span>
         </div>
-        <pre class="code-preview-box" id="sb-output"></pre>
+        <pre class="preview-box" id="sb-output"></pre>
       </div>
     </div>
   </div>
 
-  <!-- Panel 4: CLAUDE.md Builder -->
-  <div class="panel" id="panel-claudebuilder">
+  <!-- Panel: CLAUDE.md Builder -->
+  <div class="tab-panel" id="panel-claudebuilder">
     <div class="hero-box">
       <h2>📝 Интерактивный Генератор `CLAUDE.md` под проект</h2>
-      <p>Настройте корпоративные правила и архитектурные ограничения вашего проекта. Claude Code читает `CLAUDE.md` при каждом запуске и неукоснительно соблюдает эти инструкции.</p>
+      <p>Задайте правила архитектуры и стандарты кода для вашего проекта. Claude Code читает `CLAUDE.md` при каждом старте сессии.</p>
     </div>
 
     <div class="builder-grid">
-      <div class="builder-form">
-        <div class="form-group">
+      <div class="builder-card">
+        <div class="form-field">
           <label>Стек проекта (Framework / Language):</label>
-          <select id="cb-stack" class="form-control" onchange="updateClaudeMdPreview()">
-            <option value="nextjs">Next.js 15 (App Router, Tailwind, TypeScript)</option>
-            <option value="fastapi">FastAPI + Python 3.12 (Pydantic v2, Async SQLAlchemy)</option>
-            <option value="django">Django REST Framework + PostgreSQL</option>
-            <option value="golang">Go (Gin / Fiber + GORM / pgx)</option>
-            <option value="rust">Rust (Axum + Tokio + SQLx)</option>
-            <option value="fullstack-ru">Full-Stack РФ (Next.js + FastAPI + Telegram + ЮKassa)</option>
+          <select id="cb-stack" class="form-input" onchange="updateClaudeMdPreview()">
+            <option value="Next.js 15 (App Router, Tailwind, TypeScript)">Next.js 15 (App Router, Tailwind, TypeScript)</option>
+            <option value="FastAPI + Python 3.12 (Pydantic v2, Async SQLAlchemy)">FastAPI + Python 3.12 (Pydantic v2, Async SQLAlchemy)</option>
+            <option value="Django REST Framework + PostgreSQL">Django REST Framework + PostgreSQL</option>
+            <option value="Go (Gin / Fiber + GORM / pgx)">Go (Gin / Fiber + GORM / pgx)</option>
+            <option value="Rust (Axum + Tokio + SQLx)">Rust (Axum + Tokio + SQLx)</option>
+            <option value="Full-Stack РФ (Next.js + FastAPI + Telegram + ЮKassa)">Full-Stack РФ (Next.js + FastAPI + Telegram + ЮKassa)</option>
           </select>
         </div>
-        <div class="form-group">
-          <label>Команда сборки (Build command):</label>
-          <input type="text" id="cb-build" class="form-control" value="npm run build" oninput="updateClaudeMdPreview()">
+        <div class="form-field">
+          <label>Команда сборки (Build):</label>
+          <input type="text" id="cb-build" class="form-input" value="npm run build" oninput="updateClaudeMdPreview()">
         </div>
-        <div class="form-group">
-          <label>Команда запуска тестов (Test command):</label>
-          <input type="text" id="cb-test" class="form-control" value="npm test" oninput="updateClaudeMdPreview()">
+        <div class="form-field">
+          <label>Команда тестов (Test):</label>
+          <input type="text" id="cb-test" class="form-input" value="npm test" oninput="updateClaudeMdPreview()">
         </div>
-        <div class="form-group">
-          <label>Команда линтера (Lint command):</label>
-          <input type="text" id="cb-lint" class="form-control" value="npm run lint" oninput="updateClaudeMdPreview()">
+        <div class="form-field">
+          <label>Команда линтера (Lint):</label>
+          <input type="text" id="cb-lint" class="form-input" value="npm run lint" oninput="updateClaudeMdPreview()">
         </div>
-        <div class="form-group">
-          <label>Особые архитектурные правила:</label>
-          <textarea id="cb-rules" class="form-control" rows="5" oninput="updateClaudeMdPreview()">- Follow TDD: write tests before implementation.
-- Use Conventional Commits standard (feat:, fix:, docs:, refactor:).
+        <div class="form-field">
+          <label>Правила архитектуры:</label>
+          <textarea id="cb-rules" class="form-input" rows="4" oninput="updateClaudeMdPreview()">- Follow TDD: write unit tests before implementation.
+- Use Conventional Commits standard (feat:, fix:, refactor:).
 - Never commit secrets or .env files.
-- Keep components modular and single-responsibility.</textarea>
+- Keep components modular with single-responsibility.</textarea>
         </div>
         <button class="btn btn-primary" onclick="copyClaudeMdCode()">📋 Скопировать CLAUDE.md</button>
       </div>
 
-      <div class="builder-preview">
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem">
-          <span style="font-weight:800;font-size:.85rem;color:var(--accent-hover)">ПРЕДПРОСМОТР CLAUDE.MD</span>
-          <span style="font-size:.75rem;color:var(--text-muted)">./CLAUDE.md в корне проекта</span>
+      <div class="builder-card">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <span style="font-weight:700;font-size:.82rem;color:var(--text-pure)">ПРЕДПРОСМОТР CLAUDE.MD</span>
+          <span style="font-size:.72rem;color:var(--text-faint)">./CLAUDE.md в корне проекта</span>
         </div>
-        <pre class="code-preview-box" id="cb-output"></pre>
+        <pre class="preview-box" id="cb-output"></pre>
       </div>
     </div>
   </div>
 
-  <!-- Panel 5: Repositories Directory -->
-  <div class="panel" id="panel-repos">
+  <!-- Panel: Repositories -->
+  <div class="tab-panel" id="panel-repos">
     <div class="hero-box">
       <h2>📚 Каталог ключевых репозиториев экосистемы Claude Code</h2>
-      <p>Исследуйте ведущие мировые репозитории с сотнями плагинов, скиллов и MCP-серверов от официальных команд и лидеров Open-Source.</p>
+      <p>Официальные репозитории и проверенные инструменты ведущих инженеров Open-Source сообщества.</p>
     </div>
-
     <div class="profiles-grid" id="repos-grid"></div>
   </div>
 
-  <!-- Panel 6: Security -->
-  <div class="panel" id="panel-security">
+  <!-- Panel: Security -->
+  <div class="tab-panel" id="panel-security">
     <div class="hero-box">
       <h2>🛡️ Архитектура эшелонированной защиты (7 слоев)</h2>
-      <p>Комплексная модель безопасности, сочетающая детерминированные PreToolUse-хуки на уровне ОС, Deny-first правила в `settings.json` и мгновенные снимки отката.</p>
+      <p>Детерминированные PreToolUse хуки перехвата на уровне ОС, жесткие правила Deny-first в `settings.json` и система снапшотов отката.</p>
     </div>
-
     <div class="profiles-grid" id="security-grid"></div>
   </div>
 
-  <!-- Panel 7: Generate Command -->
-  <div class="panel" id="panel-generate">
+  <!-- Panel: Generate Command -->
+  <div class="tab-panel" id="panel-generate">
     <div class="hero-box">
       <h2>⚡ Ваша готовая команда для PowerShell</h2>
       <p>Сгенерированная команда полностью безопасна, идемпотентна и сохраняет существующие пользовательские настройки.</p>
     </div>
 
-    <div class="filter-bar" style="margin-bottom:1.5rem">
-      <div class="toggle-group">
-        <span class="toggle-label">Режим предпросмотра (-DryRun)</span>
-        <div class="toggle" id="toggle-opt-dryrun" onclick="this.classList.toggle('active');updateCommand()"></div>
-      </div>
-      <div class="toggle-group">
-        <span class="toggle-label">Пропустить сторонние скиллы (-SkipThirdParty)</span>
-        <div class="toggle" id="toggle-opt-skip3rd" onclick="this.classList.toggle('active');updateCommand()"></div>
-      </div>
-      <div class="toggle-group">
-        <span class="toggle-label">Обновление пакетов (-Update)</span>
-        <div class="toggle" id="toggle-opt-update" onclick="this.classList.toggle('active');updateCommand()"></div>
-      </div>
-    </div>
-
-    <div class="command-container">
+    <div class="command-section">
       <div class="command-header">
-        <span class="command-title">PowerShell Команда</span>
+        <span style="font-size:.82rem;font-weight:700;color:var(--text-silver);text-transform:uppercase;letter-spacing:.08em">PowerShell Команда</span>
         <button class="btn btn-sm btn-primary" onclick="copyCommand()">📋 Скопировать команду</button>
       </div>
-      <pre class="command-box" id="command-code">.\setup-claude-code-ultimate.ps1 -Profile Master</pre>
+      <pre class="command-code" id="command-code">.\setup-claude-code-ultimate.ps1 -Profile Master</pre>
     </div>
   </div>
 
-  <!-- Detail Modal -->
-  <div class="modal-backdrop" id="modal-backdrop" onclick="closeModal(event)">
-    <div class="modal" id="modal-content" onclick="event.stopPropagation()">
-      <button class="modal__close" onclick="closeModal()">✕</button>
+  <!-- Modal -->
+  <div class="modal-overlay" id="modal-overlay" onclick="closeModal(event)">
+    <div class="modal-box" id="modal-box" onclick="event.stopPropagation()">
+      <button class="modal-close" onclick="closeModal()">✕</button>
       <div id="modal-body"></div>
     </div>
   </div>
 
   <!-- Footer -->
   <footer class="footer">
-    Claude Code Ultimate Hub v1.6.0 · Global Registry & Vercel Ready · Август 2026 г.<br>
-    Создано на основе исследований 50+ репозиториев: Anthropic, Y Combinator (gstack), Superpowers (Jesse Vincent), Upstash, Rohit Gupta, Florian Bruniaux, Daniel Agrici, Julius Brussee, Yandex Cloud, YooKassa.<br>
+    Claude Code Ultimate Hub · Onyx Luxury Edition · Август 2026 г.<br>
+    Создано на базе исследований 50+ репозиториев: Anthropic, Garry Tan (gstack), Jesse Vincent (Superpowers), Upstash, Rohit Gupta, Florian Bruniaux, Daniel Agrici, Julius Brussee, Yandex Cloud, YooKassa.<br>
     Лицензия MIT · Открытый исходный код
   </footer>
 
 </div>
 
 <script>
-// ─── Massive Component Registry (80+ Verified Components) ─────
+// ─── Particle Starfield Animation ──────────────────────────────
+const canvas = document.getElementById('star-canvas');
+const ctx = canvas.getContext('2d');
+let stars = [];
+let mouse = { x: null, y: null };
+
+function resizeCanvas() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+  initStars();
+}
+
+function initStars() {
+  stars = [];
+  const numStars = Math.floor((canvas.width * canvas.height) / 12000);
+  for (let i = 0; i < numStars; i++) {
+    stars.push({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      radius: Math.random() * 1.2 + 0.3,
+      alpha: Math.random() * 0.7 + 0.2,
+      vx: (Math.random() - 0.5) * 0.15,
+      vy: (Math.random() - 0.5) * 0.15,
+      twinkle: Math.random() * 0.02 + 0.005
+    });
+  }
+}
+
+function animateStars() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  for (let i = 0; i < stars.length; i++) {
+    const s = stars[i];
+    s.x += s.vx;
+    s.y += s.vy;
+    s.alpha += Math.sin(Date.now() * s.twinkle) * 0.005;
+
+    if (s.x < 0) s.x = canvas.width;
+    if (s.x > canvas.width) s.x = 0;
+    if (s.y < 0) s.y = canvas.height;
+    if (s.y > canvas.height) s.y = 0;
+
+    ctx.beginPath();
+    ctx.arc(s.x, s.y, s.radius, 0, Math.PI * 2);
+    ctx.fillStyle = `rgba(255, 255, 255, ${Math.max(0.1, Math.min(0.85, s.alpha))})`;
+    ctx.fill();
+  }
+
+  requestAnimationFrame(animateStars);
+}
+
+window.addEventListener('resize', resizeCanvas);
+window.addEventListener('mousemove', (e) => {
+  mouse.x = e.clientX;
+  mouse.y = e.clientY;
+});
+resizeCanvas();
+animateStars();
+
+// ─── Data Definitions (80+ Verified Components) ────────────────
 const PROFILES = [
   {
-    id:'Master',icon:'🌟',name:'Master All-in-One (Идеальный Стек)',
-    desc:'Флагманский сбалансированный стек: Web (Frontend Design, Playwright), Backend (Postgres, SQLite, Supabase), РФ/СНГ бизнес (Telegram, ЮKassa, YC), Память проекта, TDD, Caveman и 7 слоев защиты.',
+    id:'Master',icon:'🌟',name:'Master All-in-One (Флагман)',
+    desc:'Сбалансированный стек: Web (Frontend Design, Playwright), Backend (Postgres, SQLite, Supabase), РФ/СНГ бизнес (Telegram, ЮKassa, YC), Память проекта, TDD, Caveman и 7 слоев защиты.',
     target:'Для разработчиков, основателей стартапов и фрилансеров, которым нужен 1 универсальный готовый сетап без необходимости переключать профили.',
-    why:'Объединяет все ключевые направления, оставляя нагрузку на контекст в оптимальных пределах (~35 инструментов).',
-    recommended:true,featured:true
+    recommended:true
   },
   {
     id:'Russia',icon:'🇷🇺',name:'РФ / СНГ Стек',
     desc:'Локализованный бизнес-стек без зарубежных блокировок: Telegram боты (вместо Slack), ЮKassa платежи (вместо Stripe), Yandex Cloud (вместо AWS), Caveman сжатие.',
-    target:'Для создания сайтов, интернет-магазинов, Telegram-ботов и сервисов с приемом оплаты в рублях и хостингом в РФ.',
-    why:'Полностью исключает зависимости от недоступных зарубежных сервисов (Stripe, AWS, Slack).'
+    target:'Для создания сайтов, интернет-магазинов, Telegram-ботов и сервисов с приемом оплаты в рублях и хостингом в РФ.'
   },
   {
     id:'Core',icon:'🎯',name:'Core (Базовый)',
     desc:'Рекомендуемый минимум для любого разработчика: TDD дисциплина, документация, GitHub, субагенты Architect и Security, хуки защиты.',
-    target:'Для повседневного кодинга на любом языке без привязки к конкретным базам данных или фреймворкам.',
-    why:'Максимальная скорость ответа, минимальный расход токенов, чистая инженерная культура.'
+    target:'Для повседневного кодинга на любом языке без привязки к конкретным базам данных или фреймворкам.'
   },
   {
     id:'Web',icon:'🌐',name:'Full-Stack Web',
     desc:'Полный стек для веб-разработки: React, Next.js, Playwright E2E тесты, UI/UX Pro Max, Supabase Postgres скиллы, TypeScript LSP, линтер.',
-    target:'Для Frontend и Full-Stack инженеров, разрабатывающих современные SPA, SSR и PWA приложения.',
-    why:'Позволяет тестировать верстку на живом Chromium и создавать дизайн мирового уровня.'
+    target:'Для Frontend и Full-Stack инженеров, разрабатывающих современные SPA, SSR и PWA приложения.'
   },
   {
     id:'Frontend',icon:'🎨',name:'Frontend / UI',
     desc:'Интерфейсы и дизайн: UI/UX Pro Max, Frontend Design, Hyperframes, Playwright, Tailwind, Vercel специалист.',
-    target:'Для верстальщиков, дизайнеров и фронтендеров, создающих лендинги и веб-интерфейсы.',
-    why:'Генерирует дизайн по 67 проверенным дизайн-системам без шаблонов искусственного интеллекта.'
+    target:'Для верстальщиков, дизайнеров и фронтендеров, создающих лендинги и веб-интерфейсы.'
   },
   {
     id:'Backend',icon:'⚙️',name:'Backend & APIs',
     desc:'Серверная разработка: PostgreSQL, SQLite, Redis, ClickHouse, оптимизация SQL Supabase, субагент Code Reviewer, Python LSP.',
-    target:'Для бэкенд-разработчиков (Node.js, Python, Go, Rust), работающих с базами данных и микросервисами.',
-    why:'Предоставляет безопасный доступ к схемам БД в режиме чтения и статический анализ типов.'
+    target:'Для бэкенд-разработчиков (Node.js, Python, Go, Rust), работающих с базами данных и микросервисами.'
   },
   {
     id:'Security',icon:'🔒',name:'Security Auditor',
     desc:'Глубокий аудит безопасности: субагент Security Reviewer (Opus), OWASP проверки, Bulletproof пайплайн.',
-    target:'Для аудита кодовой базы перед релизом, поиска утечек секретов и уязвимостей инъекций.',
-    why:'Задействует Claude Opus для глубокого статического анализа и поиска логических дыр.'
+    target:'Для аудита кодовой базы перед релизом, поиска утечек секретов и уязвимостей инъекций.'
   },
   {
     id:'Data',icon:'🗄️',name:'Data & Analytics',
     desc:'Работа с данными: Postgres MCP, SQLite, Redis, ClickHouse, Dataviz (Mermaid/Chart.js), Supabase RLS политики.',
-    target:'Для аналитиков данных, Data Science и бэкендеров, работающих со сложными SQL-выборками и визуализацией.',
-    why:'Позволяет строить дашборды и графики прямо из текста запросов к базам данных.'
+    target:'Для аналитиков данных, Data Science и бэкендеров, работающих со сложными SQL-выборками и визуализацией.'
   },
   {
     id:'DevOps',icon:'🚀',name:'DevOps & CI/CD',
     desc:'Инфраструктура: Docker MCP, GitHub Actions, Sentry мониторинг ошибок, n8n автоматизации, проверка логов сборки.',
-    target:'Для DevOps-инженеров и системных администраторов, настраивающих CI/CD и мониторинг.',
-    why:'Позволяет Claude проверять логи контейнеров и чинить сбои сборки в реальном времени.'
+    target:'Для DevOps-инженеров и системных администраторов, настраивающих CI/CD и мониторинг.'
   },
   {
     id:'Research',icon:'🔬',name:'Deep Research',
     desc:'Глубокий ресерч: нейропоиск Exa, скрапинг с рендерингом JS Firecrawl, верификация документации Context7, Notion CRM, Obsidian Vault.',
-    target:'Для исследователей, продакт-менеджеров и архитекторов, анализирующих новые технологии.',
-    why:'Скрапит сложные JS-страницы и сверяет актуальность документации по живым источникам.'
+    target:'Для исследователей, продакт-менеджеров и архитекторов, анализирующих новые технологии.'
   },
   {
     id:'Marketing',icon:'📈',name:'SEO & Marketing',
     desc:'Маркетинг: Marketing плагин, Claude SEO (25 подскиллов и E-E-A-T аудит), Playwright для скриншотов, Hyperframes.',
-    target:'Для интернет-маркетологов, SEO-специалистов и фаундеров, продвигающих веб-продукты.',
-    why:'Генерирует продающие лендинги, мета-теги, разметку Schema.org и промо-видео.'
+    target:'Для интернет-маркетологов, SEO-специалистов и фаундеров, продвигающих веб-продукты.'
   },
   {
     id:'AI',icon:'🤖',name:'AI / Agent Eng',
     desc:'Разработка агентов и MCP: Skill Creator, Sequential Thinking, Graph Memory, Architect (Opus), Caveman компрессия.',
-    target:'Для инженеров искусственного интеллекта, создающих кастомных агентов и сложные цепочки рассуждений.',
-    why:'Обеспечивает пошаговое рассуждение и сборку собственных навыков по стандартам Anthropic.'
+    target:'Для инженеров искусственного интеллекта, создающих кастомных агентов и сложные цепочки рассуждений.'
   },
   {
     id:'Full',icon:'💎',name:'Full Ultimate (80+ Tools)',
     desc:'Максимальный арсенал из всех проверенных компонентов, включая память AgentMemory, gstack, Docker, Redis, ClickHouse, Linear, Sentry, ЮKassa, Yandex Cloud, Telegram и n8n.',
-    target:'Для полного тестирования всей экосистемы и экспериментальных пайплайнов.',
-    why:'Содержит абсолютно все инструменты, исследованные в мировых репозиториях.'
+    target:'Для полного тестирования всей экосистемы и экспериментальных пайплайнов.'
   }
 ];
 
 const COMPONENTS = [
-  // ── 1. Plugins (14) ──
-  {
-    id:'frontend-design',name:'Frontend Design',cat:'plugin',sec:'safe',
-    desc:'Генерация современных интерфейсов: чистый HTML/CSS, Tailwind, Radix UI, Framer Motion без "шаблонного" вида ИИ.',
-    whyNeed:'Интерфейсы выглядят как работа ведущих продуктовых дизайнеров, а не шаблонная нейросетевая верстка.',
-    whyNotNeed:'Если вы разрабатываете консольные утилиты или чистый бэкенд.',
-    auth:'Не требуется (бесплатно)',cost:'Низкий',
-    profiles:['Master','Frontend','Web','Russia','Full'],
-    source:'anthropics/claude-code',author:'Anthropic Community',repoUrl:'https://github.com/anthropics/claude-code',tools:0
-  },
-  {
-    id:'superpowers',name:'Superpowers (TDD & Planning)',cat:'plugin',sec:'safe',
-    desc:'Плагин от Jesse Vincent (obra). Внедряет строгую TDD-дисциплину, структурированное планирование фич и брейншторминг.',
-    whyNeed:'Предотвращает написание непротестированного кода, заставляет модель сначала писать тесты и спецификацию.',
-    whyNotNeed:'Если вы пишете только одноразовые скрипты и вам не нужны юнит-тесты.',
-    auth:'Не требуется (бесплатно)',cost:'0 токенов (локальные скиллы)',
-    profiles:['Master','Core','Web','Frontend','Backend','Security','Data','DevOps','Research','Marketing','AI','Russia','Full'],
-    source:'obra/superpowers',author:'Jesse Vincent (@obra)',repoUrl:'https://github.com/obra/superpowers',tools:0
-  },
-  {
-    id:'gstack',name:'gstack (23 Агента Garry Tan)',cat:'plugin',sec:'safe',
-    desc:'Плагин от главы Y Combinator Garry Tan: эмулирует работу 23 ролей виртуальной инженерной команды (/office-hours, /plan-review, /qa, /ship).',
-    whyNeed:'Комплексный анализ продукта от идеи и юнит-экономики до релиза.',
-    whyNotNeed:'Для микро-фиксов в 1 строчку.',
-    auth:'Не требуется',cost:'Средний',
-    profiles:['Full'],
-    source:'garrytan/gstack',author:'Garry Tan (CEO Y Combinator)',repoUrl:'https://github.com/garrytan/gstack',tools:0
-  },
-  {
-    id:'context7',name:'Context7 Documentation Live',cat:'plugin',sec:'safe',
-    desc:'Плагин от Upstash: получение актуальной документации по библиотекам в реальном времени. Исключает галлюцинации по устаревшим API.',
-    whyNeed:'Критически важен в 2026 году при работе со свежими версиями Next.js, Tailwind, LangChain, Supabase.',
-    whyNotNeed:'Если проект использует старый легаси стек с неизменным API.',
-    auth:'Бесплатный тариф доступен (Upstash)',cost:'2 инструмента, экономит контекст',
-    profiles:['Master','Core','Web','Frontend','Backend','AI','Russia','Full'],
-    source:'@upstash/context7-mcp',author:'Upstash',repoUrl:'https://github.com/upstash/context7-mcp',tools:2
-  },
-  {
-    id:'marketing',name:'Marketing & Content',cat:'plugin',sec:'safe',
-    desc:'Плагин для создания маркетинговых материалов, лендингов, рассылок, постов и документации продуктов.',
-    whyNeed:'Помогает быстро упаковать и презентовать технический продукт для аудитории и инвесторов.',
-    whyNotNeed:'Для внутренних backend сервисов.',
-    auth:'Не требуется',cost:'Низкий',
-    profiles:['Master','Marketing','Russia','Full'],
-    source:'claude-plugins / marketing',author:'Anthropic Community',repoUrl:'https://github.com/anthropics/claude-code',tools:0
-  },
-  {
-    id:'agentmemory',name:'Productivity / AgentMemory',cat:'plugin',sec:'safe',
-    desc:'Плагин постоянной памяти проекта от Rohit Gupta: 4 уровня памяти (кратковременная, эпизодическая, семантическая, процедурная).',
-    whyNeed:'Claude помнит архитектурные решения, предпочтения по стеку и прошлые баги между сессиями.',
-    whyNotNeed:'Если вы предпочитаете полностью чистый контекст в каждой новой сессии.',
-    auth:'Локальное хранилище (бесплатно)',cost:'Минимальный (подгружается по запросу)',
-    profiles:['Master','Full'],
-    source:'rohitg00/agentmemory',author:'Rohit Gupta (@rohitg00)',repoUrl:'https://github.com/rohitg00/agentmemory',tools:0
-  },
-  {
-    id:'skill-anthropic',name:'Anthropic Office Skills',cat:'plugin',sec:'safe',
-    desc:'Официальные скиллы Anthropic: чтение и генерация документов Word (DOCX), Excel (XLSX), PDF и презентаций PowerPoint (PPTX).',
-    whyNeed:'Позволяет загружать технические задания в Word/PDF и анализировать финансовые таблицы.',
-    whyNotNeed:'Если вы работаете строго с кодом без офисных документов.',
-    auth:'Не требуется',cost:'0 токенов до момента вызова',
-    profiles:['Master','Core','Web','Backend','Research','Russia','Full'],
-    source:'anthropics/skills',author:'Anthropic Official',repoUrl:'https://github.com/anthropics/skills',tools:0
-  },
-  {
-    id:'mcp-playwright',name:'Playwright Visual Tester',cat:'plugin',sec:'safe',
-    desc:'Браузерная автоматизация: рендеринг страниц, клики, заполнение форм, создание скриншотов и проверка локального хоста.',
-    whyNeed:'Позволяет Claude открыть localhost, проверить верстку и убедиться, что кнопка работает.',
-    whyNotNeed:'Для чистых CLI или бэкенд утилит без UI.',
-    auth:'Локальный Chromium (бесплатно)',cost:'8 инструментов',
-    profiles:['Master','Web','Frontend','Marketing','Full'],
-    source:'@anthropic/mcp-playwright',author:'Anthropic Official',repoUrl:'https://github.com/modelcontextprotocol/servers/tree/main/src/playwright',tools:8
-  },
-  {
-    id:'github-plugin',name:'GitHub Official Plugin',cat:'plugin',sec:'safe',
-    desc:'Официальный плагин интеграции с GitHub: управление репозиториями, чтение и создание Issues, Pull Requests, запуск Actions.',
-    whyNeed:'Позволяет Claude Code автономно подтягивать контекст тикетов и пушить готовые PR.',
-    whyNotNeed:'Если проект не использует GitHub или ведется в изолированном локальном Git.',
-    auth:'Авторизация через gh auth login или GITHUB_TOKEN',cost:'Низкий',
-    profiles:['Master','Core','Web','Frontend','Backend','Security','DevOps','AI','Russia','Full'],
-    source:'claude-plugins-official',author:'GitHub / Anthropic',repoUrl:'https://github.com/modelcontextprotocol/servers/tree/main/src/github',tools:0
-  },
-  {
-    id:'vercel-plugin',name:'Vercel Official Plugin',cat:'plugin',sec:'auth',
-    desc:'Официальный плагин Vercel: управление деплоями, диагностика производительности и специализированные агенты для Next.js.',
-    whyNeed:'Мгновенная публикация превью-деплоев и проверка Serverless логов прямо из терминала.',
-    whyNotNeed:'Если проект разворачивается на собственных VPS, Docker или AWS.',
-    auth:'Требуется аккаунт Vercel',cost:'Низкий',
-    profiles:['Web','Frontend','Full'],
-    source:'claude-plugins-official',author:'Vercel Official',repoUrl:'https://github.com/vercel/vercel',tools:0
-  },
-  {
-    id:'linear-plugin',name:'Linear Project Management',cat:'plugin',sec:'auth',
-    desc:'Интеграция с трекером задач Linear: связывание веток Git с задачами спринтов, автоматический перевод статусов.',
-    whyNeed:'Позволяет разработчикам закрывать задачи в Linear прямо во время коммита кода.',
-    whyNotNeed:'Если вы используете GitHub Issues, Jira или Notion.',
-    auth:'Linear Personal API Key',cost:'Низкий',
-    profiles:['DevOps','Full'],
-    source:'linear-mcp',author:'Linear Official',repoUrl:'https://github.com/cline/linear-mcp',tools:0
-  },
-  {
-    id:'sentry-plugin',name:'Sentry Error Diagnostics',cat:'plugin',sec:'auth',
-    desc:'Анализ продакшн ошибок в реальном времени: извлечение стек-трейсов, связывание бага с конкретным коммитом.',
-    whyNeed:'Claude Code сам находит причину сбоя на проде и генерирует хотфикс.',
-    whyNotNeed:'Если проект находится на стадии локального прототипа.',
-    auth:'Sentry Auth Token',cost:'Низкий',
-    profiles:['DevOps','Full'],
-    source:'@modelcontextprotocol/server-sentry',author:'Sentry Official',repoUrl:'https://github.com/modelcontextprotocol/servers/tree/main/src/sentry',tools:0
-  },
-  {
-    id:'aws-plugin',name:'AWS Infrastructure Manager',cat:'plugin',sec:'auth',
-    desc:'Инспекция ресурсов AWS: Lambda функции, S3 бакеты, CloudWatch логи и DynamoDB таблицы.',
-    whyNeed:'Управление облачной инфраструктурой Amazon Web Services через чат.',
-    whyNotNeed:'Для проектов в РФ / СНГ (рекомендуется Yandex Cloud).',
-    auth:'AWS Access Keys / IAM Role',cost:'Средний',
-    profiles:['DevOps','Full'],
-    source:'aws-mcp-community',author:'AWS Community',repoUrl:'https://github.com/punkpeye/awesome-mcp-servers',tools:0
-  },
-  {
-    id:'cloudflare-plugin',name:'Cloudflare Workers & DNS',cat:'plugin',sec:'auth',
-    desc:'Управление Edge-функциями Cloudflare Workers, KV хранилищем, R2 бакетами и DNS записями доменов.',
-    whyNeed:'Развертывание глобальных Serverless функций с минимальной задержкой.',
-    whyNotNeed:'Если проект использует стандартный VPS.',
-    auth:'Cloudflare API Token',cost:'Низкий',
-    profiles:['Web','DevOps','Full'],
-    source:'cloudflare-mcp',author:'Cloudflare Official',repoUrl:'https://github.com/cloudflare',tools:0
-  },
+  // Plugins (14)
+  { id:'frontend-design',name:'Frontend Design',cat:'plugin',auth:'free',desc:'Генерация современных интерфейсов: чистый HTML/CSS, Tailwind, Radix UI без "шаблонного" вида ИИ.',whyNeed:'Интерфейсы выглядят как работа ведущих дизайнеров.',author:'Anthropic Community',repoUrl:'https://github.com/anthropics/claude-code',profiles:['Master','Frontend','Web','Russia','Full'] },
+  { id:'superpowers',name:'Superpowers (TDD & Planning)',cat:'plugin',auth:'free',desc:'Плагин от Jesse Vincent (obra). Внедряет строгую TDD-дисциплину, структурированное планирование фич.',whyNeed:'Предотвращает написание непротестированного кода.',author:'Jesse Vincent (@obra)',repoUrl:'https://github.com/obra/superpowers',profiles:['Master','Core','Web','Frontend','Backend','Security','Data','DevOps','Research','Marketing','AI','Russia','Full'] },
+  { id:'gstack',name:'gstack (23 Агента Garry Tan)',cat:'plugin',auth:'free',desc:'Плагин от главы Y Combinator Garry Tan: 23 роли виртуальной инженерной команды (/office-hours, /plan-review, /qa, /ship).',whyNeed:'Комплексный анализ продукта от идеи до релиза.',author:'Garry Tan (CEO Y Combinator)',repoUrl:'https://github.com/garrytan/gstack',profiles:['Full'] },
+  { id:'context7',name:'Context7 Documentation Live',cat:'plugin',auth:'free',desc:'Плагин от Upstash: получение актуальной документации по библиотекам в реальном времени без галлюцинаций.',whyNeed:'Критически важен при работе со свежими версиями Next.js, Tailwind, Supabase.',author:'Upstash',repoUrl:'https://github.com/upstash/context7-mcp',profiles:['Master','Core','Web','Frontend','Backend','AI','Russia','Full'] },
+  { id:'marketing',name:'Marketing & Content',cat:'plugin',auth:'free',desc:'Создание маркетинговых материалов, лендингов, рассылок, постов и продуктовой документации.',whyNeed:'Быстрая упаковка и презентация продукта.',author:'Anthropic Community',repoUrl:'https://github.com/anthropics/claude-code',profiles:['Master','Marketing','Russia','Full'] },
+  { id:'agentmemory',name:'Productivity / AgentMemory',cat:'plugin',auth:'free',desc:'Постоянная 4-уровневая память проекта от Rohit Gupta: хранение предпочтений и истории багов между сессиями.',whyNeed:'Claude помнит контекст прошлых решений.',author:'Rohit Gupta (@rohitg00)',repoUrl:'https://github.com/rohitg00/agentmemory',profiles:['Master','Full'] },
+  { id:'skill-anthropic',name:'Anthropic Office Skills',cat:'plugin',auth:'free',desc:'Официальные скиллы Anthropic: чтение и генерация документов Word (DOCX), Excel (XLSX), PDF, PPTX.',whyNeed:'Работа с ТЗ и финансовыми таблицами.',author:'Anthropic Official',repoUrl:'https://github.com/anthropics/skills',profiles:['Master','Core','Web','Backend','Research','Russia','Full'] },
+  { id:'mcp-playwright',name:'Playwright Visual Tester',cat:'plugin',auth:'free',desc:'Браузерная автоматизация: рендеринг страниц, клики, создание скриншотов и проверка верстки.',whyNeed:'Проверка верстки и UI на живом Chromium.',author:'Anthropic Official',repoUrl:'https://github.com/modelcontextprotocol/servers/tree/main/src/playwright',profiles:['Master','Web','Frontend','Marketing','Full'] },
+  { id:'github-plugin',name:'GitHub Official Plugin',cat:'plugin',auth:'free',desc:'Интеграция с GitHub: управление репозиториями, чтение и создание Issues, Pull Requests, Actions.',whyNeed:'Автономное подтягивание контекста тикетов.',author:'GitHub / Anthropic',repoUrl:'https://github.com/modelcontextprotocol/servers/tree/main/src/github',profiles:['Master','Core','Web','Frontend','Backend','Security','DevOps','AI','Russia','Full'] },
+  { id:'vercel-plugin',name:'Vercel Official Plugin',cat:'plugin',auth:'key',desc:'Официальный плагин Vercel: управление деплоями, диагностика производительности и логи Next.js.',whyNeed:'Мгновенные превью-деплои из консоли.',author:'Vercel Official',repoUrl:'https://github.com/vercel/vercel',profiles:['Web','Frontend','Full'] },
+  { id:'linear-plugin',name:'Linear Project Management',cat:'plugin',auth:'key',desc:'Интеграция с Linear: связывание веток Git с задачами спринтов и перевод статусов.',whyNeed:'Закрытие задач прямо во время коммита.',author:'Linear Official',repoUrl:'https://github.com/cline/linear-mcp',profiles:['DevOps','Full'] },
+  { id:'sentry-plugin',name:'Sentry Error Diagnostics',cat:'plugin',auth:'key',desc:'Анализ продакшн ошибок: извлечение стек-трейсов и связывание бага с конкретным коммитом.',whyNeed:'Автоматический поиск причин сбоев на проде.',author:'Sentry Official',repoUrl:'https://github.com/modelcontextprotocol/servers/tree/main/src/sentry',profiles:['DevOps','Full'] },
+  { id:'aws-plugin',name:'AWS Infrastructure Manager',cat:'plugin',auth:'key',desc:'Инспекция ресурсов AWS: Lambda функции, S3 бакеты, CloudWatch логи и DynamoDB.',whyNeed:'Управление инфраструктурой Amazon Web Services.',author:'AWS Community',repoUrl:'https://github.com/punkpeye/awesome-mcp-servers',profiles:['DevOps','Full'] },
+  { id:'cloudflare-plugin',name:'Cloudflare Workers & DNS',cat:'plugin',auth:'key',desc:'Управление Edge-функциями Cloudflare Workers, KV хранилищем, R2 бакетами и DNS.',whyNeed:'Развертывание Serverless функций по всему миру.',author:'Cloudflare Official',repoUrl:'https://github.com/cloudflare',profiles:['Web','DevOps','Full'] },
 
-  // ── 2. Skills & Workflows (22) ──
-  {
-    id:'skill-creator',name:'Skill Creator (Anthropic)',cat:'skill',sec:'safe',
-    desc:'Официальный инструмент Anthropic для создания, тестирования и калибровки собственных кастомных навыков.',
-    whyNeed:'Позволяет упаковать любую вашу корпоративную логику в готовый переиспользуемый навык.',
-    whyNotNeed:'Если вас устраивают только стандартные навыки.',
-    auth:'Не требуется',cost:'0 токенов',
-    profiles:['Master','AI','Full'],
-    source:'anthropics/skills/skill-creator',author:'Anthropic Official',repoUrl:'https://github.com/anthropics/skills/tree/main/skill-creator',tools:0
-  },
-  {
-    id:'skill-seo',name:'Claude SEO Pro',cat:'skill',sec:'safe',
-    desc:'25 специализированных подскиллов от Daniel Agrici (технический SEO-аудит, микроразметка Schema.org, оптимизация под поисковый ИИ).',
-    whyNeed:'Для продвижения сайтов и вывода веб-проектов в топ поисковой выдачи Google и Яндекс.',
-    whyNotNeed:'Для закрытых корпоративных сервисов.',
-    auth:'Не требуется',cost:'Низкий',
-    profiles:['Master','Marketing','Russia','Full'],
-    source:'AgriciDaniel/claude-seo',author:'Daniel Agrici (@AgriciDaniel)',repoUrl:'https://github.com/AgriciDaniel/claude-seo',tools:0
-  },
-  {
-    id:'skill-caveman',name:'Caveman (Сжатие токенов)',cat:'skill',sec:'safe',
-    desc:'Скилл от Julius Brussee: сжатие промптов и удаление «воды» из ответов. Экономит до 65% токенов без потери смысла кода.',
-    whyNeed:'Существенно снижает расходы на API и ускоряет вывод ответов в терминале.',
-    whyNotNeed:'Если вы любите длинные вежливые объяснения от модели.',
-    auth:'Не требуется',cost:'Экономит до 65% токенов',
-    profiles:['Master','Russia','AI','Full'],
-    source:'JuliusBrussee/caveman',author:'Julius Brussee (@JuliusBrussee)',repoUrl:'https://github.com/JuliusBrussee/caveman',tools:0
-  },
-  {
-    id:'agent-security',name:'Security Review (Дыры до релиза)',cat:'skill',sec:'safe',
-    desc:'Инженер по информационной безопасности (Opus). Аудит кода на уязвимости OWASP, проверка утечек ключей и векторов инъекций.',
-    whyNeed:'Проводит независимый аудит перед мерджем в main ветку.',
-    whyNotNeed:'Если в проекте нет критических данных.',
-    auth:'Включен в Claude Code',cost:'Высокий (только при вызове)',
-    profiles:['Master','Core','Security','Russia','Full'],
-    source:'Локальный субагент',author:'Setup System',repoUrl:'https://github.com/anthropics/claude-code',tools:0
-  },
-  {
-    id:'skill-hyperframes',name:'Hyperframes (HTML & Video)',cat:'skill',sec:'safe',
-    desc:'Скилл от HeyGen: генерация программных анимаций, баннеров и видео-мокапов в MP4 через чистый HTML/CSS/GSAP.',
-    whyNeed:'Создание динамических промо-роликов и мокапов интерфейсов прямо из промпта.',
-    whyNotNeed:'Если в проекте не требуется генерация видео-контента.',
-    auth:'Не требуется',cost:'Низкий',
-    profiles:['Frontend','Marketing','Full'],
-    source:'heygen-com/hyperframes',author:'HeyGen Team',repoUrl:'https://github.com/heygen-com/hyperframes',tools:0
-  },
-  {
-    id:'skill-uiux',name:'UI/UX Pro Max (67 стилей)',cat:'skill',sec:'safe',
-    desc:'Интеллектуальная база данных по дизайну: 67 проверенных стилей, палитры, пары шрифтов, сетки и готовые дизайн-системы.',
-    whyNeed:'Избавляет интерфейсы от «дефолтного» вида; делает дизайн визуально дорогим и современным.',
-    whyNotNeed:'Если проект является чисто консольной утилитой.',
-    auth:'Не требуется',cost:'Минимальный',
-    profiles:['Master','Frontend','Web','Marketing','Russia','Full'],
-    source:'nextlevelbuilder/ui-ux-pro-max-skill',author:'NextLevelBuilder',repoUrl:'https://github.com/nextlevelbuilder/ui-ux-pro-max-skill',tools:0
-  },
-  {
-    id:'skill-bulletproof',name:'Bulletproof (12-этапный пайплайн)',cat:'skill',sec:'safe',
-    desc:'Строгий 12-этапный инженерный пайплайн от Artemii Millier: исследование архитектуры, тесты, ревью и деплой без галлюцинаций (/bulletproof).',
-    whyNeed:'Обеспечивает промышленное качество кода на уровне ведущих IT-компаний.',
-    whyNotNeed:'Для быстрых прототипов на коленке.',
-    auth:'Не требуется',cost:'Средний',
-    profiles:['Master','Security','Full'],
-    source:'artemiimillier/bulletproof',author:'Artemii Millier (@artemiimillier)',repoUrl:'https://github.com/artemiimillier/bulletproof',tools:0
-  },
-  {
-    id:'skill-dataviz',name:'Dataviz (Графики и диаграммы)',cat:'skill',sec:'safe',
-    desc:'Генерация интерактивных графиков, дашбордов и диаграмм (Chart.js, Mermaid, D3, Recharts).',
-    whyNeed:'Наглядное представление метрик, аналитики и схем архитектуры.',
-    whyNotNeed:'Если проект не содержит аналитических данных.',
-    auth:'Не требуется',cost:'0 токенов',
-    profiles:['Master','Data','Research','Full'],
-    source:'claude-skills/dataviz',author:'Mermaid / Chart.js',repoUrl:'https://github.com/mermaid-js/mermaid',tools:0
-  },
-  {
-    id:'skill-supabase',name:'Supabase Agent Skills',cat:'skill',sec:'safe',
-    desc:'Паттерны Postgres от команды Supabase: оптимизация индексов, RLS политики безопасности, схемы баз данных.',
-    whyNeed:'Предотвращает уязвимости в политиках доступа и медленные SQL-запросы.',
-    whyNotNeed:'Если проект не использует PostgreSQL / Supabase.',
-    auth:'Не требуется',cost:'0 токенов в покое',
-    profiles:['Master','Data','Backend','Web','Full'],
-    source:'supabase/agent-skills',author:'Supabase Team',repoUrl:'https://github.com/supabase/agent-skills',tools:0
-  },
-  {
-    id:'skill-commits',name:'Conventional Commits & PRs',cat:'skill',sec:'safe',
-    desc:'Автоматическое формирование атомарных коммитов по спецификации Conventional Commits и генерация описания Pull Request с чеклистом.',
-    whyNeed:'Идеально чистая история Git репозитория без мусорных сообщений.',
-    whyNotNeed:'Для локальных черновых экспериментов.',
-    auth:'Не требуется',cost:'0 токенов',
-    profiles:['Master','Core','DevOps','Full'],
-    source:'Florian Bruniaux Guide',author:'Florian Bruniaux',repoUrl:'https://github.com/FlorianBruniaux/claude-code-ultimate-guide',tools:0
-  },
-  {
-    id:'skill-astgrep',name:'AST-Grep Structural Refactor',cat:'skill',sec:'safe',
-    desc:'Структурный синтаксический поиск и рефакторинг кода по AST-дереву (ast-grep) вместо текстовых регулярных выражений.',
-    whyNeed:'Безопасный массовый рефакторинг кода без риска поломать похожие по имени переменные.',
-    whyNotNeed:'Для мелких точечных правок.',
-    auth:'Не требуется (ast-grep CLI)',cost:'0 токенов',
-    profiles:['Master','Backend','Web','Full'],
-    source:'ast-grep.github.io',author:'Herrington Darkholme (@ast-grep)',repoUrl:'https://github.com/ast-grep/ast-grep',tools:0
-  },
-  {
-    id:'skill-openapi',name:'OpenAPI / Swagger Generator',cat:'skill',sec:'safe',
-    desc:'Автоматическая генерация и валидация OpenAPI спецификаций, Swagger схем и типов TypeScript по коду эндпоинтов.',
-    whyNeed:'Синхронизирует документацию API с реальным кодом без ручной рутины.',
-    whyNotNeed:'Если в проекте нет внешнего REST API.',
-    auth:'Не требуется',cost:'0 токенов',
-    profiles:['Backend','Full'],
-    source:'ComposioHQ Skills',author:'ComposioHQ / OpenAPI',repoUrl:'https://github.com/ComposioHQ/awesome-claude-skills',tools:0
-  },
-  {
-    id:'skill-prisma',name:'Prisma ORM Best Practices',cat:'skill',sec:'safe',
-    desc:'Шаблоны схем данных Prisma: индексы, сложные связи Many-to-Many, каскадные удаления и транзакции.',
-    whyNeed:'Помогает избежать N+1 запросов и блокировок в базах данных Node.js / TypeScript.',
-    whyNotNeed:'Если вы используете Drizzle, TypeORM или чистый SQL.',
-    auth:'Не требуется',cost:'0 токенов',
-    profiles:['Backend','Web','Full'],
-    source:'prisma-skills',author:'Prisma Team',repoUrl:'https://github.com/prisma/prisma',tools:0
-  },
-  {
-    id:'skill-tailwind',name:'Tailwind CSS v4 Pro',cat:'skill',sec:'safe',
-    desc:'Современные утилиты Tailwind CSS v4: контейнерные запросы, анимации, CSS-переменные и темная тема.',
-    whyNeed:'Генерация чистого и компактного CSS без дублирования стилей.',
-    whyNotNeed:'Если проект использует Vanilla CSS или CSS Modules.',
-    auth:'Не требуется',cost:'0 токенов',
-    profiles:['Frontend','Web','Full'],
-    source:'tailwind-skills',author:'Tailwind Labs',repoUrl:'https://github.com/tailwindlabs/tailwindcss',tools:0
-  },
-  {
-    id:'skill-nextjs',name:'Next.js 15 App Router Specialist',cat:'skill',sec:'safe',
-    desc:'Архитектурные шаблоны Next.js 15: Server Actions, React Server Components, Suspense границы и оптимизация шрифтов.',
-    whyNeed:'Предотвращает ошибки гидратации и проблемы с серверным рендерингом (SSR).',
-    whyNotNeed:'Для классических SPA на Vite или чистом HTML.',
-    auth:'Не требуется',cost:'0 токенов',
-    profiles:['Web','Frontend','Full'],
-    source:'nextjs-skills',author:'Vercel / Next.js',repoUrl:'https://github.com/vercel/next.js',tools:0
-  },
-  {
-    id:'skill-docker',name:'Dockerfile & Compose Optimizer',cat:'skill',sec:'safe',
-    desc:'Многоэтапные (Multi-stage) сборки Dockerfile, минимизация размера образов (Alpine/Distroless), безопасные непривилегированные пользователи.',
-    whyNeed:'Уменьшает размер Docker-образа с 1.5 Гб до 80 Мб и ускоряет сборку.',
-    whyNotNeed:'Если вы не собираете контейнеры.',
-    auth:'Не требуется',cost:'0 токенов',
-    profiles:['DevOps','Backend','Full'],
-    source:'docker-skills',author:'Docker Official',repoUrl:'https://github.com/docker',tools:0
-  },
-  {
-    id:'skill-kubernetes',name:'Kubernetes Manifest Generator',cat:'skill',sec:'safe',
-    desc:'Генерация и валидация манифестов K8s: Deployments, Services, Ingress, ConfigMaps, HPA (Horizontal Pod Autoscaler).',
-    whyNeed:'Безопасная конфигурация кластеров Kubernetes без ошибок в YAML отступах.',
-    whyNotNeed:'Для простых монолитов на 1 VPS.',
-    auth:'Не требуется',cost:'0 токенов',
-    profiles:['DevOps','Full'],
-    source:'k8s-skills',author:'Kubernetes Community',repoUrl:'https://github.com/kubernetes/kubernetes',tools:0
-  },
-  {
-    id:'skill-graphql',name:'GraphQL Schema & Resolvers',cat:'skill',sec:'safe',
-    desc:'Проектирование GraphQL API: схемы, резолверы, Dataloader для решения N+1 проблем и строгая типизация.',
-    whyNeed:'Создание гибких и высокопроизводительных GraphQL сервисов.',
-    whyNotNeed:'Если в проекте используется классический REST API или gRPC.',
-    auth:'Не требуется',cost:'0 токенов',
-    profiles:['Backend','Full'],
-    source:'graphql-skills',author:'GraphQL Foundation',repoUrl:'https://github.com/graphql/graphql-js',tools:0
-  },
-  {
-    id:'skill-jest',name:'Jest & Vitest Unit Testing',cat:'skill',sec:'safe',
-    desc:'Генерация быстрых модульных тестов на Vitest/Jest: мокирование модулей, снепшот-тесты, покрытие веток (Branch Coverage).',
-    whyNeed:'Автоматическое покрытие функций тестами с точностью до каждой ветки условий.',
-    whyNotNeed:'Если вы используете Playwright или Pytest.',
-    auth:'Не требуется',cost:'0 токенов',
-    profiles:['Web','Frontend','Backend','Full'],
-    source:'vitest-skills',author:'Vitest Team',repoUrl:'https://github.com/vitest-dev/vitest',tools:0
-  },
-  {
-    id:'skill-cypress',name:'Cypress E2E Testing',cat:'skill',sec:'safe',
-    desc:'Сценарии сквозного тестирования Cypress: перехват сетевых запросов (cy.intercept), работа с сессиями и фикстурами.',
-    whyNeed:'Проверка сложных пользовательских сценариев в реальном браузере.',
-    whyNotNeed:'Если в проекте уже используется Playwright.',
-    auth:'Не требуется',cost:'0 токенов',
-    profiles:['Web','Frontend','Full'],
-    source:'cypress-skills',author:'Cypress.io',repoUrl:'https://github.com/cypress-io/cypress',tools:0
-  },
-  {
-    id:'skill-regex',name:'Safe Regex Expert & Explainer',cat:'skill',sec:'safe',
-    desc:'Генерация регулярных выражений с защитой от ReDoS (Regular Expression Denial of Service) и подробным объяснением каждого квантификатора.',
-    whyNeed:'Защищает сервер от зависаний при обработке длинных пользовательских строк.',
-    whyNotNeed:'Для тривиального поиска подстрок.',
-    auth:'Не требуется',cost:'0 токенов',
-    profiles:['Core','Backend','Security','Full'],
-    source:'regex-skills',author:'Security Community',repoUrl:'https://github.com/FlorianBruniaux/claude-code-ultimate-guide',tools:0
-  },
-  {
-    id:'skill-accessibility',name:'a11y Web Accessibility (WCAG 2.2)',cat:'skill',sec:'safe',
-    desc:'Аудит доступности веб-интерфейсов по стандарту WCAG 2.2: контрастность цветов, навигация с клавиатуры, ARIA-атрибуты.',
-    whyNeed:'Делает сайты удобными для всех пользователей и повышает SEO-рейтинг.',
-    whyNotNeed:'Для внутренних закрытых утилит.',
-    auth:'Не требуется',cost:'0 токенов',
-    profiles:['Frontend','Web','Marketing','Full'],
-    source:'a11y-skills',author:'W3C WAI',repoUrl:'https://github.com/w3c',tools:0
-  },
+  // Skills (22)
+  { id:'skill-creator',name:'Skill Creator (Anthropic)',cat:'skill',auth:'free',desc:'Официальный инструмент Anthropic для создания и тестирования кастомных навыков.',whyNeed:'Упаковка корпоративной логики в навык.',author:'Anthropic Official',repoUrl:'https://github.com/anthropics/skills/tree/main/skill-creator',profiles:['Master','AI','Full'] },
+  { id:'skill-seo',name:'Claude SEO Pro',cat:'skill',auth:'free',desc:'25 специализированных подскиллов для технического SEO-аудита и микроразметки Schema.org.',whyNeed:'Продвижение сайтов в топ Google и Яндекс.',author:'Daniel Agrici (@AgriciDaniel)',repoUrl:'https://github.com/AgriciDaniel/claude-seo',profiles:['Master','Marketing','Russia','Full'] },
+  { id:'skill-caveman',name:'Caveman (Сжатие токенов)',cat:'skill',auth:'free',desc:'Семантическое сжатие промптов и ответов: экономия до 65% токенов без потери смысла.',whyNeed:'Снижение расходов на API и ускорение вывода.',author:'Julius Brussee (@JuliusBrussee)',repoUrl:'https://github.com/JuliusBrussee/caveman',profiles:['Master','Russia','AI','Full'] },
+  { id:'agent-security',name:'Security Review (OWASP)',cat:'skill',auth:'free',desc:'Аудит кода на уязвимости OWASP, проверка утечек ключей и векторов инъекций на Opus.',whyNeed:'Независимый аудит безопасности до релиза.',author:'Setup System',repoUrl:'https://github.com/anthropics/claude-code',profiles:['Master','Core','Security','Russia','Full'] },
+  { id:'skill-hyperframes',name:'Hyperframes (HTML & Video)',cat:'skill',auth:'free',desc:'Генерация программных анимаций, баннеров и видео-мокапов в MP4 через HTML/CSS/GSAP.',whyNeed:'Создание динамических промо-роликов.',author:'HeyGen Team',repoUrl:'https://github.com/heygen-com/hyperframes',profiles:['Frontend','Marketing','Full'] },
+  { id:'skill-uiux',name:'UI/UX Pro Max (67 стилей)',cat:'skill',auth:'free',desc:'База данных по дизайну: 67 проверенных стилей, палитры, пары шрифтов, сетки и дизайн-системы.',whyNeed:'Делает дизайн визуально дорогим и уникальным.',author:'NextLevelBuilder',repoUrl:'https://github.com/nextlevelbuilder/ui-ux-pro-max-skill',profiles:['Master','Frontend','Web','Marketing','Russia','Full'] },
+  { id:'skill-bulletproof',name:'Bulletproof (12-этапный пайплайн)',cat:'skill',auth:'free',desc:'Строгий 12-этапный инженерный пайплайн: исследование архитектуры, тесты, ревью и деплой.',whyNeed:'Промышленное качество кода без галлюцинаций.',author:'Artemii Millier (@artemiimillier)',repoUrl:'https://github.com/artemiimillier/bulletproof',profiles:['Master','Security','Full'] },
+  { id:'skill-dataviz',name:'Dataviz (Графики и диаграммы)',cat:'skill',auth:'free',desc:'Генерация интерактивных графиков, дашбордов и диаграмм (Chart.js, Mermaid, D3).',whyNeed:'Наглядное представление метрик и архитектуры.',author:'Mermaid / Chart.js',repoUrl:'https://github.com/mermaid-js/mermaid',profiles:['Master','Data','Research','Full'] },
+  { id:'skill-supabase',name:'Supabase Agent Skills',cat:'skill',auth:'free',desc:'Паттерны Postgres: оптимизация индексов, RLS политики безопасности, схемы баз данных.',whyNeed:'Предотвращает медленные SQL-запросы.',author:'Supabase Team',repoUrl:'https://github.com/supabase/agent-skills',profiles:['Master','Data','Backend','Web','Full'] },
+  { id:'skill-commits',name:'Conventional Commits & PRs',cat:'skill',auth:'free',desc:'Автоматическое формирование атомарных коммитов и описаний Pull Request с чеклистом.',whyNeed:'Идеально чистая история Git репозитория.',author:'Florian Bruniaux',repoUrl:'https://github.com/FlorianBruniaux/claude-code-ultimate-guide',profiles:['Master','Core','DevOps','Full'] },
+  { id:'skill-astgrep',name:'AST-Grep Structural Refactor',cat:'skill',auth:'free',desc:'Структурный синтаксический поиск и рефакторинг кода по AST-дереву без regex.',whyNeed:'Безопасный массовый рефакторинг кода.',author:'Herrington Darkholme (@ast-grep)',repoUrl:'https://github.com/ast-grep/ast-grep',profiles:['Master','Backend','Web','Full'] },
+  { id:'skill-openapi',name:'OpenAPI / Swagger Generator',cat:'skill',auth:'free',desc:'Генерация и валидация OpenAPI спецификаций, Swagger схем и типов TypeScript по коду.',whyNeed:'Синхронизация документации API с кодом.',author:'ComposioHQ / OpenAPI',repoUrl:'https://github.com/ComposioHQ/awesome-claude-skills',profiles:['Backend','Full'] },
+  { id:'skill-prisma',name:'Prisma ORM Best Practices',cat:'skill',auth:'free',desc:'Шаблоны схем данных Prisma: индексы, сложные связи Many-to-Many и транзакции.',whyNeed:'Предотвращает N+1 запросы в базах данных.',author:'Prisma Team',repoUrl:'https://github.com/prisma/prisma',profiles:['Backend','Web','Full'] },
+  { id:'skill-tailwind',name:'Tailwind CSS v4 Pro',cat:'skill',auth:'free',desc:'Современные утилиты Tailwind CSS v4: контейнерные запросы, CSS-переменные и темная тема.',whyNeed:'Генерация чистого CSS без дубликатов.',author:'Tailwind Labs',repoUrl:'https://github.com/tailwindlabs/tailwindcss',profiles:['Frontend','Web','Full'] },
+  { id:'skill-nextjs',name:'Next.js 15 App Router',cat:'skill',auth:'free',desc:'Паттерны Next.js 15: Server Actions, React Server Components, Suspense границы.',whyNeed:'Исключает ошибки гидратации и проблемы с SSR.',author:'Vercel / Next.js',repoUrl:'https://github.com/vercel/next.js',profiles:['Web','Frontend','Full'] },
+  { id:'skill-docker',name:'Dockerfile Optimizer',cat:'skill',auth:'free',desc:'Многоэтапные (Multi-stage) сборки Dockerfile, минимизация размера образов (Alpine/Distroless).',whyNeed:'Уменьшает размер Docker-образа в 10 раз.',author:'Docker Official',repoUrl:'https://github.com/docker',profiles:['DevOps','Backend','Full'] },
+  { id:'skill-kubernetes',name:'Kubernetes Manifests',cat:'skill',auth:'free',desc:'Генерация и валидация манифестов K8s: Deployments, Services, Ingress, HPA.',whyNeed:'Безопасная конфигурация кластеров K8s.',author:'Kubernetes Community',repoUrl:'https://github.com/kubernetes/kubernetes',profiles:['DevOps','Full'] },
+  { id:'skill-graphql',name:'GraphQL Schema & Resolvers',cat:'skill',auth:'free',desc:'Проектирование GraphQL API: схемы, резолверы, Dataloader для решения N+1 проблем.',whyNeed:'Создание производительных GraphQL сервисов.',author:'GraphQL Foundation',repoUrl:'https://github.com/graphql/graphql-js',profiles:['Backend','Full'] },
+  { id:'skill-jest',name:'Jest & Vitest Unit Testing',cat:'skill',auth:'free',desc:'Генерация быстрых модульных тестов на Vitest/Jest: мокирование модулей, снепшоты.',whyNeed:'Покрытие функций тестами с высокой точностью.',author:'Vitest Team',repoUrl:'https://github.com/vitest-dev/vitest',profiles:['Web','Frontend','Backend','Full'] },
+  { id:'skill-cypress',name:'Cypress E2E Testing',cat:'skill',auth:'free',desc:'Сценарии сквозного тестирования Cypress: перехват сетевых запросов и фикстуры.',whyNeed:'Проверка сложных пользовательских сценариев.',author:'Cypress.io',repoUrl:'https://github.com/cypress-io/cypress',profiles:['Web','Frontend','Full'] },
+  { id:'skill-regex',name:'Safe Regex Expert',cat:'skill',auth:'free',desc:'Генерация регулярных выражений с защитой от ReDoS (Denial of Service) и объяснением.',whyNeed:'Защита сервера от зависаний при обработке строк.',author:'Security Community',repoUrl:'https://github.com/FlorianBruniaux/claude-code-ultimate-guide',profiles:['Core','Backend','Security','Full'] },
+  { id:'skill-accessibility',name:'a11y Accessibility (WCAG 2.2)',cat:'skill',auth:'free',desc:'Аудит доступности веб-интерфейсов по стандарту WCAG 2.2: контрастность и ARIA.',whyNeed:'Удобство интерфейса и рост SEO-рейтинга.',author:'W3C WAI',repoUrl:'https://github.com/w3c',profiles:['Frontend','Web','Marketing','Full'] },
 
-  // ── 3. MCP Servers (26) ──
-  {
-    id:'mcp-telegram',name:'Telegram MCP (Вместо Slack)',cat:'mcp',sec:'auth',
-    desc:'Прямое управление ботами и каналами Telegram, отправка сообщений, сбор лидов и уведомлений (JGalea / Telethon).',
-    whyNeed:'Идеально для РФ/СНГ рынка для создания чат-ботов, уведомлений о заказах и поддержки клиентов в Telegram.',
-    whyNotNeed:'Если проект использует другие каналы коммуникации.',
-    auth:'Telegram Bot Token или API ID/Hash',cost:'10 инструментов',
-    profiles:['Master','Russia','Marketing','Full'],
-    source:'jgalea/telegram-mcp',author:'Jonathan Galea (@jgalea)',repoUrl:'https://github.com/jgalea/telegram-mcp',tools:10
-  },
-  {
-    id:'mcp-yookassa',name:'ЮKassa MCP (Вместо Stripe)',cat:'mcp',sec:'auth',
-    desc:'Интеграция с платежной системой ЮKassa (YooKassa): создание платежей, чеки по 54-ФЗ, возвраты, СБП и подписки.',
-    whyNeed:'Прием онлайн-оплаты в рублях в РФ без необходимости зарубежных сервисов вроде Stripe.',
-    whyNotNeed:'Если проект не принимает платежи.',
-    auth:'YOOKASSA_SHOP_ID и YOOKASSA_SECRET_KEY',cost:'6 инструментов',
-    profiles:['Master','Russia','Web','Full'],
-    source:'@theyahia/yookassa-mcp',author:'theYahia (@theyahia)',repoUrl:'https://github.com/theYahia/yookassa-mcp',tools:6
-  },
-  {
-    id:'mcp-yandexcloud',name:'Yandex Cloud MCP (Вместо AWS)',cat:'mcp',sec:'auth',
-    desc:'Официальный MCP-сервер Яндекса для управления Compute VM, Object Storage (S3), Managed YDB и Serverless функциями.',
-    whyNeed:'Облачный хостинг и инфраструктура внутри РФ с оплатой в рублях и без блокировок.',
-    whyNotNeed:'Если вы используете локальный сервер или другой хостинг.',
-    auth:'Yandex Cloud OAuth Token / Service Account Key',cost:'8 инструментов',
-    profiles:['Master','Russia','DevOps','Full'],
-    source:'yandex-cloud/mcp',author:'Yandex Cloud Official',repoUrl:'https://github.com/yandex-cloud/mcp',tools:8
-  },
-  {
-    id:'mcp-github',name:'GitHub MCP Server',cat:'mcp',sec:'auth',
-    desc:'Официальный MCP-сервер для прямого вызова API GitHub: поиск кода, анализ дифов, управление ветками и ветками релизов.',
-    whyNeed:'Дает модели программный доступ ко всей инфраструктуре репозитория.',
-    whyNotNeed:'Если достаточно простого локального Git CLI.',
-    auth:'GITHUB_TOKEN (бесплатно)',cost:'12 инструментов',
-    profiles:['Master','Core','Web','Frontend','Backend','Security','DevOps','AI','Russia','Full'],
-    source:'@modelcontextprotocol/server-github',author:'Anthropic / GitHub',repoUrl:'https://github.com/modelcontextprotocol/servers/tree/main/src/github',tools:12
-  },
-  {
-    id:'mcp-supabase',name:'Supabase MCP (Бэкенд без бэкендера)',cat:'mcp',sec:'auth',
-    desc:'Прямое управление проектами Supabase: создание таблиц Postgres, настройка авторизации, генерация миграций и RLS.',
-    whyNeed:'Позволяет развернуть полноценный рабочий бэкенд с БД и Auth за 2 минуты через чат.',
-    whyNotNeed:'Если у вас кастомный бэкенд на Django/Go.',
-    auth:'Supabase Access Token',cost:'6 инструментов',
-    profiles:['Master','Web','Backend','Data','Russia','Full'],
-    source:'@modelcontextprotocol/server-supabase',author:'Supabase Official',repoUrl:'https://github.com/supabase/mcp-server-supabase',tools:6
-  },
-  {
-    id:'mcp-notion',name:'Notion MCP (База знаний и CRM)',cat:'mcp',sec:'auth',
-    desc:'Интеграция с Notion: чтение и запись страниц, ведение баз данных задач, CRM клиентов и документации.',
-    whyNeed:'Claude Code сам ведет документацию проекта и обновляет статус задач прямо в вашем Notion.',
-    whyNotNeed:'Если вы не используете Notion.',
-    auth:'NOTION_API_KEY',cost:'5 инструментов',
-    profiles:['Master','Research','Marketing','Russia','Full'],
-    source:'@modelcontextprotocol/server-notion',author:'Notion Official',repoUrl:'https://github.com/modelcontextprotocol/servers/tree/main/src/notion',tools:5
-  },
-  {
-    id:'mcp-firecrawl',name:'Firecrawl MCP (Скрапинг с JS)',cat:'mcp',sec:'auth',
-    desc:'Глубокий веб-скрапинг с рендерингом JavaScript. Преобразует любую страницу или документацию в чистый Markdown.',
-    whyNeed:'Когда нужно спарсить сайт со сложным JS (SPA) для ресерча.',
-    whyNotNeed:'Если хватает стандартного бесплатного WebFetch.',
-    auth:'API ключ Firecrawl (есть 500 бесплатных кредитов/мес)',cost:'5 инструментов',
-    profiles:['Research','Full'],
-    source:'firecrawl-mcp',author:'Firecrawl Official',repoUrl:'https://github.com/mendableai/firecrawl-mcp-server',tools:5
-  },
-  {
-    id:'mcp-n8n',name:'n8n MCP (Автоматизации без кода)',cat:'mcp',sec:'auth',
-    desc:'Управление платформой автоматизации n8n: запуск вебхуков, построение сценариев интеграции сервисов.',
-    whyNeed:'Связывает Claude Code с тысячами внешних сервисов (CRM, рассылки, базы данных) через визуальные воркфлоу.',
-    whyNotNeed:'Если вы не используете n8n.',
-    auth:'N8N_API_KEY и URL инстанса',cost:'6 инструментов',
-    profiles:['Master','DevOps','Russia','Full'],
-    source:'czlonkowski/n8n-mcp',author:'Czlonkowski / n8n',repoUrl:'https://github.com/czlonkowski/n8n-mcp',tools:6
-  },
-  {
-    id:'mcp-docker',name:'Docker MCP Server',cat:'mcp',sec:'safe',
-    desc:'Официальный MCP-сервер для управления Docker: инспекция контейнеров, чтение логов, сборка образов и мониторинг ресурсов.',
-    whyNeed:'Позволяет Claude проверять состояние локальных контейнеров и чинить сбои сборки.',
-    whyNotNeed:'Если вы не используете Docker.',
-    auth:'Локальный Docker Socket (бесплатно)',cost:'6 инструментов',
-    profiles:['Master','DevOps','Full'],
-    source:'@modelcontextprotocol/server-docker',author:'Anthropic / Docker',repoUrl:'https://github.com/modelcontextprotocol/servers/tree/main/src/docker',tools:6
-  },
-  {
-    id:'mcp-linear',name:'Linear Issue Tracker MCP',cat:'mcp',sec:'auth',
-    desc:'Официальный сервер Linear: создание и закрытие тикетов, привязка задач к веткам Git и обновление статусов спринтов.',
-    whyNeed:'Связывает разработку кода напрямую с таск-трекером Linear.',
-    whyNotNeed:'Если вы используете GitHub Issues или Jira.',
-    auth:'Linear Personal API Key',cost:'8 инструментов',
-    profiles:['DevOps','Full'],
-    source:'https://mcp.linear.app/sse',author:'Linear Official',repoUrl:'https://github.com/cline/linear-mcp',tools:8
-  },
-  {
-    id:'mcp-obsidian',name:'Obsidian Vault MCP',cat:'mcp',sec:'safe',
-    desc:'Интеграция с локальным хранилищем заметок Obsidian: семантический поиск, чтение базы знаний и создание заметок по проекту.',
-    whyNeed:'Claude Code использует ваш персональный Obsidian как внешнюю долговременную базу знаний.',
-    whyNotNeed:'Если вы не ведете заметки в Obsidian.',
-    auth:'Локальный путь к Vault',cost:'4 инструмента',
-    profiles:['Research','Full'],
-    source:'cyanheads/obsidian-mcp-server',author:'cyanheads (@cyanheads)',repoUrl:'https://github.com/cyanheads/obsidian-mcp-server',tools:4
-  },
-  {
-    id:'mcp-sentry',name:'Sentry Error Tracking MCP',cat:'mcp',sec:'auth',
-    desc:'Интеграция с мониторингом ошибок Sentry: чтение стек-трейсов, анализ частоты ошибок и автоматическая локализация бага в коде.',
-    whyNeed:'Claude сам подтягивает реальный стек-трейс с продакшена и пишет фикс.',
-    whyNotNeed:'Если проект не подключен к Sentry.',
-    auth:'Sentry Auth Token',cost:'4 инструмента',
-    profiles:['DevOps','Full'],
-    source:'@modelcontextprotocol/server-sentry',author:'Sentry Official',repoUrl:'https://github.com/modelcontextprotocol/servers/tree/main/src/sentry',tools:4
-  },
-  {
-    id:'mcp-postgres',name:'PostgreSQL Read-Only MCP',cat:'mcp',sec:'auth',
-    desc:'Прямое подключение к Postgres в режиме чтения: инспекция схем таблиц, выполнение безопасных запросов и оптимизация EXPLAIN.',
-    whyNeed:'Агент может сам посмотреть реальную структуру БД и написать точный SQL-запрос.',
-    whyNotNeed:'Если вы не работаете с базами данных Postgres.',
-    auth:'Строка подключения DATABASE_URL',cost:'4 инструмента',
-    profiles:['Master','Data','Backend','Full'],
-    source:'@modelcontextprotocol/server-postgres',author:'Anthropic Official',repoUrl:'https://github.com/modelcontextprotocol/servers/tree/main/src/postgres',tools:4
-  },
-  {
-    id:'mcp-sqlite',name:'SQLite Local DB MCP',cat:'mcp',sec:'safe',
-    desc:'Инспекция и чтение локальных баз данных SQLite. Идеально для локальной разработки, аналитики и встроенных БД.',
-    whyNeed:'Мгновенный анализ локальных файлов .db/.sqlite.',
-    whyNotNeed:'Если проект не использует SQLite.',
-    auth:'Не требуется (локальный файл)',cost:'4 инструмента',
-    profiles:['Master','Data','Backend','Full'],
-    source:'@modelcontextprotocol/server-sqlite',author:'Anthropic Official',repoUrl:'https://github.com/modelcontextprotocol/servers/tree/main/src/sqlite',tools:4
-  },
-  {
-    id:'mcp-redis',name:'Redis Cache & Store MCP',cat:'mcp',sec:'auth',
-    desc:'Инспекция ключей, кэша и очередей Redis: чтение структур данных, проверка TTL и времени жизни кэша.',
-    whyNeed:'Отладка распределенного кэша и очередей задач прямо из терминала.',
-    whyNotNeed:'Если проект не использует Redis.',
-    auth:'REDIS_URL (localhost:6379)',cost:'4 инструмента',
-    profiles:['Backend','Data','Full'],
-    source:'@modelcontextprotocol/server-redis',author:'Anthropic Community',repoUrl:'https://github.com/modelcontextprotocol/servers/tree/main/src/redis',tools:4
-  },
-  {
-    id:'mcp-clickhouse',name:'ClickHouse Analytics MCP',cat:'mcp',sec:'auth',
-    desc:'Высокоскоростная аналитическая колоночная БД ClickHouse: запросы по миллиардам строк логов и событий.',
-    whyNeed:'Идеально для Big Data, построения маркетинговой аналитики и логов посещаемости.',
-    whyNotNeed:'Для обычных CRUD сайтов с небольшими объемами данных.',
-    auth:'CLICKHOUSE_URL / credentials',cost:'4 инструмента',
-    profiles:['Data','Full'],
-    source:'clickhouse-mcp',author:'ClickHouse Official',repoUrl:'https://github.com/ClickHouse/ClickHouse',tools:4
-  },
-  {
-    id:'mcp-sequential',name:'Sequential Thinking MCP',cat:'mcp',sec:'safe',
-    desc:'Механизм пошагового рассуждения: заставляет Claude декомпозировать сложные инженерные задачи и проверять гипотезы перед кодом.',
-    whyNeed:'Помогает при проектировании сложных распределенных систем и отладке race conditions.',
-    whyNotNeed:'Для простых рутинных правок кода.',
-    auth:'Не требуется (бесплатно)',cost:'1 инструмент, высокая точность',
-    profiles:['AI','Full'],
-    source:'@modelcontextprotocol/server-sequential-thinking',author:'Anthropic Official',repoUrl:'https://github.com/modelcontextprotocol/servers/tree/main/src/sequentialthinking',tools:1
-  },
-  {
-    id:'mcp-filesystem',name:'Local Filesystem Enhanced MCP',cat:'mcp',sec:'safe',
-    desc:'Расширенный доступ к локальной файловой системе с поиском по контрольным суммам и метаданным.',
-    whyNeed:'Пакетная обработка медиафайлов и больших директорий.',
-    whyNotNeed:'Для обычной работы внутри рабочей папки проекта.',
-    auth:'Разрешенные пути в конфиге',cost:'5 инструментов',
-    profiles:['Core','Full'],
-    source:'@modelcontextprotocol/server-filesystem',author:'Anthropic Official',repoUrl:'https://github.com/modelcontextprotocol/servers/tree/main/src/filesystem',tools:5
-  },
-  {
-    id:'mcp-git',name:'Local Git History MCP',cat:'mcp',sec:'safe',
-    desc:'Прямой анализ коммитов, веток, blame и авторов изменений без вызова терминальных команд.',
-    whyNeed:'Быстрое исследование истории изменений конкретной строки кода.',
-    whyNotNeed:'Если вы предпочитаете git log в терминале.',
-    auth:'Локальный репозиторий Git',cost:'6 инструментов',
-    profiles:['Core','Full'],
-    source:'@modelcontextprotocol/server-git',author:'Anthropic Official',repoUrl:'https://github.com/modelcontextprotocol/servers/tree/main/src/git',tools:6
-  },
-  {
-    id:'mcp-brave',name:'Brave Search API MCP',cat:'mcp',sec:'auth',
-    desc:'Глобальный веб-поиск без слежки через независимый поисковый индекс Brave Search.',
-    whyNeed:'Поиск актуальных статей, решений ошибок и релизов библиотек в реальном времени.',
-    whyNotNeed:'Если вы используете Context7 или встроенный поиск.',
-    auth:'BRAVE_API_KEY (есть бесплатный лимит)',cost:'2 инструмента',
-    profiles:['Research','Full'],
-    source:'@modelcontextprotocol/server-brave-search',author:'Anthropic Official',repoUrl:'https://github.com/modelcontextprotocol/servers/tree/main/src/brave-search',tools:2
-  },
-  {
-    id:'mcp-fetch',name:'HTTP Fetch & Markdown Converter',cat:'mcp',sec:'safe',
-    desc:'Быстрое скачивание HTML страниц и моментальная конвертация в чистый Markdown без запуска тяжелого браузера.',
-    whyNeed:'Экономит память при чтении простых статей и статической документации.',
-    whyNotNeed:'Для динамических SPA приложений (для них нужен Playwright/Firecrawl).',
-    auth:'Не требуется',cost:'1 инструмент',
-    profiles:['Research','Full'],
-    source:'@modelcontextprotocol/server-fetch',author:'Anthropic Official',repoUrl:'https://github.com/modelcontextprotocol/servers/tree/main/src/fetch',tools:1
-  },
-  {
-    id:'mcp-puppeteer',name:'Puppeteer Headless Browser',cat:'mcp',sec:'safe',
-    desc:'Альтернативный сервер управления браузером Chrome на базе библиотеки Google Puppeteer.',
-    whyNeed:'Генерация PDF из HTML страниц и тестирование доступности.',
-    whyNotNeed:'Если у вас уже активен Playwright MCP.',
-    auth:'Локальный Chrome',cost:'6 инструментов',
-    profiles:['Web','Full'],
-    source:'@modelcontextprotocol/server-puppeteer',author:'Anthropic Official',repoUrl:'https://github.com/modelcontextprotocol/servers/tree/main/src/puppeteer',tools:6
-  },
-  {
-    id:'mcp-slack',name:'Slack Workspace MCP',cat:'mcp',sec:'auth',
-    desc:'Интеграция с корпоративным мессенджером Slack: отправка оповещений о сборках, чтение каналов.',
-    whyNeed:'Для международных команд, работающих в Slack.',
-    whyNotNeed:'Для пользователей из РФ / СНГ (рекомендуется Telegram MCP).',
-    auth:'SLACK_BOT_TOKEN',cost:'8 инструментов',
-    profiles:['Full'],
-    source:'@modelcontextprotocol/server-slack',author:'Anthropic Official',repoUrl:'https://github.com/modelcontextprotocol/servers/tree/main/src/slack',tools:8
-  },
-  {
-    id:'mcp-jira',name:'Atlassian Jira Issue Tracker',cat:'mcp',sec:'auth',
-    desc:'Управление задачами в Jira: создание тикетов, смена статусов в Agile досках и трекинг времени.',
-    whyNeed:'Интеграция с корпоративными энтерпрайз-процессами Atlassian.',
-    whyNotNeed:'Для стартапов и небольших команд.',
-    auth:'Jira API Token & Domain',cost:'7 инструментов',
-    profiles:['Full'],
-    source:'jira-mcp',author:'Atlassian Community',repoUrl:'https://github.com/punkpeye/awesome-mcp-servers',tools:7
-  },
-  {
-    id:'mcp-google-drive',name:'Google Drive & Docs MCP',cat:'mcp',sec:'auth',
-    desc:'Чтение и поиск документов на Google Диске, анализ Google Таблиц и корпоративных файлов.',
-    whyNeed:'Позволяет модели читать технические задания прямо из Google Docs.',
-    whyNotNeed:'Если вы храните документацию локально в Markdown.',
-    auth:'Google Cloud OAuth Token',cost:'5 инструментов',
-    profiles:['Research','Full'],
-    source:'@modelcontextprotocol/server-gdrive',author:'Anthropic Official',repoUrl:'https://github.com/modelcontextprotocol/servers/tree/main/src/gdrive',tools:5
-  },
-  {
-    id:'mcp-memory',name:'Knowledge Graph Memory MCP',cat:'mcp',sec:'safe',
-    desc:'Официальный граф знаний от Anthropic: сохранение сущностей, связей и фактов о проекте в виде графовой структуры.',
-    whyNeed:'Построение долговременных связей между компонентами сложной системы.',
-    whyNotNeed:'Если достаточно простого CLAUDE.md.',
-    auth:'Локальное хранилище',cost:'4 инструмента',
-    profiles:['AI','Full'],
-    source:'@modelcontextprotocol/server-memory',author:'Anthropic Official',repoUrl:'https://github.com/modelcontextprotocol/servers/tree/main/src/memory',tools:4
-  },
+  // MCP Servers (26)
+  { id:'mcp-telegram',name:'Telegram MCP (Вместо Slack)',cat:'mcp',auth:'key',desc:'Прямое управление ботами и каналами Telegram, отправка сообщений и уведомлений.',whyNeed:'Создание чат-ботов и уведомлений в Telegram для рынка РФ/СНГ.',author:'Jonathan Galea (@jgalea)',repoUrl:'https://github.com/jgalea/telegram-mcp',profiles:['Master','Russia','Marketing','Full'] },
+  { id:'mcp-yookassa',name:'ЮKassa MCP (Вместо Stripe)',cat:'mcp',auth:'key',desc:'Интеграция с ЮKassa: прием платежей в рублях, чеки 54-ФЗ, возвраты, СБП и подписки.',whyNeed:'Прием онлайн-оплаты в рублях в РФ без Stripe.',author:'theYahia (@theyahia)',repoUrl:'https://github.com/theYahia/yookassa-mcp',profiles:['Master','Russia','Web','Full'] },
+  { id:'mcp-yandexcloud',name:'Yandex Cloud MCP (Вместо AWS)',cat:'mcp',auth:'key',desc:'Официальный MCP Яндекса: Compute VM, Object Storage (S3), Managed YDB и Serverless.',whyNeed:'Облачный хостинг в РФ с оплатой в рублях без VPN.',author:'Yandex Cloud Official',repoUrl:'https://github.com/yandex-cloud/mcp',profiles:['Master','Russia','DevOps','Full'] },
+  { id:'mcp-github',name:'GitHub MCP Server',cat:'mcp',auth:'key',desc:'Официальный MCP-сервер GitHub: поиск кода, анализ дифов, управление ветками и PR.',whyNeed:'Программный доступ ко всей инфраструктуре репозитория.',author:'Anthropic / GitHub',repoUrl:'https://github.com/modelcontextprotocol/servers/tree/main/src/github',profiles:['Master','Core','Web','Frontend','Backend','Security','DevOps','AI','Russia','Full'] },
+  { id:'mcp-supabase',name:'Supabase MCP',cat:'mcp',auth:'key',desc:'Управление проектами Supabase: создание таблиц Postgres, Auth и миграции.',whyNeed:'Развертывание готового бэкенда за 2 минуты.',author:'Supabase Official',repoUrl:'https://github.com/supabase/mcp-server-supabase',profiles:['Master','Web','Backend','Data','Russia','Full'] },
+  { id:'mcp-notion',name:'Notion MCP',cat:'mcp',auth:'key',desc:'Интеграция с Notion: чтение и запись страниц, ведение баз данных задач и CRM.',whyNeed:'Claude сам ведет документацию проекта в Notion.',author:'Notion Official',repoUrl:'https://github.com/modelcontextprotocol/servers/tree/main/src/notion',profiles:['Master','Research','Marketing','Russia','Full'] },
+  { id:'mcp-firecrawl',name:'Firecrawl MCP (Скрапинг JS)',cat:'mcp',auth:'key',desc:'Глубокий веб-скрапинг с рендерингом JavaScript. Преобразует любую страницу в Markdown.',whyNeed:'Скрапинг сложных динамических SPA сайтов.',author:'Firecrawl Official',repoUrl:'https://github.com/mendableai/firecrawl-mcp-server',profiles:['Research','Full'] },
+  { id:'mcp-n8n',name:'n8n MCP (Автоматизации)',cat:'mcp',auth:'key',desc:'Управление платформой автоматизации n8n: запуск вебхуков и интеграционных сценариев.',whyNeed:'Связывает Claude с тысячами сервисов без кода.',author:'Czlonkowski / n8n',repoUrl:'https://github.com/czlonkowski/n8n-mcp',profiles:['Master','DevOps','Russia','Full'] },
+  { id:'mcp-docker',name:'Docker MCP Server',cat:'mcp',auth:'free',desc:'Официальный сервер управления Docker: инспекция контейнеров, чтение логов и сборка.',whyNeed:'Проверка состояния контейнеров и исправление сбоев.',author:'Anthropic / Docker',repoUrl:'https://github.com/modelcontextprotocol/servers/tree/main/src/docker',profiles:['Master','DevOps','Full'] },
+  { id:'mcp-linear',name:'Linear Issue Tracker',cat:'mcp',auth:'key',desc:'Создание и закрытие тикетов в Linear, привязка задач к веткам Git.',whyNeed:'Связывает разработку кода с таск-трекером.',author:'Linear Official',repoUrl:'https://github.com/cline/linear-mcp',profiles:['DevOps','Full'] },
+  { id:'mcp-obsidian',name:'Obsidian Vault MCP',cat:'mcp',auth:'free',desc:'Интеграция с локальным хранилищем заметок Obsidian: семантический поиск и заметки.',whyNeed:'Использование Obsidian как долговременной базы знаний.',author:'cyanheads (@cyanheads)',repoUrl:'https://github.com/cyanheads/obsidian-mcp-server',profiles:['Research','Full'] },
+  { id:'mcp-sentry',name:'Sentry Error Tracking',cat:'mcp',auth:'key',desc:'Чтение стек-трейсов ошибок Sentry и локализация бага в коде.',whyNeed:'Подтягивание ошибок с продакшена.',author:'Sentry Official',repoUrl:'https://github.com/modelcontextprotocol/servers/tree/main/src/sentry',profiles:['DevOps','Full'] },
+  { id:'mcp-postgres',name:'PostgreSQL Read-Only MCP',cat:'mcp',auth:'key',desc:'Прямое подключение к Postgres в режиме чтения: инспекция схем и выполнение SQL.',whyNeed:'Точные SQL-запросы на основе реальной структуры БД.',author:'Anthropic Official',repoUrl:'https://github.com/modelcontextprotocol/servers/tree/main/src/postgres',profiles:['Master','Data','Backend','Full'] },
+  { id:'mcp-sqlite',name:'SQLite Local DB MCP',cat:'mcp',auth:'free',desc:'Инспекция и чтение локальных баз данных SQLite (.db/.sqlite).',whyNeed:'Мгновенный анализ локальных файлов БД.',author:'Anthropic Official',repoUrl:'https://github.com/modelcontextprotocol/servers/tree/main/src/sqlite',profiles:['Master','Data','Backend','Full'] },
+  { id:'mcp-redis',name:'Redis Cache & Store MCP',cat:'mcp',auth:'key',desc:'Инспекция ключей, кэша и очередей Redis: проверка TTL и структур данных.',whyNeed:'Отладка распределенного кэша прямо из консоли.',author:'Anthropic Community',repoUrl:'https://github.com/modelcontextprotocol/servers/tree/main/src/redis',profiles:['Backend','Data','Full'] },
+  { id:'mcp-clickhouse',name:'ClickHouse Analytics MCP',cat:'mcp',auth:'key',desc:'Аналитическая колоночная БД ClickHouse: запросы по миллиардам строк логов.',whyNeed:'Работа с Big Data и маркетинговой аналитикой.',author:'ClickHouse Official',repoUrl:'https://github.com/ClickHouse/ClickHouse',profiles:['Data','Full'] },
+  { id:'mcp-sequential',name:'Sequential Thinking MCP',cat:'mcp',auth:'free',desc:'Пошаговая декомпозиция сложных задач и проверка гипотез перед написанием кода.',whyNeed:'Проектирование сложных распределенных систем.',author:'Anthropic Official',repoUrl:'https://github.com/modelcontextprotocol/servers/tree/main/src/sequentialthinking',profiles:['AI','Full'] },
+  { id:'mcp-filesystem',name:'Filesystem Enhanced MCP',cat:'mcp',auth:'free',desc:'Расширенный доступ к файловой системе с поиском по контрольным суммам.',whyNeed:'Пакетная обработка файлов в больших каталогах.',author:'Anthropic Official',repoUrl:'https://github.com/modelcontextprotocol/servers/tree/main/src/filesystem',profiles:['Core','Full'] },
+  { id:'mcp-git',name:'Local Git History MCP',cat:'mcp',auth:'free',desc:'Анализ истории коммитов, blame и авторов изменений без вызова терминала.',whyNeed:'Быстрое исследование истории строк кода.',author:'Anthropic Official',repoUrl:'https://github.com/modelcontextprotocol/servers/tree/main/src/git',profiles:['Core','Full'] },
+  { id:'mcp-brave',name:'Brave Search API MCP',cat:'mcp',auth:'key',desc:'Глобальный веб-поиск через независимый индекс Brave Search.',whyNeed:'Поиск актуальных статей и решений ошибок.',author:'Anthropic Official',repoUrl:'https://github.com/modelcontextprotocol/servers/tree/main/src/brave-search',profiles:['Research','Full'] },
+  { id:'mcp-fetch',name:'HTTP Fetch & Markdown',cat:'mcp',auth:'free',desc:'Скачивание HTML страниц и конвертация в чистый Markdown без браузера.',whyNeed:'Экономичное чтение документации.',author:'Anthropic Official',repoUrl:'https://github.com/modelcontextprotocol/servers/tree/main/src/fetch',profiles:['Research','Full'] },
+  { id:'mcp-puppeteer',name:'Puppeteer Browser MCP',cat:'mcp',auth:'free',desc:'Сервер управления Chrome на базе библиотеки Google Puppeteer.',whyNeed:'Генерация PDF из HTML и тестирование верстки.',author:'Anthropic Official',repoUrl:'https://github.com/modelcontextprotocol/servers/tree/main/src/puppeteer',profiles:['Web','Full'] },
+  { id:'mcp-slack',name:'Slack Workspace MCP',cat:'mcp',auth:'key',desc:'Интеграция со Slack: отправка уведомлений о сборках и чтение каналов.',whyNeed:'Для команд, работающих в Slack.',author:'Anthropic Official',repoUrl:'https://github.com/modelcontextprotocol/servers/tree/main/src/slack',profiles:['Full'] },
+  { id:'mcp-jira',name:'Atlassian Jira Tracker',cat:'mcp',auth:'key',desc:'Управление задачами в Jira: создание тикетов и смена статусов.',whyNeed:'Интеграция с корпоративными процессами Atlassian.',author:'Atlassian Community',repoUrl:'https://github.com/punkpeye/awesome-mcp-servers',profiles:['Full'] },
+  { id:'mcp-google-drive',name:'Google Drive & Docs MCP',cat:'mcp',auth:'key',desc:'Чтение и поиск документов на Google Диске и анализ Google Таблиц.',whyNeed:'Чтение ТЗ прямо из Google Docs.',author:'Anthropic Official',repoUrl:'https://github.com/modelcontextprotocol/servers/tree/main/src/gdrive',profiles:['Research','Full'] },
+  { id:'mcp-memory',name:'Knowledge Graph Memory',cat:'mcp',auth:'free',desc:'Граф знаний от Anthropic: сохранение сущностей и связей о проекте.',whyNeed:'Построение долговременных связей компонентов.',author:'Anthropic Official',repoUrl:'https://github.com/modelcontextprotocol/servers/tree/main/src/memory',profiles:['AI','Full'] },
 
-  // ── 4. LSP Servers (6) ──
-  {
-    id:'lsp-typescript',name:'TypeScript / JS LSP',cat:'lsp',sec:'safe',
-    desc:'Language Server Protocol для TypeScript и JavaScript. Мгновенная навигация по символам (Go to Definition, Find References).',
-    whyNeed:'Ускоряет поиск символов в 10 раз и исключает ошибки импортов.',
-    whyNotNeed:'Если вы не пишете на JS/TS.',
-    auth:'Не требуется (npm пакет)',cost:'0 токенов, локальный демон',
-    profiles:['Master','Web','Frontend','Backend','Russia','Full'],
-    source:'typescript-language-server',author:'Open Source Community',repoUrl:'https://github.com/typescript-language-server/typescript-language-server',tools:0
-  },
-  {
-    id:'lsp-python',name:'Python Pyright LSP',cat:'lsp',sec:'safe',
-    desc:'Статический анализатор типов и Language Server для Python. Проверяет сигнатуры функций и доступные методы.',
-    whyNeed:'Предотвращает TypeErrors и подсказывает точные импорты для FastAPI, Django, PyTorch.',
-    whyNotNeed:'Если проект не использует Python.',
-    auth:'Не требуется (pip / npm пакет)',cost:'0 токенов',
-    profiles:['Master','Backend','Data','AI','Full'],
-    source:'pyright / pyright-langserver',author:'Microsoft',repoUrl:'https://github.com/microsoft/pyright',tools:0
-  },
-  {
-    id:'lsp-rust',name:'Rust Analyzer LSP',cat:'lsp',sec:'safe',
-    desc:'Официальный Language Server для языка Rust: анализ типов, развертывание макросов и проверка borrow checker.',
-    whyNeed:'Предотвращает ошибки владения памятью и ускоряет написание безопасного кода на Rust.',
-    whyNotNeed:'Если проект не использует Rust.',
-    auth:'Не требуется (rust-analyzer binary)',cost:'0 токенов',
-    profiles:['Backend','Full'],
-    source:'rust-analyzer.github.io',author:'Rust Team',repoUrl:'https://github.com/rust-lang/rust-analyzer',tools:0
-  },
-  {
-    id:'lsp-golang',name:'Go Gopls LSP',cat:'lsp',sec:'safe',
-    desc:'Официальный Language Server для языка Go (Golang): навигация по пакетам, автодополнение структур и интерфейсов.',
-    whyNeed:'Помогает писать чистый и идиоматичный Go-код.',
-    whyNotNeed:'Если проект не на Go.',
-    auth:'Не требуется (gopls binary)',cost:'0 токенов',
-    profiles:['Backend','Full'],
-    source:'golang.org/x/tools/gopls',author:'Go Team',repoUrl:'https://github.com/golang/tools/tree/master/gopls',tools:0
-  },
-  {
-    id:'lsp-csharp',name:'C# / .NET OmniSharp LSP',cat:'lsp',sec:'safe',
-    desc:'Language Server для разработки на C# и платформе .NET (ASP.NET Core, Unity).',
-    whyNeed:'Поддержка автодополнения и рефакторинга для C# проектов.',
-    whyNotNeed:'Если проект не использует .NET.',
-    auth:'Не требуется',cost:'0 токенов',
-    profiles:['Backend','Full'],
-    source:'omnisharp-roslyn',author:'.NET Foundation',repoUrl:'https://github.com/OmniSharp/omnisharp-roslyn',tools:0
-  },
-  {
-    id:'lsp-cpp',name:'C / C++ Clangd LSP',cat:'lsp',sec:'safe',
-    desc:'Языковой сервер Clangd для C и C++: анализ заголовочных файлов, AST-навигация и подсказка типов шаблонов.',
-    whyNeed:'Точная навигация в сложных C++ проектах.',
-    whyNotNeed:'Если проект не на C/C++.',
-    auth:'Не требуется (clangd)',cost:'0 токенов',
-    profiles:['Backend','Full'],
-    source:'clangd.llvm.org',author:'LLVM Project',repoUrl:'https://github.com/llvm/llvm-project',tools:0
-  },
+  // LSP Servers (6)
+  { id:'lsp-typescript',name:'TypeScript / JS LSP',cat:'lsp',auth:'free',desc:'Language Server Protocol для TS/JS. Мгновенная навигация по символам AST в 10 раз быстрее grep.',whyNeed:'Ускоряет поиск символов и исключает ошибки импортов.',author:'Open Source Community',repoUrl:'https://github.com/typescript-language-server/typescript-language-server',profiles:['Master','Web','Frontend','Backend','Russia','Full'] },
+  { id:'lsp-python',name:'Python Pyright LSP',cat:'lsp',auth:'free',desc:'Статический анализатор типов и Language Server для Python (Pyright).',whyNeed:'Предотвращает TypeErrors в FastAPI и Django.',author:'Microsoft',repoUrl:'https://github.com/microsoft/pyright',profiles:['Master','Backend','Data','AI','Full'] },
+  { id:'lsp-rust',name:'Rust Analyzer LSP',cat:'lsp',auth:'free',desc:'Официальный Language Server для языка Rust: проверка типов и borrow checker.',whyNeed:'Написание безопасного кода на Rust.',author:'Rust Team',repoUrl:'https://github.com/rust-lang/rust-analyzer',profiles:['Backend','Full'] },
+  { id:'lsp-golang',name:'Go Gopls LSP',cat:'lsp',auth:'free',desc:'Официальный Language Server для Go: навигация по пакетам и структурам.',whyNeed:'Написание чистого Go-кода.',author:'Go Team',repoUrl:'https://github.com/golang/tools/tree/master/gopls',profiles:['Backend','Full'] },
+  { id:'lsp-csharp',name:'C# / .NET OmniSharp LSP',cat:'lsp',auth:'free',desc:'Language Server для разработки на C# и платформе .NET (ASP.NET Core).',whyNeed:'Автодополнение и рефакторинг C#.',author:'.NET Foundation',repoUrl:'https://github.com/OmniSharp/omnisharp-roslyn',profiles:['Backend','Full'] },
+  { id:'lsp-cpp',name:'C / C++ Clangd LSP',cat:'lsp',auth:'free',desc:'Языковой сервер Clangd для C/C++: AST-навигация и анализ заголовков.',whyNeed:'Точная навигация в C++ проектах.',author:'LLVM Project',repoUrl:'https://github.com/llvm/llvm-project',profiles:['Backend','Full'] },
 
-  // ── 5. Subagents (8) ──
-  {
-    id:'agent-architect',name:'Architect Agent (Opus)',cat:'agent',sec:'safe',
-    desc:'Главный системный архитектор на базе Claude Opus. Оценивает архитектурные компромиссы, схемы данных и масштабируемость.',
-    whyNeed:'Вызывается для критических проектных решений.',
-    whyNotNeed:'Для механического написания кода.',
-    auth:'Включен в Claude Code',cost:'Высокий (только при вызове)',
-    profiles:['Master','Core','Web','Backend','AI','Full'],
-    source:'~/.claude/agents/architect.md',author:'Setup System',repoUrl:'https://github.com/anthropics/claude-code',tools:0
-  },
-  {
-    id:'agent-codereview',name:'Code Reviewer (Sonnet)',cat:'agent',sec:'safe',
-    desc:'Прагматичный код-ревьюер. Анализирует стиль, читаемость, edge cases и соответствие паттернам на экономичной модели Sonnet.',
-    whyNeed:'Находит скрытые баги и рейс-кондишены во время разработки фич.',
-    whyNotNeed:'Для мелких фиксов опечаток.',
-    auth:'Включен в Claude Code',cost:'Низкий',
-    profiles:['Master','Core','Web','Backend','Full'],
-    source:'~/.claude/agents/code-reviewer.md',author:'Setup System',repoUrl:'https://github.com/anthropics/claude-code',tools:0
-  },
-  {
-    id:'agent-researcher',name:'Researcher (Sonnet)',cat:'agent',sec:'safe',
-    desc:'Специалист по техническому ресерчу. Проверяет документацию библиотек через Context7 и Exa.',
-    whyNeed:'Быстро находит актуальные примеры реализации без отвлечения ведущей модели.',
-    whyNotNeed:'Если стек и архитектура уже определены.',
-    auth:'Включен в Claude Code',cost:'Низкий',
-    profiles:['Master','Research','Full'],
-    source:'~/.claude/agents/researcher.md',author:'Setup System',repoUrl:'https://github.com/anthropics/claude-code',tools:0
-  },
-  {
-    id:'agent-tester',name:'Testing Specialist (Sonnet)',cat:'agent',sec:'safe',
-    desc:'Инженер по тестированию. Пишет юнит-тесты, интеграционные тесты и E2E сценарии Playwright.',
-    whyNeed:'Автоматически покрывает написанный код тестами.',
-    whyNotNeed:'Если вы не пишете автотесты.',
-    auth:'Включен в Claude Code',cost:'Низкий',
-    profiles:['Master','Web','Frontend','Backend','Full'],
-    source:'~/.claude/agents/testing-specialist.md',author:'Setup System',repoUrl:'https://github.com/anthropics/claude-code',tools:0
-  },
-  {
-    id:'agent-docs',name:'Docs Writer (Haiku)',cat:'agent',sec:'safe',
-    desc:'Технический писатель на ультрабыстрой модели Haiku. Генерирует README, JSDoc, OpenAPI документацию и Changelog.',
-    whyNeed:'Мгновенная и дешевая генерация чистой документации.',
-    whyNotNeed:'Если документация ведется вручную.',
-    auth:'Включен в Claude Code',cost:'Минимальный (Haiku)',
-    profiles:['Master','Full'],
-    source:'~/.claude/agents/docs-writer.md',author:'Setup System',repoUrl:'https://github.com/anthropics/claude-code',tools:0
-  },
-  {
-    id:'agent-db',name:'Database Specialist (Sonnet)',cat:'agent',sec:'safe',
-    desc:'Инженер баз данных: анализ EXPLAIN планов, проектирование индексов и безопасное написание миграций SQL.',
-    whyNeed:'Оптимизирует медленные запросы и предотвращает блокировки таблиц.',
-    whyNotNeed:'Для статических сайтов без БД.',
-    auth:'Включен в Claude Code',cost:'Низкий',
-    profiles:['Backend','Data','Full'],
-    source:'~/.claude/agents/db-specialist.md',author:'Setup System',repoUrl:'https://github.com/anthropics/claude-code',tools:0
-  },
-  {
-    id:'agent-devops',name:'DevOps Specialist (Sonnet)',cat:'agent',sec:'safe',
-    desc:'Инженер инфраструктуры: оптимизация Dockerfile, написание пайплайнов GitHub Actions и настройка Nginx.',
-    whyNeed:'Автоматизация деплоя и сборки без ручной рутины.',
-    whyNotNeed:'Если деплой выполняется через Vercel в 1 клик.',
-    auth:'Включен в Claude Code',cost:'Низкий',
-    profiles:['DevOps','Full'],
-    source:'~/.claude/agents/devops-specialist.md',author:'Setup System',repoUrl:'https://github.com/anthropics/claude-code',tools:0
-  },
-  {
-    id:'agent-refactor',name:'Refactoring Specialist (Sonnet)',cat:'agent',sec:'safe',
-    desc:'Специалист по декомпозиции монолитных функций, удалению дубликатов (DRY) и приведению кода к SOLID принципам.',
-    whyNeed:'Чистит легаси код без поломки существующей логики.',
-    whyNotNeed:'Для новых проектов с нуля.',
-    auth:'Включен в Claude Code',cost:'Низкий',
-    profiles:['Core','Backend','Web','Full'],
-    source:'~/.claude/agents/refactor-specialist.md',author:'Setup System',repoUrl:'https://github.com/anthropics/claude-code',tools:0
-  },
+  // Subagents (8)
+  { id:'agent-architect',name:'Architect Agent (Opus)',cat:'agent',auth:'free',desc:'Главный системный архитектор на базе Claude Opus: масштабируемость и схемы данных.',whyNeed:'Вызывается для критических архитектурных решений.',author:'Setup System',repoUrl:'https://github.com/anthropics/claude-code',profiles:['Master','Core','Web','Backend','AI','Full'] },
+  { id:'agent-codereview',name:'Code Reviewer (Sonnet)',cat:'agent',auth:'free',desc:'Прагматичный код-ревьюер: поиск багов, читаемость и соответствие паттернам.',whyNeed:'Поиск скрытых багов во время разработки.',author:'Setup System',repoUrl:'https://github.com/anthropics/claude-code',profiles:['Master','Core','Web','Backend','Full'] },
+  { id:'agent-researcher',name:'Researcher (Sonnet)',cat:'agent',auth:'free',desc:'Специалист по техническому ресерчу документации библиотек через Context7.',whyNeed:'Поиск актуальных примеров реализации.',author:'Setup System',repoUrl:'https://github.com/anthropics/claude-code',profiles:['Master','Research','Full'] },
+  { id:'agent-tester',name:'Testing Specialist (Sonnet)',cat:'agent',auth:'free',desc:'Инженер по тестированию: модульные, интеграционные и E2E тесты.',whyNeed:'Автоматическое покрытие кода тестами.',author:'Setup System',repoUrl:'https://github.com/anthropics/claude-code',profiles:['Master','Web','Frontend','Backend','Full'] },
+  { id:'agent-docs',name:'Docs Writer (Haiku)',cat:'agent',auth:'free',desc:'Технический писатель на ультрабыстрой Haiku: README, JSDoc, OpenAPI.',whyNeed:'Мгновенная генерация документации.',author:'Setup System',repoUrl:'https://github.com/anthropics/claude-code',profiles:['Master','Full'] },
+  { id:'agent-db',name:'Database Specialist (Sonnet)',cat:'agent',auth:'free',desc:'Инженер баз данных: анализ EXPLAIN планов и безопасные SQL миграции.',whyNeed:'Оптимизация медленных SQL запросов.',author:'Setup System',repoUrl:'https://github.com/anthropics/claude-code',profiles:['Backend','Data','Full'] },
+  { id:'agent-devops',name:'DevOps Specialist (Sonnet)',cat:'agent',auth:'free',desc:'Инженер инфраструктуры: оптимизация Dockerfile и пайплайны GitHub Actions.',whyNeed:'Автоматизация сборки и деплоя.',author:'Setup System',repoUrl:'https://github.com/anthropics/claude-code',profiles:['DevOps','Full'] },
+  { id:'agent-refactor',name:'Refactoring Specialist (Sonnet)',cat:'agent',auth:'free',desc:'Декомпозиция монолитных функций и приведение кода к SOLID принципам.',whyNeed:'Чистка легаси кода без поломки логики.',author:'Setup System',repoUrl:'https://github.com/anthropics/claude-code',profiles:['Core','Backend','Web','Full'] },
 
-  // ── 6. Hooks (6) ──
-  {
-    id:'hook-secrets',name:'Secret Scanner Hook',cat:'hook',sec:'safe',
-    desc:'Детерминированный PreToolUse хук scan-secrets.ps1. Сканирует каждую команду терминала на наличие паролей, токенов и ключей до ее запуска.',
-    whyNeed:'Гарантированная защита от случайной утечки API ключей в логи и репозиторий.',
-    whyNotNeed:'Всегда необходим для безопасности.',
-    auth:'Локальный скрипт PowerShell',cost:'0 токенов',
-    profiles:['Master','Core','Web','Frontend','Backend','Security','Data','DevOps','Research','Marketing','AI','Russia','Full'],
-    source:'~/.claude/hooks/scan-secrets.ps1',author:'Setup System',repoUrl:'https://github.com/FlorianBruniaux/claude-code-ultimate-guide',tools:0
-  },
-  {
-    id:'hook-danger',name:'Dangerous Command Blocker',cat:'hook',sec:'safe',
-    desc:'Детерминированный PreToolUse хук block-dangerous.ps1. Блокирует деструктивные команды (rm -rf /, format, del /s /q C:) независимо от инструкций модели.',
-    whyNeed:'Защита от Prompt Injection атак из недоверенных файлов или README.',
-    whyNotNeed:'Всегда необходим.',
-    auth:'Локальный скрипт PowerShell',cost:'0 токенов',
-    profiles:['Master','Core','Web','Frontend','Backend','Security','Data','DevOps','Research','Marketing','AI','Russia','Full'],
-    source:'~/.claude/hooks/block-dangerous.ps1',author:'Setup System',repoUrl:'https://github.com/FlorianBruniaux/claude-code-ultimate-guide',tools:0
-  },
-  {
-    id:'hook-repomap',name:'SessionStart RepoMap Hook',cat:'hook',sec:'safe',
-    desc:'Хук repo-map.ps1 при старте сессии: генерирует компактное дерево файлов и статус Git, ориентируя агента в проекте.',
-    whyNeed:'Экономит до 5 поисковых шагов в начале каждой сессии (совет Сатьяма Джайна).',
-    whyNotNeed:'Для микро-проектов из 1 файла.',
-    auth:'Локальный хук',cost:'0 токенов',
-    profiles:['Master','Core','Web','Frontend','Backend','Security','Russia','Full'],
-    source:'~/.claude/hooks/repo-map.ps1',author:'Sattyam Jain / Setup System',repoUrl:'https://github.com/hesreallyhim/awesome-claude-code',tools:0
-  },
-  {
-    id:'hook-selfheal',name:'StopFailure Self-Healing Hook',cat:'hook',sec:'safe',
-    desc:'Хук self-heal.ps1 при падении команды сборки/тестов: автоматически извлекает код ошибки и подставляет чеклист локализации бага.',
-    whyNeed:'Модель не паникует при ошибке, а методично исправляет корень проблемы.',
-    whyNotNeed:'Если вы предпочитаете сами читать логи ошибок.',
-    auth:'Локальный хук',cost:'0 токенов',
-    profiles:['Master','Core','Web','Frontend','Backend','Russia','Full'],
-    source:'~/.claude/hooks/self-heal.ps1',author:'Florian Bruniaux Guide',repoUrl:'https://github.com/FlorianBruniaux/claude-code-ultimate-guide',tools:0
-  },
-  {
-    id:'hook-testrunner',name:'Auto Test Runner Hook',cat:'hook',sec:'safe',
-    desc:'PostToolUse хук: автоматически запускает быстрые тесты при сохранении файлов компонентов.',
-    whyNeed:'Мгновенная обратная связь: агент сразу видит, сломалась ли функциональность.',
-    whyNotNeed:'Для долгих интеграционных тестов.',
-    auth:'Локальный хук',cost:'0 токенов',
-    profiles:['Core','Security','Full'],
-    source:'~/.claude/hooks/test-runner.ps1',author:'Setup System',repoUrl:'https://github.com/FlorianBruniaux/claude-code-ultimate-guide',tools:0
-  },
-  {
-    id:'hook-lint',name:'Pre-Commit Linter Hook',cat:'hook',sec:'safe',
-    desc:'Хук проверки форматирования Pre-Commit: запускает Prettier / ESLint / Ruff перед созданием коммита.',
-    whyNeed:'Гарантирует чистоту кодовой базы без синтаксических помарок.',
-    whyNotNeed:'Если форматирование настроено в IDE.',
-    auth:'Локальный хук',cost:'0 токенов',
-    profiles:['Core','Full'],
-    source:'~/.claude/hooks/lint-check.ps1',author:'Setup System',repoUrl:'https://github.com/FlorianBruniaux/claude-code-ultimate-guide',tools:0
-  }
+  // Hooks (6)
+  { id:'hook-secrets',name:'Secret Scanner Hook',cat:'hook',auth:'free',desc:'Детерминированный PreToolUse хук: сканирует каждую команду на наличие паролей и токенов.',whyNeed:'Защита от случайной утечки секретов в логи.',author:'Setup System',repoUrl:'https://github.com/FlorianBruniaux/claude-code-ultimate-guide',profiles:['Master','Core','Web','Frontend','Backend','Security','Data','DevOps','Research','Marketing','AI','Russia','Full'] },
+  { id:'hook-danger',name:'Dangerous Command Blocker',cat:'hook',auth:'free',desc:'PreToolUse хук: блокирует деструктивные команды (rm -rf /, format, del /s /q C:).',whyNeed:'Защита от Prompt Injection атак из файлов.',author:'Setup System',repoUrl:'https://github.com/FlorianBruniaux/claude-code-ultimate-guide',profiles:['Master','Core','Web','Frontend','Backend','Security','Data','DevOps','Research','Marketing','AI','Russia','Full'] },
+  { id:'hook-repomap',name:'SessionStart RepoMap Hook',cat:'hook',auth:'free',desc:'Хук при старте сессии: генерирует компактное дерево файлов и статус Git.',whyNeed:'Экономит до 5 поисковых шагов в начале сессии.',author:'Sattyam Jain / Setup System',repoUrl:'https://github.com/hesreallyhim/awesome-claude-code',profiles:['Master','Core','Web','Frontend','Backend','Security','Russia','Full'] },
+  { id:'hook-selfheal',name:'StopFailure Self-Healing Hook',cat:'hook',auth:'free',desc:'Хук при падении сборки/тестов: извлекает код ошибки и дает чеклист локализации.',whyNeed:'Методичное исправление ошибок без паники.',author:'Florian Bruniaux Guide',repoUrl:'https://github.com/FlorianBruniaux/claude-code-ultimate-guide',profiles:['Master','Core','Web','Frontend','Backend','Russia','Full'] },
+  { id:'hook-testrunner',name:'Auto Test Runner Hook',cat:'hook',auth:'free',desc:'PostToolUse хук: автоматически запускает быстрые тесты при сохранении файлов.',whyNeed:'Мгновенная обратная связь при разработке.',author:'Setup System',repoUrl:'https://github.com/FlorianBruniaux/claude-code-ultimate-guide',profiles:['Core','Security','Full'] },
+  { id:'hook-lint',name:'Pre-Commit Linter Hook',cat:'hook',auth:'free',desc:'Хук проверки форматирования Pre-Commit: запускает линтер перед коммитом.',whyNeed:'Гарантирует чистоту кодовой базы.',author:'Setup System',repoUrl:'https://github.com/FlorianBruniaux/claude-code-ultimate-guide',profiles:['Core','Full'] }
 ];
 
 const REPOS = [
   { name:'hesreallyhim/awesome-claude-code', stars:'⭐ 3.5k+', desc:'Канонический каталог плагинов, команд, воркфлоу и шаблонов субагентов для Claude Code.', url:'https://github.com/hesreallyhim/awesome-claude-code' },
-  { name:'ComposioHQ/awesome-claude-skills', stars:'⭐ 2.8k+', desc:'Крупнейшая библиотека из 1,000+ готовых скиллов для интеграции с внешними SaaS сервисами.', url:'https://github.com/ComposioHQ/awesome-claude-skills' },
+  { name:'ComposioHQ/awesome-claude-skills', stars:'⭐ 2.8k+', desc:'Библиотека из 1,000+ готовых скиллов для интеграции с внешними SaaS сервисами.', url:'https://github.com/ComposioHQ/awesome-claude-skills' },
   { name:'punkpeye/awesome-mcp-servers', stars:'⭐ 8.2k+', desc:'Главный мировой реестр Model Context Protocol серверов для работы с БД, облаками и файлами.', url:'https://github.com/punkpeye/awesome-mcp-servers' },
-  { name:'FlorianBruniaux/claude-code-ultimate-guide', stars:'⭐ 430K+ строк', desc:'Самый подробный практический гайд по автономным пайплайнам, хукам самовосстановления и TDD.', url:'https://github.com/FlorianBruniaux/claude-code-ultimate-guide' },
-  { name:'rohitg00/agentmemory', stars:'⭐ Память', desc:'4-уровневая постоянная память проекта: векторный поиск + BM25, сохранение предпочтений между сессиями.', url:'https://github.com/rohitg00/agentmemory' },
-  { name:'garrytan/gstack', stars:'⭐ Y Combinator', desc:'Методология виртуальной команды Garry Tan: 23 агентные роли для планирования, QA и релиза.', url:'https://github.com/garrytan/gstack' },
-  { name:'JuliusBrussee/caveman', stars:'⭐ Экономия', desc:'Скилл семантического сжатия: убирает "воду" из промптов, экономя до 65% токенов без потери смысла.', url:'https://github.com/JuliusBrussee/caveman' },
-  { name:'theYahia/yookassa-mcp & yandex-cloud/mcp', stars:'⭐ РФ Стек', desc:'MCP-серверы для РФ: прием платежей ЮKassa с чеками 54-ФЗ, инфраструктура Yandex Cloud и Telegram боты.', url:'https://github.com/theYahia/yookassa-mcp' }
+  { name:'FlorianBruniaux/claude-code-ultimate-guide', stars:'⭐ 430K+ строк', desc:'Самый подробный гайд по автономным пайплайнам, хукам самовосстановления и TDD.', url:'https://github.com/FlorianBruniaux/claude-code-ultimate-guide' },
+  { name:'rohitg00/agentmemory', stars:'⭐ Память', desc:'4-уровневая постоянная память проекта: векторный поиск + BM25, сохранение контекста.', url:'https://github.com/rohitg00/agentmemory' },
+  { name:'garrytan/gstack', stars:'⭐ Y Combinator', desc:'Методология виртуальной команды Garry Tan: 23 роли для планирования, QA и релиза.', url:'https://github.com/garrytan/gstack' },
+  { name:'JuliusBrussee/caveman', stars:'⭐ Экономия', desc:'Скилл семантического сжатия: убирает "воду" из промптов, экономя до 65% токенов.', url:'https://github.com/JuliusBrussee/caveman' },
+  { name:'theYahia/yookassa-mcp & yandex-cloud/mcp', stars:'⭐ РФ Стек', desc:'MCP-серверы для РФ: платежи ЮKassa с чеками 54-ФЗ, облако Yandex Cloud и Telegram боты.', url:'https://github.com/theYahia/yookassa-mcp' }
 ];
 
 const SECURITY_LAYERS = [
-  { num:'УРОВЕНЬ 1', title:'Политики разрешений (Deny-first)', desc:'Блокировка доступа к .env*, .ssh/, приватным ключам (*.pem, *.key) и опасным командам (rm -rf /, format, del /s /q C:) на уровне settings.json.' },
-  { num:'УРОВЕНЬ 2', title:'Детерминированные PreToolUse хуки', desc:'Скрипты scan-secrets.ps1 и block-dangerous.ps1 сканируют каждую команду терминала до запуска и жестко блокируют опасные вызовы (код 2).' },
-  { num:'УРОВЕНЬ 3', title:'Изоляция процессов (WSL2 Sandbox)', desc:'Для изоляции сетевого стека и файловой системы поддерживается запуск в защищенной Linux-песочнице WSL2.' },
+  { num:'УРОВЕНЬ 1', title:'Политики разрешений (Deny-first)', desc:'Блокировка доступа к .env*, .ssh/, приватным ключам (*.pem, *.key) и опасным командам на уровне settings.json.' },
+  { num:'УРОВЕНЬ 2', title:'Детерминированные PreToolUse хуки', desc:'Скрипты scan-secrets.ps1 и block-dangerous.ps1 сканируют каждую команду терминала до запуска и блокируют опасные вызовы (код 2).' },
+  { num:'УРОВЕНЬ 3', title:'Изоляция процессов (WSL2 Sandbox)', desc:'Для аппаратной изоляции сетевого стека поддерживается запуск в защищенной Linux-песочнице WSL2.' },
   { num:'УРОВЕНЬ 4', title:'Минимизация привилегий MCP', desc:'Серверы баз данных (PostgreSQL, SQLite) подключаются только в режиме чтения (Read-Only).' },
-  { num:'УРОВЕНЬ 5', title:'Безопасность API-токенов', desc:'Полный запрет на запись паролей в конфигурационные файлы: все токены передаются только через переменные окружения сессии.' },
+  { num:'УРОВЕНЬ 5', title:'Безопасность API-токенов', desc:'Полный запрет на запись паролей в файлы: все токены передаются только через переменные окружения сессии.' },
   { num:'УРОВЕНЬ 6', title:'Снапшоты и мгновенный откат', desc:'Автоматическое создание снимков в ~/.claude/backups/. Команда -Rollback возвращает предыдущую рабочую конфигурацию.' },
-  { num:'УРОВЕНЬ 7', title:'Диагностический Health-Check', desc:'15-факторная проверка системы: claude doctor, целостность настроек, версий утилит и доступности MCP серверов.' }
+  { num:'УРОВЕНЬ 7', title:'Диагностический Health-Check', desc:'15-факторная проверка системы: claude doctor, целостность настроек и доступности MCP серверов.' }
 ];
 
 // ─── State ─────────────────────────────────────────────────────
@@ -1360,11 +941,11 @@ function renderProfiles() {
     const count = getComponentsForProfile(p.id).length;
     const isSel = selectedProfile === p.id;
     return `
-      <div class="profile-card ${isSel ? 'selected' : ''} ${p.featured ? 'featured' : ''}" onclick="selectProfile('${p.id}')">
+      <div class="profile-card ${isSel ? 'selected' : ''}" onclick="selectProfile('${p.id}')">
         <div class="profile-card__header">
           <span class="profile-card__icon">${p.icon}</span>
           <span class="profile-card__name">${p.name}</span>
-          ${p.recommended ? `<span class="profile-card__badge ${p.featured ? 'badge-gold' : ''}">⭐ Флагман</span>` : ''}
+          ${p.recommended ? `<span class="profile-card__tag">Флагман</span>` : ''}
         </div>
         <div class="profile-card__desc">${p.desc}</div>
         <div class="profile-card__target">
@@ -1372,7 +953,7 @@ function renderProfiles() {
         </div>
         <div class="profile-card__meta">
           <span>📦 ${count} компонентов</span>
-          <span style="color:var(--accent-hover);font-weight:700">${isSel ? '✓ Активен' : 'Выбрать →'}</span>
+          <span style="color:var(--text-pure);font-weight:600">${isSel ? '✓ Активен' : 'Выбрать →'}</span>
         </div>
       </div>
     `;
@@ -1382,15 +963,11 @@ function renderProfiles() {
 function renderComponents() {
   const container = document.getElementById('components-grid');
   const catNames = {plugin:'Плагин',mcp:'MCP Сервер',skill:'Скилл',agent:'Субагент',hook:'Хук',lsp:'LSP Сервер'};
-  const secNames = {safe:'Безопасно',auth:'Нужен Auth',exp:'Эксперимент'};
-  const secClasses = {safe:'sec-safe',auth:'sec-auth',exp:'sec-exp'};
-  const catClasses = {plugin:'badge-cat-plugin',mcp:'badge-cat-mcp',skill:'badge-cat-skill',agent:'badge-cat-agent',hook:'badge-cat-hook',lsp:'badge-cat-lsp'};
-
-  const onlySafe = document.getElementById('toggle-safeonly').classList.contains('active');
+  const authNames = {free:'Бесплатно',key:'Нужен Ключ'};
+  const authClasses = {free:'auth-free',key:'auth-key'};
 
   const filtered = COMPONENTS.filter(c => {
     if (currentCategory !== 'all' && c.cat !== currentCategory) return false;
-    if (onlySafe && c.sec === 'exp') return false;
     if (searchQuery) {
       const q = searchQuery.toLowerCase();
       const match = c.name.toLowerCase().includes(q) || c.desc.toLowerCase().includes(q) || c.id.toLowerCase().includes(q) || (c.author && c.author.toLowerCase().includes(q));
@@ -1402,44 +979,37 @@ function renderComponents() {
   document.getElementById('tab-comp-count').textContent = COMPONENTS.length;
 
   if (filtered.length === 0) {
-    container.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:3rem;color:var(--text-muted)">Компоненты по заданному фильтру не найдены.</div>`;
+    container.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:3rem;color:var(--text-faint)">Компоненты по заданному фильтру не найдены.</div>`;
     return;
   }
 
   container.innerHTML = filtered.map(c => {
     const isSel = selectedComponents.has(c.id);
     return `
-      <div class="component-card ${isSel ? 'selected' : ''}" onclick="toggleComponent('${c.id}')">
-        <div class="component-card__top">
+      <div class="comp-card ${isSel ? 'selected' : ''}" onclick="toggleComponent('${c.id}')">
+        <div class="comp-card__top">
           <div class="check-box">${isSel ? '✓' : ''}</div>
-          <div class="component-card__title-row">
-            <div class="component-card__title">
+          <div class="comp-card__title-wrap">
+            <div class="comp-card__title">
               ${c.name}
-              <span class="badge-category ${catClasses[c.cat]}">${catNames[c.cat]}</span>
-              <span class="badge-security ${secClasses[c.sec]}">${secNames[c.sec]}</span>
+              <span class="badge-cat">${catNames[c.cat]}</span>
+              <span class="badge-auth ${authClasses[c.auth]}">${authNames[c.auth]}</span>
             </div>
           </div>
         </div>
 
-        <div class="component-card__desc">${c.desc}</div>
+        <div class="comp-card__desc">${c.desc}</div>
 
-        <div class="detail-row">
-          <div class="detail-item">
-            <strong>Зачем нужен:</strong>
-            <span>${c.whyNeed}</span>
-          </div>
-          <div class="detail-item">
-            <strong>Автор / Создатель:</strong>
-            <span>${c.author}</span>
-          </div>
+        <div class="detail-table">
+          <div><strong>Зачем нужен:</strong> <span>${c.whyNeed}</span></div>
+          <div><strong>Автор:</strong> <span>${c.author}</span></div>
         </div>
 
-        <div class="component-card__footer">
-          <div class="footer-tags">
-            ${c.repoUrl ? `<a href="${c.repoUrl}" target="_blank" class="source-link" onclick="event.stopPropagation()">🔗 Исходник (${c.source}) ↗</a>` : `<span>📦 ${c.source}</span>`}
-            ${c.tools > 0 ? `<span>🔧 ${c.tools} tools</span>` : ''}
+        <div class="comp-card__footer">
+          <div>
+            ${c.repoUrl ? `<a href="${c.repoUrl}" target="_blank" class="source-btn" onclick="event.stopPropagation()">🔗 Исходник ↗</a>` : `<span>📦 ${c.id}</span>`}
           </div>
-          <button class="btn btn-sm btn-secondary" onclick="event.stopPropagation();showDetails('${c.id}')" style="padding:.25rem .6rem">Инфо ↗</button>
+          <button class="btn btn-sm btn-secondary" onclick="event.stopPropagation();showDetails('${c.id}')" style="padding:.25rem .65rem">Инфо ↗</button>
         </div>
       </div>
     `;
@@ -1452,11 +1022,11 @@ function renderRepos() {
     <div class="profile-card">
       <div class="profile-card__header">
         <span class="profile-card__name">${r.name}</span>
-        <span class="profile-card__badge badge-gold">${r.stars}</span>
+        <span class="profile-card__tag">${r.stars}</span>
       </div>
       <div class="profile-card__desc">${r.desc}</div>
       <div class="profile-card__meta">
-        <a href="${r.url}" target="_blank" class="source-link" style="font-size:.85rem">Открыть на GitHub ↗</a>
+        <a href="${r.url}" target="_blank" class="source-btn" style="font-size:.85rem">Открыть на GitHub ↗</a>
       </div>
     </div>
   `).join('');
@@ -1467,10 +1037,10 @@ function renderSecurity() {
   container.innerHTML = SECURITY_LAYERS.map(s => `
     <div class="profile-card">
       <div class="profile-card__header">
-        <span class="profile-card__badge" style="background:var(--accent-glow);color:var(--accent-hover)">${s.num}</span>
+        <span class="profile-card__tag">${s.num}</span>
         <span class="profile-card__name">${s.title}</span>
       </div>
-      <div class="profile-card__desc" style="margin-top:.4rem">${s.desc}</div>
+      <div class="profile-card__desc" style="margin-top:.5rem">${s.desc}</div>
     </div>
   `).join('');
 }
@@ -1494,10 +1064,6 @@ function updateStats() {
 }
 
 function updateCommand() {
-  const dryRun = document.getElementById('toggle-opt-dryrun')?.classList.contains('active');
-  const skip3rd = document.getElementById('toggle-opt-skip3rd')?.classList.contains('active');
-  const isUpdate = document.getElementById('toggle-opt-update')?.classList.contains('active');
-
   const p = selectedProfile || 'Master';
   const customIds = [...selectedComponents];
   const standardIds = getComponentsForProfile(p);
@@ -1509,10 +1075,6 @@ function updateCommand() {
   if (!isExactProfile && customIds.length > 0) {
     cmd += ` -Components "${customIds.join(',')}"`;
   }
-
-  if (dryRun) cmd += ' -DryRun';
-  if (skip3rd) cmd += ' -SkipThirdParty';
-  if (isUpdate) cmd += ' -Update';
 
   const codeEl = document.getElementById('command-code');
   if (codeEl) codeEl.textContent = cmd;
@@ -1536,7 +1098,7 @@ ${body}`;
 
 function copySkillCode() {
   const code = document.getElementById('sb-output').textContent;
-  navigator.clipboard.writeText(code).then(() => alert('✅ SKILL.md скопирован в буфер обмена!'));
+  navigator.clipboard.writeText(code).then(() => alert('✅ SKILL.md скопирован в буфер!'));
 }
 
 function updateClaudeMdPreview() {
@@ -1549,14 +1111,14 @@ function updateClaudeMdPreview() {
   const md = `# Project Guidelines for Claude Code
 
 ## Tech Stack
-- Framework / Architecture: ${stack}
+- Framework: ${stack}
 
 ## Build & Test Commands
 - Build: \`${build}\`
 - Test: \`${test}\`
 - Lint: \`${lint}\`
 
-## Code Standards & Architectural Rules
+## Code Standards
 ${rules}
 
 ## Managed by Claude Code Ultimate Setup
@@ -1569,7 +1131,7 @@ ${rules}
 
 function copyClaudeMdCode() {
   const code = document.getElementById('cb-output').textContent;
-  navigator.clipboard.writeText(code).then(() => alert('✅ CLAUDE.md скопирован в буфер обмена!'));
+  navigator.clipboard.writeText(code).then(() => alert('✅ CLAUDE.md скопирован в буфер!'));
 }
 
 // ─── Actions ───────────────────────────────────────────────────
@@ -1611,12 +1173,14 @@ function copyCommand() {
   navigator.clipboard.writeText(code).then(() => {
     const btn = document.querySelector('.command-header .btn');
     const old = btn.innerHTML;
-    btn.innerHTML = '✅ Скопировано в буфер!';
-    btn.style.background = 'var(--success)';
+    btn.innerHTML = '✅ Скопировано!';
+    btn.style.background = 'var(--accent-emerald)';
+    btn.style.color = '#fff';
     setTimeout(() => {
       btn.innerHTML = old;
       btn.style.background = '';
-    }, 2200);
+      btn.style.color = '';
+    }, 2000);
   });
 }
 
@@ -1629,46 +1193,43 @@ function showDetails(id) {
 
   modalBody.innerHTML = `
     <div style="display:flex;align-items:center;gap:.8rem;margin-bottom:1rem">
-      <span class="badge-category badge-cat-${c.cat}" style="font-size:.8rem;padding:.2rem .6rem">${catNames[c.cat]}</span>
-      <h3 style="font-size:1.4rem;font-weight:900">${c.name}</h3>
+      <span class="badge-cat" style="font-size:.75rem;padding:.25rem .6rem">${catNames[c.cat]}</span>
+      <h3 style="font-size:1.35rem;font-weight:700;color:var(--text-pure)">${c.name}</h3>
     </div>
 
-    <p style="font-size:.95rem;color:var(--text-secondary);line-height:1.6;margin-bottom:1.5rem">${c.desc}</p>
+    <p style="font-size:.9rem;color:var(--text-muted);line-height:1.6;margin-bottom:1.4rem">${c.desc}</p>
 
-    <div style="display:grid;grid-template-columns:1fr;gap:.9rem;background:var(--bg-secondary);padding:1.4rem;border-radius:var(--radius);margin-bottom:1.5rem;font-size:.85rem">
-      <div><strong style="color:var(--accent-hover)">🎯 Зачем нужен и практический сценарий:</strong><br>${c.whyNeed}</div>
-      <div><strong style="color:var(--warning)">🛑 Когда НЕ нужен (чтобы не тратить память):</strong><br>${c.whyNotNeed}</div>
-      <div><strong style="color:var(--success)">🔑 Требования к авторизации:</strong><br>${c.auth}</div>
-      <div><strong style="color:var(--info)">⚡ Нагрузка на память и контекст:</strong><br>${c.cost}</div>
-      <div><strong style="color:var(--purple)">👨‍💻 Автор / Создатель:</strong><br>${c.author}</div>
-      <div><strong style="color:var(--text-primary)">📦 Официальный репозиторий / Исходник:</strong><br>
-        ${c.repoUrl ? `<a href="${c.repoUrl}" target="_blank" style="color:var(--accent-hover);font-weight:bold;word-break:break-all">${c.repoUrl} ↗</a>` : `<code>${c.source}</code>`}
+    <div style="display:grid;gap:.8rem;background:var(--bg-main);padding:1.2rem;border-radius:var(--radius-xs);margin-bottom:1.4rem;font-size:.82rem;border:1px solid var(--border-subtle)">
+      <div><strong style="color:var(--text-pure)">🎯 Зачем нужен и практический сценарий:</strong><br><span style="color:var(--text-muted)">${c.whyNeed}</span></div>
+      <div><strong style="color:var(--text-pure)">👨‍💻 Автор / Создатель:</strong><br><span style="color:var(--text-muted)">${c.author}</span></div>
+      <div><strong style="color:var(--text-pure)">📦 Официальный репозиторий:</strong><br>
+        ${c.repoUrl ? `<a href="${c.repoUrl}" target="_blank" style="color:var(--text-pure);font-weight:600;word-break:break-all">${c.repoUrl} ↗</a>` : `<code>${c.id}</code>`}
       </div>
     </div>
 
     <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem">
-      ${c.repoUrl ? `<a href="${c.repoUrl}" target="_blank" class="btn btn-secondary">🌐 Открыть репозиторий GitHub ↗</a>` : '<div></div>'}
-      <div style="display:flex;gap:1rem">
+      ${c.repoUrl ? `<a href="${c.repoUrl}" target="_blank" class="btn btn-secondary">🌐 Открыть GitHub ↗</a>` : '<div></div>'}
+      <div style="display:flex;gap:.8rem">
         <button class="btn btn-secondary" onclick="closeModal()">Закрыть</button>
         <button class="btn btn-primary" onclick="toggleComponent('${c.id}');closeModal()">${selectedComponents.has(c.id) ? 'Убрать из сборки' : 'Добавить в сборку'}</button>
       </div>
     </div>
   `;
 
-  document.getElementById('modal-backdrop').style.display = 'flex';
+  document.getElementById('modal-overlay').style.display = 'flex';
 }
 
 function closeModal(e) {
-  if (!e || e.target.id === 'modal-backdrop' || e.target.classList.contains('modal__close') || e.target.tagName === 'BUTTON') {
-    document.getElementById('modal-backdrop').style.display = 'none';
+  if (!e || e.target.id === 'modal-overlay' || e.target.classList.contains('modal-close') || e.target.tagName === 'BUTTON') {
+    document.getElementById('modal-overlay').style.display = 'none';
   }
 }
 
 // ─── Tab Navigation ────────────────────────────────────────────
-document.querySelectorAll('.tab').forEach(tab => {
+document.querySelectorAll('.tab-btn').forEach(tab => {
   tab.addEventListener('click', () => {
-    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-    document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
     tab.classList.add('active');
     const panelId = 'panel-' + tab.dataset.tab;
     const targetPanel = document.getElementById(panelId);
