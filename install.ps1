@@ -17,7 +17,7 @@ function Show-Header {
  ██║     ██║     ██╔══██║██║   ██║██║  ██║██╔══╝       ██╔══██║██║   ██║██╔══██╗
  ╚██████╗███████╗██║  ██║╚██████╔╝██████╔╝███████╗     ██║  ██║╚██████╔╝██████╔╝
   ╚═════╝╚══════╝╚═╝  ╚═╝ ╚═════╝ ╚═════╝ ╚══════╝     ╚═╝  ╚═╝ ╚═════╝ ╚═════╝ 
-                 CLAUDE CODE ULTIMATE HUB — ONYX EDITION (120+ TOOLS)
+                 CLAUDE CODE ULTIMATE HUB — ONYX EDITION (500+ TOOLS)
 "@ -ForegroundColor White
 
     Write-Host "  ─────────────────────────────────────────────────────────────────────────────" -ForegroundColor DarkGray
