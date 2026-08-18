@@ -1,9 +1,14 @@
 <#
 .SYNOPSIS
-    Claude Code Ultimate Setup — Production-quality infrastructure for Claude Code on Windows.
+    Claude Code Ultimate Setup Script v1.6.0 (Mega-Edition: 120+ Tools)
+    Windows 10 / 11 Native and WSL2 compatible.
 .DESCRIPTION
-    Installs, configures, and hardens Claude Code with the Master All-in-One stack,
-    covering Full-Stack Web, Backend, Russia/CIS business tools, Lean Subagents, LSP, and 7-layer security.
+    Configures an enterprise-grade Claude Code environment with:
+    - Master All-in-One balanced flagship stack
+    - 120+ verified tools: 20+ plugins, 35+ skills, 40+ MCPs, 8 LSPs, 10 subagents, 8 hooks
+    - Russia & CIS localization (Telegram, YooKassa, Yandex Cloud, Caveman)
+    - 7-layer defense-in-depth security model (PreToolUse deterministic hooks)
+    - Full rollback & automated health-check diagnostics
     Research date: 2026-08-18 | Claude Code v2.1.233+
 .PARAMETER Profile
     Component profile: Master, Core, Russia, Web, Frontend, Backend, Security, Data, DevOps, Research, Marketing, AI, Full
