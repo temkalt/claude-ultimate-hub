@@ -17,7 +17,7 @@ function Show-Header {
  ██║     ██║     ██╔══██║██║   ██║██║  ██║██╔══╝       ██╔══██║██║   ██║██╔══██╗
  ╚██████╗███████╗██║  ██║╚██████╔╝██████╔╝███████╗     ██║  ██║╚██████╔╝██████╔╝
   ╚═════╝╚══════╝╚═╝  ╚═╝ ╚═════╝ ╚═════╝ ╚══════╝     ╚═╝  ╚═╝ ╚═════╝ ╚═════╝ 
-                 CLAUDE CODE ULTIMATE HUB — ONYX EDITION (500+ TOOLS)
+                 CLAUDE CODE ULTIMATE HUB — ONYX EDITION (600+ TOOLS)
 "@ -ForegroundColor White
 
     Write-Host "  ─────────────────────────────────────────────────────────────────────────────" -ForegroundColor DarkGray
@@ -46,12 +46,12 @@ Show-Header
 
 Write-Host "  Выберите действие или профиль установки:`n" -ForegroundColor Yellow
 
-Write-Host "  [1] 🌟 Master All-in-One (Флагман: Web + Backend + РФ Стек + Память + TDD)" -ForegroundColor Green
+Write-Host "  [1] 🌟 Master All-in-One (Откалиброванный флагман: 34 ключевых инструмента)" -ForegroundColor Green
 Write-Host "  [2] 🇷🇺 РФ / СНГ Стек (Telegram, ЮKassa, Yandex Cloud, Caveman)" -ForegroundColor Cyan
 Write-Host "  [3] 🌐 Full-Stack Web (Next.js 15, Playwright, UI/UX Pro, TS LSP)" -ForegroundColor White
 Write-Host "  [4] ⚙️ Backend & APIs (PostgreSQL, SQLite, Redis, Python Pyright, AST-Grep)" -ForegroundColor White
 Write-Host "  [5] 🔒 Security Auditor (OWASP, Bulletproof, Opus Reviewer)" -ForegroundColor White
-Write-Host "  [6] 💎 Full Ultimate (Все 120+ инструментов)" -ForegroundColor Magenta
+Write-Host "  [6] 💎 Full Ultimate (Все 600+ инструментов)" -ForegroundColor Magenta
 Write-Host "  ─────────────────────────────────────────────────────────────────────────────" -ForegroundColor DarkGray
 Write-Host "  [7] 🩺 Запустить полную диагностику системы (Health-Check)" -ForegroundColor Yellow
 Write-Host "  [8] 🔧 Режим восстановления и сброса схемы хуков (Repair)" -ForegroundColor Yellow

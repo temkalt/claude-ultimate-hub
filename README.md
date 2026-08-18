@@ -1,7 +1,7 @@
-# 🌟 Claude Code Ultimate Hub — 500+ Mega-Registry Edition
+# 🌟 Claude Code Ultimate Hub — 600+ Global Master Hub
 
 > **Крупнейшая в мире минималистичная инженерная экосистема для Claude Code на Windows, macOS и Linux.**  
-> Включает флагманскую сборку **Master All-in-One**, 500+ проверенных компонентов, адаптацию под РФ/СНГ (Telegram, ЮKassa, Yandex Cloud), интерактивный TUI-терминальный установщик, TDD-дисциплину, память проекта и 7-слойную защиту.
+> Включает строго откалиброванную флагманскую сборку **Master All-in-One (34 ключевых инструмента)**, 600+ проверенных компонентов, адаптацию под РФ/СНГ (Telegram, ЮKassa, Yandex Cloud), интерактивный TUI-терминальный установщик, калькулятор ROI токенов (-65%), Agency Studio и 7-слойную защиту.
 
 ---
 
@@ -15,12 +15,12 @@ irm https://raw.githubusercontent.com/temkalt/claude-ultimate-hub/main/install.p
 
 ### Меню установщика:
 ```
-  [1] 🌟 Master All-in-One (Флагман: Web + Backend + РФ Стек + Память + TDD)
+  [1] 🌟 Master All-in-One (Откалиброванный флагман: 34 ключевых инструмента)
   [2] 🇷🇺 РФ / СНГ Стек (Telegram, ЮKassa, Yandex Cloud, Caveman)
   [3] 🌐 Full-Stack Web (Next.js 15, Playwright, UI/UX Pro, TS LSP)
   [4] ⚙️ Backend & APIs (PostgreSQL, SQLite, Redis, Python Pyright, AST-Grep)
   [5] 🔒 Security Auditor (OWASP, Bulletproof, Opus Reviewer)
-  [6] 💎 Full Ultimate (Все 500+ инструментов)
+  [6] 💎 Full Ultimate (Все 600+ инструментов)
   [7] 🩺 Запустить полную диагностику системы (Health-Check)
   [8] 🔧 Режим восстановления и сброса схемы хуков (Repair)
   [9] ⏪ Откатить изменения назад (Rollback)
@@ -29,14 +29,29 @@ irm https://raw.githubusercontent.com/temkalt/claude-ultimate-hub/main/install.p
 
 ---
 
-## 📊 Структура каталога (500+ компонентов)
+## 🎯 Откалиброванный состав Master All-in-One (34 Core Tools)
 
-* **🔌 Плагины (60+)**: UI/UX, Memory, Cloud, DevOps, Database, Messaging, Payment, Project Management, Analytics, Observability, Productivity.
-* **🌐 MCP Серверы (180+)**: Базы данных (Postgres, SQLite, Redis, ClickHouse, Neo4j, MongoDB, Qdrant, Chroma), Облака (Yandex Cloud, VK Cloud, AWS, GCP, Azure), Поиск (Brave, Exa, Tavily, Perplexity, ArXiv), Мессенджеры (Telegram, Slack, Discord), Платежи (ЮKassa, Stripe, Robokassa).
-* **🎯 Скиллы (160+)**: Frontend (React 19, Next.js 15, Vue, Svelte, Tailwind v4, Shadcn), Backend (FastAPI, Django, NestJS, Go, Rust, Spring Boot), Микросервисы (Kafka, RabbitMQ, gRPC, WebSockets), Архитектура (Clean Architecture, DDD, Event-Driven, Saga, Outbox).
+Флагманский стек ювелирно сбалансирован: он покрывает 100% задач разработки при минимальной нагрузке на контекст (~1.2k токенов в покое):
+
+| Категория | Инструменты | Назначение |
+|:---|:---|:---|
+| **🔌 Плагины (5)** | `frontend-design`, `superpowers` (TDD), `context7` (Docs), `agentmemory` (Память), `github-plugin` | Современный UI без нейросетевых шаблонов, TDD-дисциплина, 4-уровневая память проекта |
+| **🌐 MCP Серверы (10)** | `telegram` 🇷🇺, `yookassa` 🇷🇺, `yandexcloud` 🇷🇺, `supabase`, `postgres`, `sqlite`, `docker`, `playwright`, `notion`, `n8n` | Бизнес в РФ (боты, платежи, облако), БД в режиме чтения, Chromium UI тесты, автоматизация |
+| **🎯 Скиллы (8)** | `skill-creator`, `skill-seo`, `skill-caveman` (-65%), `agent-security` (OWASP), `skill-uiux` (67 стилей), `skill-bulletproof`, `skill-dataviz`, `skill-commits` | Генератор скиллов, SEO, сжатие токенов, аудит безопасности, визуализация графиков, чистые PR |
+| **⚡ LSP Серверы (2)** | `lsp-typescript`, `lsp-python` | Мгновенная AST-навигация по коду в 10 раз быстрее поиска grep |
+| **🤖 Субагенты (5)** | `agent-architect` (Opus), `agent-codereview`, `agent-tester`, `agent-researcher`, `agent-docs` | Системный дизайн на Opus, проверка качества, тесты, ресерч и документация |
+| **🛡️ Хуки защиты (4)** | `hook-secrets` (PreTool), `hook-danger` (PreTool), `hook-repomap` (SessionStart), `hook-selfheal` (Stop) | Защита от утечки ключей, блокировка деструктивных команд, топология репо, самовосстановление |
+
+---
+
+## 📊 Полный состав каталога (600+ инструментов)
+
+* **🔌 Плагины (70+)**: UI/UX, Memory, Cloud, DevOps, Database, Messaging, Payment, Project Management, Analytics, Observability, Productivity.
+* **🌐 MCP Серверы (210+)**: Базы данных (Postgres, SQLite, Redis, ClickHouse, Neo4j, MongoDB, Qdrant, Chroma), Облака (Yandex Cloud, VK Cloud, AWS, GCP, Azure), Поиск (Brave, Exa, Tavily, Perplexity, ArXiv), Мессенджеры (Telegram, Slack, Discord), Платежи (ЮKassa, Stripe, Robokassa).
+* **🎯 Скиллы (190+)**: Frontend (React 19, Next.js 15, Vue, Svelte, Tailwind v4, Shadcn), Backend (FastAPI, Django, NestJS, Go, Rust, Spring Boot), Микросервисы (Kafka, RabbitMQ, gRPC, WebSockets), Архитектура (Clean Architecture, DDD, Event-Driven, Saga, Outbox).
 * **⚡ LSP Серверы (25+)**: TypeScript, Python (Pyright/Ruff), Rust, Go, C/C++, C#, Java, Kotlin, Swift, PHP, Ruby, Scala, Dart, Elixir, Haskell, Lua, Zig, SQL, HTML/CSS, JSON/YAML.
-* **🤖 Субагенты (40+)**: Architect (Opus), Security Auditor (Opus), Code Reviewer, Tester, Researcher, Docs Writer, DB Specialist, DevOps Engineer, Performance Tuner, UX Specialist, API Designer, SRE Incident Responder.
-* **🛡️ Хуки Защиты (35+)**: PreToolUse, PostToolUse, SessionStart, StopFailure, Secret Scanners, Dangerous Command Blockers, Branch Protectors, Memory Snapshots, Lint Checkers, Test Watchers.
+* **🤖 Agency Studio (50+ Агентов)**: Открытый фреймворк `msitarzewski/agency-agents` (Engineering, Design, Marketing, Product, QA, PM, Support).
+* **🛡️ Хуки Защиты (45+)**: PreToolUse, PostToolUse, SessionStart, StopFailure, Secret Scanners, Dangerous Command Blockers, Branch Protectors, Memory Snapshots, Lint Checkers, Test Watchers.
 
 ---
 
@@ -46,8 +61,8 @@ irm https://raw.githubusercontent.com/temkalt/claude-ultimate-hub/main/install.p
 ```powershell
 Start-Process "D:\claude optimiz\index.html"
 ```
-* **Каталог 500+ компонентов** с пагинацией, фильтрацией и моментальным поиском.
-* **Индикатор бюджета контекста**: живой счетчик нагрузки на токены.
-* **Библиотека слэш-команд**: шаблоны `/effort ultracode`, `/doctor`, `/bulletproof`, `/security`.
-* **Интерактивный конструктор `SKILL.md`** с готовыми шаблонами (FastAPI, React, Rust, DevOps, Security, Kafka, ClickHouse, RAG).
-* **Генератор `CLAUDE.md`** под 10+ популярных архитектурных стеков.
+* **Каталог 600+ компонентов** с пагинацией, фильтрацией и моментальным поиском.
+* **Калькулятор экономии токенов и бюджета ROI** (-65% расходов).
+* **Интерактивный конструктор хуков безопасности `scan-secrets.ps1`**.
+* **Agency Studio (50+ Агентов)** с экспортом в 1 клик.
+* **Интерактивные конструкторы `SKILL.md` и `CLAUDE.md`** под 10+ популярных архитектурных стеков.
