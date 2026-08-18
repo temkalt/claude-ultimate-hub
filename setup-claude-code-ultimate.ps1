@@ -308,18 +308,18 @@ function Test-Dependencies {
 # ═══════════════════════════════════════════════════════════════════
 
 $script:ProfileMap = @{
-    'Master'   = @('frontend-design','superpowers','context7','marketing','agentmemory','skill-anthropic','github-plugin','skill-creator','skill-seo','skill-caveman','agent-security','skill-uiux','skill-bulletproof','skill-dataviz','skill-supabase','skill-commits','skill-astgrep','mcp-telegram','mcp-yookassa','mcp-yandexcloud','mcp-github','mcp-supabase','mcp-notion','mcp-playwright','mcp-docker','mcp-postgres','mcp-sqlite','mcp-n8n','lsp-typescript','lsp-python','agent-architect','agent-codereview','agent-researcher','agent-tester','agent-docs','hook-secrets','hook-danger','hook-repomap','hook-selfheal')
-    'Core'     = @('superpowers','github-plugin','mcp-github','context7','skill-anthropic','skill-commits','agent-architect','agent-security','agent-codereview','hook-secrets','hook-danger','hook-repomap','hook-selfheal')
-    'Russia'   = @('frontend-design','superpowers','context7','marketing','skill-anthropic','skill-seo','skill-caveman','agent-security','skill-uiux','skill-commits','mcp-telegram','mcp-yookassa','mcp-yandexcloud','mcp-github','mcp-supabase','mcp-notion','mcp-n8n','lsp-typescript','hook-secrets','hook-danger','hook-repomap','hook-selfheal')
-    'Web'      = @('frontend-design','superpowers','github-plugin','vercel-plugin','lsp-typescript','mcp-github','context7','mcp-playwright','skill-anthropic','skill-uiux','skill-supabase','skill-commits','skill-astgrep','agent-architect','agent-codereview','agent-tester','hook-secrets','hook-danger','hook-repomap','hook-selfheal')
-    'Frontend' = @('frontend-design','superpowers','github-plugin','vercel-plugin','lsp-typescript','mcp-github','context7','mcp-playwright','skill-uiux','skill-hyperframes','agent-architect','agent-codereview','agent-tester','hook-secrets','hook-danger','hook-repomap')
-    'Backend'  = @('superpowers','github-plugin','lsp-python','lsp-rust','lsp-golang','mcp-github','context7','mcp-postgres','mcp-sqlite','mcp-redis','mcp-supabase','skill-anthropic','skill-supabase','skill-openapi','skill-astgrep','agent-architect','agent-codereview','agent-tester','hook-secrets','hook-danger','hook-repomap','hook-selfheal')
-    'Security' = @('superpowers','github-plugin','mcp-github','agent-architect','agent-security','skill-bulletproof','hook-secrets','hook-danger','hook-repomap')
-    'Data'     = @('superpowers','github-plugin','lsp-python','mcp-github','context7','mcp-postgres','mcp-sqlite','mcp-redis','mcp-supabase','skill-supabase','skill-dataviz','hook-secrets','hook-danger')
-    'DevOps'   = @('superpowers','github-plugin','mcp-github','mcp-docker','mcp-linear','mcp-sentry','mcp-n8n','mcp-yandexcloud','skill-commits','hook-secrets','hook-danger')
-    'Research' = @('superpowers','github-plugin','mcp-github','context7','mcp-firecrawl','mcp-exa','mcp-notion','mcp-obsidian','skill-anthropic','skill-dataviz','agent-researcher','hook-secrets','hook-danger')
-    'Marketing'= @('marketing','frontend-design','superpowers','github-plugin','context7','mcp-playwright','mcp-telegram','skill-uiux','skill-seo','skill-hyperframes','hook-secrets','hook-danger')
-    'AI'       = @('superpowers','github-plugin','lsp-python','context7','mcp-sequential','skill-creator','skill-caveman','agent-architect','hook-secrets','hook-danger')
+    'Master'   = @('frontend-design','superpowers','context7','agentmemory','github-plugin','mcp-stripe','mcp-supabase','mcp-postgres','mcp-sqlite','mcp-docker','mcp-playwright','mcp-notion','mcp-linear','mcp-sentry','mcp-aws','skill-creator','skill-seo','skill-caveman','agent-security','skill-uiux','skill-bulletproof','skill-dataviz','skill-commits','lsp-typescript','lsp-python','agent-architect','agent-codereview','agent-tester','agent-researcher','agent-docs','hook-secrets','hook-danger','hook-repomap','hook-selfheal')
+    'Web'      = @('frontend-design','superpowers','context7','vercel-plugin','github-plugin','mcp-playwright','mcp-supabase','mcp-postgres','mcp-stripe','skill-uiux','skill-bulletproof','skill-commits','skill-dataviz','lsp-typescript','agent-codereview','agent-tester','agent-architect','hook-secrets','hook-danger','hook-repomap','hook-selfheal')
+    'Frontend' = @('frontend-design','superpowers','context7','vercel-plugin','mcp-playwright','skill-uiux','skill-hyperframes','skill-creator','lsp-typescript','agent-tester','agent-codereview','hook-secrets','hook-danger','hook-repomap')
+    'Backend'  = @('superpowers','context7','agentmemory','github-plugin','mcp-postgres','mcp-sqlite','mcp-docker','mcp-stripe','mcp-supabase','skill-supabase','skill-bulletproof','skill-commits','lsp-python','lsp-typescript','agent-architect','agent-codereview','agent-tester','hook-secrets','hook-danger','hook-repomap','hook-selfheal')
+    'Core'     = @('superpowers','github-plugin','context7','skill-caveman','skill-commits','agent-architect','agent-codereview','hook-secrets','hook-danger','hook-repomap','hook-selfheal')
+    'Security' = @('superpowers','github-plugin','mcp-docker','agent-security','skill-bulletproof','skill-caveman','skill-commits','agent-architect','agent-codereview','agent-tester','hook-secrets','hook-danger','hook-repomap','hook-selfheal')
+    'Data'     = @('superpowers','context7','mcp-postgres','mcp-sqlite','skill-dataviz','skill-supabase','skill-caveman','lsp-python','agent-architect','agent-codereview','agent-tester','hook-secrets','hook-danger','hook-repomap')
+    'DevOps'   = @('superpowers','github-plugin','mcp-docker','mcp-aws','mcp-sentry','mcp-linear','skill-commits','skill-bulletproof','agent-architect','agent-codereview','agent-tester','hook-secrets','hook-danger','hook-repomap','hook-selfheal')
+    'Research' = @('superpowers','context7','mcp-notion','skill-dataviz','skill-caveman','agent-researcher','agent-docs','agent-architect','hook-secrets','hook-danger','hook-repomap')
+    'Marketing'= @('superpowers','mcp-playwright','mcp-notion','skill-seo','skill-uiux','skill-hyperframes','skill-caveman','agent-researcher','agent-docs','hook-secrets','hook-danger','hook-repomap')
+    'AI'       = @('superpowers','context7','agentmemory','skill-creator','skill-caveman','agent-architect','agent-codereview','agent-researcher','hook-secrets','hook-danger','hook-repomap','hook-selfheal')
+    'Russia'   = @('frontend-design','superpowers','context7','mcp-telegram','mcp-yookassa','mcp-yandexcloud','mcp-supabase','mcp-notion','skill-uiux','skill-seo','skill-caveman','agent-security','lsp-typescript','agent-architect','agent-codereview','hook-secrets','hook-danger','hook-repomap','hook-selfheal')
     'Full'     = @('frontend-design','superpowers','gstack','context7','marketing','agentmemory','skill-anthropic','mcp-playwright','github-plugin','vercel-plugin','skill-creator','skill-seo','skill-caveman','agent-security','skill-hyperframes','skill-uiux','skill-bulletproof','skill-dataviz','skill-supabase','skill-commits','skill-astgrep','skill-openapi','mcp-telegram','mcp-yookassa','mcp-yandexcloud','mcp-github','mcp-supabase','mcp-notion','mcp-firecrawl','mcp-n8n','mcp-docker','mcp-linear','mcp-obsidian','mcp-sentry','mcp-postgres','mcp-sqlite','mcp-redis','mcp-sequential','lsp-typescript','lsp-python','lsp-rust','lsp-golang','agent-architect','agent-codereview','agent-researcher','agent-tester','agent-docs','hook-secrets','hook-danger','hook-repomap','hook-selfheal')
 }
 
@@ -479,6 +479,11 @@ function Get-InstalledMCPs {
 function Install-MCPServer {
     param([string]$Name, [string]$Command, [string[]]$McpArgs, [string]$Scope='user', [hashtable]$EnvVars=@{}, [bool]$AuthRequired=$false)
 
+    if ($DryRun) {
+        Write-Step "Would add MCP: $Name ($Command $($McpArgs -join ' '))" 'DRY'
+        Add-Result "MCP: $Name" 'DRY' 'Would install'; return
+    }
+
     $installed = Get-InstalledMCPs
     if ($installed -match [regex]::Escape($Name)) {
         if ($Update -or $ForceReinstall) {
@@ -486,11 +491,6 @@ function Install-MCPServer {
         } else {
             Write-Step "MCP '$Name': Already installed" 'SKIP'; Add-Result "MCP: $Name" 'SKIP' 'Exists'; return
         }
-    }
-
-    if ($DryRun) {
-        Write-Step "Would add MCP: $Name ($Command $($McpArgs -join ' '))" 'DRY'
-        Add-Result "MCP: $Name" 'DRY' 'Would install'; return
     }
 
     try {

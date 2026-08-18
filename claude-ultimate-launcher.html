@@ -952,34 +952,111 @@ resizeCanvas();
 animateStars();
 
 // ─── 1,000+ Global Master Registry ─────────────────────────────
-const MASTER_CORE_IDS = [
-  // 5 Plugins
-  'frontend-design', 'superpowers', 'context7', 'agentmemory', 'github-plugin',
-  // 10 MCPs (Global First)
-  'mcp-stripe', 'mcp-supabase', 'mcp-postgres', 'mcp-sqlite', 'mcp-docker', 'mcp-playwright', 'mcp-notion', 'mcp-linear', 'mcp-sentry', 'mcp-aws',
-  // 8 Skills
-  'skill-creator', 'skill-seo', 'skill-caveman', 'agent-security', 'skill-uiux', 'skill-bulletproof', 'skill-dataviz', 'skill-commits',
-  // 2 LSPs
-  'lsp-typescript', 'lsp-python',
-  // 5 Subagents
-  'agent-architect', 'agent-codereview', 'agent-tester', 'agent-researcher', 'agent-docs',
-  // 4 Hooks
-  'hook-secrets', 'hook-danger', 'hook-repomap', 'hook-selfheal'
-];
+const PROFILE_CONFIGS = {
+  'Master': [
+    'frontend-design', 'superpowers', 'context7', 'agentmemory', 'github-plugin',
+    'mcp-stripe', 'mcp-supabase', 'mcp-postgres', 'mcp-sqlite', 'mcp-docker', 'mcp-playwright', 'mcp-notion', 'mcp-linear', 'mcp-sentry', 'mcp-aws',
+    'skill-creator', 'skill-seo', 'skill-caveman', 'agent-security', 'skill-uiux', 'skill-bulletproof', 'skill-dataviz', 'skill-commits',
+    'lsp-typescript', 'lsp-python',
+    'agent-architect', 'agent-codereview', 'agent-tester', 'agent-researcher', 'agent-docs',
+    'hook-secrets', 'hook-danger', 'hook-repomap', 'hook-selfheal'
+  ],
+  'Web': [
+    'frontend-design', 'superpowers', 'context7', 'vercel-plugin', 'github-plugin',
+    'mcp-playwright', 'mcp-supabase', 'mcp-postgres', 'mcp-stripe',
+    'skill-uiux', 'skill-bulletproof', 'skill-commits', 'skill-dataviz',
+    'lsp-typescript',
+    'agent-codereview', 'agent-tester', 'agent-architect',
+    'hook-secrets', 'hook-danger', 'hook-repomap', 'hook-selfheal'
+  ],
+  'Frontend': [
+    'frontend-design', 'superpowers', 'context7', 'vercel-plugin',
+    'mcp-playwright',
+    'skill-uiux', 'skill-hyperframes', 'skill-creator',
+    'lsp-typescript',
+    'agent-tester', 'agent-codereview',
+    'hook-secrets', 'hook-danger', 'hook-repomap'
+  ],
+  'Backend': [
+    'superpowers', 'context7', 'agentmemory', 'github-plugin',
+    'mcp-postgres', 'mcp-sqlite', 'mcp-docker', 'mcp-stripe', 'mcp-supabase',
+    'skill-supabase', 'skill-bulletproof', 'skill-commits',
+    'lsp-python', 'lsp-typescript',
+    'agent-architect', 'agent-codereview', 'agent-tester',
+    'hook-secrets', 'hook-danger', 'hook-repomap', 'hook-selfheal'
+  ],
+  'Core': [
+    'superpowers', 'github-plugin', 'context7',
+    'skill-caveman', 'skill-commits',
+    'agent-architect', 'agent-codereview',
+    'hook-secrets', 'hook-danger', 'hook-repomap', 'hook-selfheal'
+  ],
+  'Security': [
+    'superpowers', 'github-plugin',
+    'mcp-docker',
+    'agent-security', 'skill-bulletproof', 'skill-caveman', 'skill-commits',
+    'agent-architect', 'agent-codereview', 'agent-tester',
+    'hook-secrets', 'hook-danger', 'hook-repomap', 'hook-selfheal'
+  ],
+  'Data': [
+    'superpowers', 'context7',
+    'mcp-postgres', 'mcp-sqlite',
+    'skill-dataviz', 'skill-supabase', 'skill-caveman',
+    'lsp-python',
+    'agent-architect', 'agent-codereview', 'agent-tester',
+    'hook-secrets', 'hook-danger', 'hook-repomap'
+  ],
+  'DevOps': [
+    'superpowers', 'github-plugin',
+    'mcp-docker', 'mcp-aws', 'mcp-sentry', 'mcp-linear',
+    'skill-commits', 'skill-bulletproof',
+    'agent-architect', 'agent-codereview', 'agent-tester',
+    'hook-secrets', 'hook-danger', 'hook-repomap', 'hook-selfheal'
+  ],
+  'Research': [
+    'superpowers', 'context7',
+    'mcp-notion',
+    'skill-dataviz', 'skill-caveman',
+    'agent-researcher', 'agent-docs', 'agent-architect',
+    'hook-secrets', 'hook-danger', 'hook-repomap'
+  ],
+  'Marketing': [
+    'superpowers',
+    'mcp-playwright', 'mcp-notion',
+    'skill-seo', 'skill-uiux', 'skill-hyperframes', 'skill-caveman',
+    'agent-researcher', 'agent-docs',
+    'hook-secrets', 'hook-danger', 'hook-repomap'
+  ],
+  'AI': [
+    'superpowers', 'context7', 'agentmemory',
+    'skill-creator', 'skill-caveman',
+    'agent-architect', 'agent-codereview', 'agent-researcher',
+    'hook-secrets', 'hook-danger', 'hook-repomap', 'hook-selfheal'
+  ],
+  'Russia': [
+    'frontend-design', 'superpowers', 'context7',
+    'mcp-telegram', 'mcp-yookassa', 'mcp-yandexcloud', 'mcp-supabase', 'mcp-notion',
+    'skill-uiux', 'skill-seo', 'skill-caveman', 'agent-security',
+    'lsp-typescript',
+    'agent-architect', 'agent-codereview',
+    'hook-secrets', 'hook-danger', 'hook-repomap', 'hook-selfheal'
+  ],
+  'Full': 'ALL'
+};
 
 const PROFILES = [
   { id:'Master',icon:'🌟',name:'Master All-in-One (34 Core Global)',desc:'Calibrated global flagship: Full-Stack Web, Backend, Cloud APIs (Stripe, GitHub, Supabase, Postgres), TDD, Project Memory, Caveman (-65%), and 7-layer defense at ~1.2k tokens.',target:'Universal default for developers, founders, and teams worldwide.',recommended:true },
-  { id:'Web',icon:'🌐',name:'Full-Stack Web',desc:'Complete web stack: React 19, Next.js 15, Playwright visual tests, UI/UX Pro Max, Supabase Postgres, TypeScript LSP.',target:'Frontend and Full-Stack engineers.' },
-  { id:'Backend',icon:'⚙️',name:'Backend & APIs',desc:'Server-side development: PostgreSQL, SQLite, Redis, ClickHouse, SQL optimization, Code Reviewer, Python LSP.',target:'Backend engineers (Node, Python, Go, Rust).' },
-  { id:'Core',icon:'🎯',name:'Core (Minimal)',desc:'Essential foundation: TDD discipline, docs, GitHub, Architect and Security subagents, safety hooks.',target:'Any language with zero extra token overhead.' },
-  { id:'Frontend',icon:'🎨',name:'Frontend / UI',desc:'Interfaces & design: UI/UX Pro Max, Frontend Design, Hyperframes, Playwright, Tailwind, Vercel specialist.',target:'UI/UX developers and designers.' },
-  { id:'Security',icon:'🔒',name:'Security Auditor',desc:'Deep security audit: Security Reviewer (Opus), OWASP vulnerability scans, Bulletproof pipeline.',target:'Pre-release code audits and secret protection.' },
-  { id:'Data',icon:'🗄️',name:'Data & Analytics',desc:'Data engineering: Postgres MCP, SQLite, Redis, ClickHouse, Dataviz (Mermaid/Chart.js), Supabase RLS.',target:'Data analysts and engineers.' },
-  { id:'DevOps',icon:'🚀',name:'DevOps & CI/CD',desc:'Cloud infrastructure: Docker MCP, GitHub Actions, Sentry monitoring, Terraform, Kubernetes.',target:'DevOps and platform engineers.' },
-  { id:'Research',icon:'🔬',name:'Deep Research',desc:'In-depth research: Exa neural search, Firecrawl JS scraper, Context7, Notion CRM, Obsidian Vault.',target:'Researchers and technical product managers.' },
-  { id:'Marketing',icon:'📈',name:'SEO & Marketing',desc:'Growth & marketing: Marketing plugin, Claude SEO (25 subskills), Playwright screenshot capture, Hyperframes.',target:'Founders, growth hackers, and SEO leads.' },
-  { id:'AI',icon:'🤖',name:'AI / Agent Eng',desc:'Agent & MCP development: Skill Creator, Sequential Thinking, Graph Memory, Architect (Opus), Caveman.',target:'AI engineers building custom agents.' },
-  { id:'Russia',icon:'🇷🇺',name:'Russia / CIS Stack',desc:'Dedicated regional stack: Telegram bots (vs Slack), YooKassa payments (vs Stripe), Yandex Cloud (vs AWS), Caveman.',target:'Russian & CIS market localized services.' },
+  { id:'Web',icon:'🌐',name:'Full-Stack Web (21 Tools)',desc:'Complete web stack: React 19, Next.js 15, Playwright visual tests, UI/UX Pro Max, Supabase Postgres, TypeScript LSP.',target:'Frontend and Full-Stack engineers.' },
+  { id:'Backend',icon:'⚙️',name:'Backend & APIs (21 Tools)',desc:'Server-side development: PostgreSQL, SQLite, Redis, ClickHouse, SQL optimization, Code Reviewer, Python LSP.',target:'Backend engineers (Node, Python, Go, Rust).' },
+  { id:'Core',icon:'🎯',name:'Core Minimal (11 Tools)',desc:'Essential foundation: TDD discipline, docs, GitHub, Architect and Security subagents, safety hooks.',target:'Any language with zero extra token overhead.' },
+  { id:'Frontend',icon:'🎨',name:'Frontend / UI (14 Tools)',desc:'Interfaces & design: UI/UX Pro Max, Frontend Design, Hyperframes, Playwright, Tailwind, Vercel specialist.',target:'UI/UX developers and designers.' },
+  { id:'Security',icon:'🔒',name:'Security Auditor (14 Tools)',desc:'Deep security audit: Security Reviewer (Opus), OWASP vulnerability scans, Bulletproof pipeline.',target:'Pre-release code audits and secret protection.' },
+  { id:'Data',icon:'🗄️',name:'Data & Analytics (14 Tools)',desc:'Data engineering: Postgres MCP, SQLite, Redis, ClickHouse, Dataviz (Mermaid/Chart.js), Supabase RLS.',target:'Data analysts and engineers.' },
+  { id:'DevOps',icon:'🚀',name:'DevOps & CI/CD (15 Tools)',desc:'Cloud infrastructure: Docker MCP, GitHub Actions, Sentry monitoring, Terraform, Kubernetes.',target:'DevOps and platform engineers.' },
+  { id:'Research',icon:'🔬',name:'Deep Research (11 Tools)',desc:'In-depth research: Exa neural search, Firecrawl JS scraper, Context7, Notion CRM, Obsidian Vault.',target:'Researchers and technical product managers.' },
+  { id:'Marketing',icon:'📈',name:'SEO & Marketing (12 Tools)',desc:'Growth & marketing: Marketing plugin, Claude SEO (25 subskills), Playwright screenshot capture, Hyperframes.',target:'Founders, growth hackers, and SEO leads.' },
+  { id:'AI',icon:'🤖',name:'AI / Agent Eng (12 Tools)',desc:'Agent & MCP development: Skill Creator, Sequential Thinking, Graph Memory, Architect (Opus), Caveman.',target:'AI engineers building custom agents.' },
+  { id:'Russia',icon:'🇷🇺',name:'Russia / CIS Stack (19 Tools)',desc:'Dedicated regional stack: Telegram bots (vs Slack), YooKassa payments (vs Stripe), Yandex Cloud (vs AWS), Caveman.',target:'Russian & CIS market localized services.' },
   { id:'Full',icon:'💎',name:'Full Ultimate (1,000+)',desc:'The entire global ecosystem arsenal in a single unified registry.',target:'Exploring all tools and experimentation.' }
 ];
 
@@ -1178,8 +1255,10 @@ let currentPage = 1;
 const ITEMS_PER_PAGE = 30;
 
 function getComponentsForProfile(pId) {
-  if (pId === 'Master') return [...MASTER_CORE_IDS];
-  return COMPONENTS.filter(c => c.profiles && c.profiles.includes(pId)).map(c => c.id);
+  if (pId === 'Full') return COMPONENTS.map(c => c.id);
+  const cfg = PROFILE_CONFIGS[pId];
+  if (cfg) return [...cfg];
+  return PROFILE_CONFIGS['Master'];
 }
 
 // ─── Language Switcher ─────────────────────────────────────────
