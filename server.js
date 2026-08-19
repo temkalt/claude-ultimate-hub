@@ -1167,6 +1167,14 @@ const server = http.createServer((req, res) => {
   });
 });
 
+server.on('error', (err) => {
+  if (err.code === 'EADDRINUSE') {
+    console.log(`\n[OK] Claude Code Control Center is already active and running on http://localhost:${PORT}/`);
+  } else {
+    console.error(`[-] Server error: ${err.message}`);
+  }
+});
+
 server.listen(PORT, () => {
   console.log(`\n================================================================`);
   console.log(`  CLAUDE CODE ULTIMATE HUB — WEB CONTROL CENTER v3.0.0 (Masterpiece)`);
