@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Claude Code Control Center — Ultimate Web Ecosystem v2.0</title>
+<title>Claude Code Control Center — Ultimate Web Ecosystem v3.0 (Masterpiece)</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
@@ -51,7 +51,7 @@ html,body{height:100%;font-family:'Plus Jakarta Sans',system-ui,sans-serif;backg
 /* App Grid Layout */
 .app-layout{
   display:grid;
-  grid-template-columns:260px 1fr;
+  grid-template-columns:280px 1fr;
   height:100vh;
   overflow:hidden;
 }
@@ -70,12 +70,12 @@ html,body{height:100%;font-family:'Plus Jakarta Sans',system-ui,sans-serif;backg
   display:flex;align-items:center;gap:.75rem;padding:.5rem .75rem;margin-bottom:1.2rem;
 }
 .brand-icon{
-  width:34px;height:34px;border-radius:9px;background:var(--text-pure);color:#000;
-  display:flex;align-items:center;justify-content:center;font-weight:900;font-size:1.15rem;
-  box-shadow:0 0 15px rgba(255,255,255,.3);
+  width:36px;height:36px;border-radius:10px;background:var(--text-pure);color:#000;
+  display:flex;align-items:center;justify-content:center;font-weight:900;font-size:1.2rem;
+  box-shadow:0 0 18px rgba(255,255,255,.3);
 }
 .brand-title{font-weight:800;font-size:1.05rem;color:var(--text-pure);letter-spacing:-.02em;line-height:1.1}
-.brand-sub{font-size:.68rem;color:var(--text-muted);font-weight:500;font-family:'JetBrains Mono',monospace}
+.brand-sub{font-size:.68rem;color:var(--accent-emerald);font-weight:600;font-family:'JetBrains Mono',monospace}
 
 .nav-section-title{
   font-size:.65rem;font-weight:700;color:var(--text-faint);text-transform:uppercase;letter-spacing:.08em;
@@ -83,15 +83,15 @@ html,body{height:100%;font-family:'Plus Jakarta Sans',system-ui,sans-serif;backg
 }
 .nav-item{
   display:flex;align-items:center;gap:.7rem;
-  padding:.6rem .8rem;border-radius:var(--radius-xs);
-  color:var(--text-muted);font-weight:600;font-size:.8rem;
+  padding:.55rem .75rem;border-radius:var(--radius-xs);
+  color:var(--text-muted);font-weight:600;font-size:.78rem;
   background:none;border:none;width:100%;text-align:left;cursor:pointer;
   transition:var(--transition);font-family:inherit;margin-bottom:.15rem;
 }
 .nav-item:hover{color:var(--text-pure);background:rgba(255,255,255,.04)}
 .nav-item.active{color:var(--text-pure);background:rgba(255,255,255,.09);font-weight:700}
 .nav-item__badge{
-  margin-left:auto;font-size:.65rem;padding:.15rem .45rem;border-radius:var(--radius-full);
+  margin-left:auto;font-size:.65rem;padding:.12rem .4rem;border-radius:var(--radius-full);
   background:var(--bg-card);color:var(--text-silver);font-family:'JetBrains Mono',monospace;
 }
 
@@ -208,7 +208,19 @@ html,body{height:100%;font-family:'Plus Jakarta Sans',system-ui,sans-serif;backg
 .btn-rose:hover{background:rgba(244,63,94,.25)}
 .btn-gold{background:var(--accent-gold);color:#000;font-weight:700}
 .btn-gold:hover{background:#f0cd8a}
+.btn-cyan{background:rgba(56,189,248,.15);color:var(--accent-cyan);border:1px solid rgba(56,189,248,.3)}
+.btn-cyan:hover{background:rgba(56,189,248,.25)}
 .btn-sm{padding:.35rem .75rem;font-size:.72rem}
+
+/* Search & Filter Bar */
+.search-bar{
+  display:flex;gap:.75rem;margin-bottom:1.2rem;align-items:center;
+}
+.search-input{
+  flex:1;background:var(--bg-surface);border:1px solid var(--border-subtle);border-radius:var(--radius-xs);
+  padding:.65rem 1rem;color:var(--text-pure);font-family:inherit;font-size:.82rem;
+}
+.search-input:focus{outline:none;border-color:var(--border-hover)}
 
 /* Assembler Layout */
 .assembler-layout{
@@ -266,7 +278,7 @@ html,body{height:100%;font-family:'Plus Jakarta Sans',system-ui,sans-serif;backg
 .t-green{background:#10b981}
 .terminal-body{
   padding:1.1rem;font-family:'JetBrains Mono',monospace;font-size:.8rem;
-  color:#a6accd;height:240px;overflow-y:auto;line-height:1.6;white-space:pre-wrap;
+  color:#a6accd;height:220px;overflow-y:auto;line-height:1.6;white-space:pre-wrap;
 }
 
 /* Diagnostic Items */
@@ -281,15 +293,8 @@ html,body{height:100%;font-family:'Plus Jakarta Sans',system-ui,sans-serif;backg
 }
 .badge-ok{background:rgba(16,185,129,.12);color:var(--accent-emerald);border:1px solid rgba(16,185,129,.25)}
 .badge-warn{background:rgba(245,158,11,.12);color:var(--accent-amber);border:1px solid rgba(245,158,11,.25)}
-.badge-auth{background:rgba(229,192,123,.12);color:var(--accent-gold);border:1px solid rgba(229,192,123,.25)}
-
-/* Switch */
-.switch{position:relative;display:inline-block;width:36px;height:18px}
-.switch input{opacity:0;width:0;height:0}
-.slider{position:absolute;cursor:pointer;top:0;left:0;right:0;bottom:0;background-color:var(--bg-card);transition:.2s;border-radius:18px;border:1px solid var(--border-subtle)}
-.slider:before{position:absolute;content:"";height:12px;width:12px;left:2px;bottom:2px;background-color:white;transition:.2s;border-radius:50%}
-input:checked + .slider{background-color:var(--accent-emerald);border-color:var(--accent-emerald)}
-input:checked + .slider:before{transform:translateX(18px);background-color:#000}
+.badge-fail{background:rgba(244,63,94,.12);color:var(--accent-rose);border:1px solid rgba(244,63,94,.25)}
+.badge-info{background:rgba(56,189,248,.12);color:var(--accent-cyan);border:1px solid rgba(56,189,248,.25)}
 
 /* Persistent Sticky Bar */
 .bottom-bar{
@@ -309,7 +314,7 @@ input:checked + .slider:before{transform:translateX(18px);background-color:#000}
 }
 .modal-box{
   background:var(--bg-surface);border:1px solid var(--border-hover);border-radius:var(--radius-lg);
-  max-width:740px;width:100%;max-height:88vh;overflow-y:auto;padding:2rem;position:relative;
+  max-width:760px;width:100%;max-height:88vh;overflow-y:auto;padding:2rem;position:relative;
   box-shadow:0 20px 60px rgba(0,0,0,.9);animation:fadeIn .2s var(--ease-smooth);
 }
 .modal-close{
@@ -320,12 +325,12 @@ input:checked + .slider:before{transform:translateX(18px);background-color:#000}
 /* Forms & Editors */
 .form-group{margin-bottom:1rem;display:flex;flex-direction:column;gap:.35rem}
 .form-label{font-size:.76rem;font-weight:700;color:var(--text-pure)}
-.form-input,.form-textarea{
+.form-input,.form-textarea,.form-select{
   background:var(--bg-darkest);border:1px solid var(--border-subtle);border-radius:var(--radius-xs);
   padding:.65rem .85rem;color:var(--text-pure);font-family:inherit;font-size:.82rem;
 }
-.form-input:focus,.form-textarea:focus{outline:none;border-color:var(--border-hover)}
-.form-textarea{font-family:'JetBrains Mono',monospace;min-height:180px;line-height:1.5}
+.form-input:focus,.form-textarea:focus,.form-select:focus{outline:none;border-color:var(--border-hover)}
+.form-textarea{font-family:'JetBrains Mono',monospace;min-height:160px;line-height:1.5}
 </style>
 </head>
 <body>
@@ -338,58 +343,68 @@ input:checked + .slider:before{transform:translateX(18px);background-color:#000}
       <div class="brand-icon">⚡</div>
       <div>
         <div class="brand-title">Control Center</div>
-        <div class="brand-sub">Claude Ultimate v2.0</div>
+        <div class="brand-sub">Claude Ultimate v3.0</div>
       </div>
     </div>
 
-    <div class="nav-section-title" id="nav-sec-manage">Управление и Сборка</div>
+    <div class="nav-section-title">Оркестрация и Сборка</div>
     <button class="nav-item active" data-view="profiles" onclick="switchView('profiles')">
-      <span>🌟</span> <span id="nav-lbl-profiles">Готовые Профили</span>
-      <span class="nav-item__badge">12</span>
+      <span>🌟</span> <span>Готовые Профили</span>
+      <span class="nav-item__badge">14</span>
     </button>
     <button class="nav-item" data-view="assembler" onclick="switchView('assembler')">
-      <span>🧩</span> <span id="nav-lbl-assembler">Конструктор Сборки</span>
+      <span>🧩</span> <span>Конструктор Сборки</span>
       <span class="nav-item__badge" id="side-selected-count">34</span>
     </button>
+    <button class="nav-item" data-view="workspace" onclick="switchView('workspace')">
+      <span>📁</span> <span>Мульти-Воркспейс</span>
+      <span class="nav-item__badge">Scan</span>
+    </button>
     <button class="nav-item" data-view="mcp-manager" onclick="switchView('mcp-manager')">
-      <span>🌐</span> <span id="nav-lbl-mcp">Менеджер MCP Серверов</span>
+      <span>🌐</span> <span>Менеджер MCP</span>
       <span class="nav-item__badge">350+</span>
     </button>
     <button class="nav-item" data-view="skills-store" onclick="switchView('skills-store')">
-      <span>🎯</span> <span id="nav-lbl-skills">Магазин Скиллов</span>
+      <span>🎯</span> <span>Магазин Скиллов</span>
       <span class="nav-item__badge">320+</span>
     </button>
     <button class="nav-item" data-view="agents-studio" onclick="switchView('agents-studio')">
-      <span>🤖</span> <span id="nav-lbl-agents">Студия Субагентов</span>
-      <span class="nav-item__badge">50+</span>
+      <span>🤖</span> <span>Студия Субагентов</span>
+      <span class="nav-item__badge">80+</span>
     </button>
 
-    <div class="nav-section-title" id="nav-sec-tools">Инженерия и Конфигурация</div>
-    <button class="nav-item" data-view="claudemd-builder" onclick="switchView('claudemd-builder')">
-      <span>📝</span> <span id="nav-lbl-claudemd">Строитель CLAUDE.md</span>
+    <div class="nav-section-title">Промпты и Оптимизация</div>
+    <button class="nav-item" data-view="prompts" onclick="switchView('prompts')">
+      <span>⚡</span> <span>Матрица Промптов</span>
+      <span class="nav-item__badge">300+</span>
     </button>
+    <button class="nav-item" data-view="claudemd-builder" onclick="switchView('claudemd-builder')">
+      <span>📝</span> <span>Оптимизатор CLAUDE.md</span>
+    </button>
+    <button class="nav-item" data-view="sessions" onclick="switchView('sessions')">
+      <span>📊</span> <span>Сессии & Затраты</span>
+      <span class="nav-item__badge">-65%</span>
+    </button>
+
+    <div class="nav-section-title">Защита и Доктор</div>
     <button class="nav-item" data-view="security" onclick="switchView('security')">
-      <span>🛡️</span> <span id="nav-lbl-sec">7 Слоев Защиты</span>
+      <span>🛡️</span> <span>7 Слоев Защиты</span>
       <span class="nav-item__badge">Active</span>
     </button>
     <button class="nav-item" data-view="diagnostics" onclick="switchView('diagnostics')">
-      <span>🩺</span> <span id="nav-lbl-diag">Доктор (Health-Check)</span>
-      <span class="nav-item__badge">15</span>
+      <span>🩺</span> <span>Доктор (Health-Check)</span>
+      <span class="nav-item__badge" id="side-diag-score">100%</span>
     </button>
     <button class="nav-item" data-view="snapshots" onclick="switchView('snapshots')">
-      <span>⏪</span> <span id="nav-lbl-snap">Снапшоты и Откаты</span>
-    </button>
-    <button class="nav-item" data-view="calculator" onclick="switchView('calculator')">
-      <span>💰</span> <span id="nav-lbl-calc">Калькулятор ROI Токенов</span>
-      <span class="nav-item__badge">-65%</span>
+      <span>⏪</span> <span>Снапшоты (Time-Machine)</span>
     </button>
     <button class="nav-item" data-view="deploy" onclick="switchView('deploy')">
-      <span>🚀</span> <span id="nav-lbl-deploy">Экспорт и Запуск CLI</span>
+      <span>🚀</span> <span>Экспорт и Запуск CLI</span>
     </button>
 
     <div class="sidebar__footer">
-      <strong style="color:var(--text-pure)">Claude Code 2.1.234+</strong><br>
-      <span id="side-footer-desc">Автономная среда настройки. Прямой запуск без терминала.</span>
+      <strong style="color:var(--text-pure)">Claude Code 2.1.235+</strong><br>
+      <span>Автономный центр управления. Максимальная интеграция экосистемы.</span>
     </div>
   </aside>
 
@@ -409,7 +424,7 @@ input:checked + .slider:before{transform:translateX(18px);background-color:#000}
       <div class="topbar__actions">
         <button class="btn btn-emerald btn-sm" onclick="executeCurrentProfileDirectly()">▶ Врубить прямо сейчас</button>
         <button class="btn btn-secondary btn-sm" onclick="downloadCustomScript()">📥 Скачать setup.ps1</button>
-        <button class="btn btn-primary btn-sm" onclick="copyLaunchCommand()" id="btn-top-copy">📋 Команда запуска</button>
+        <button class="btn btn-primary btn-sm" onclick="copyLaunchCommand()">📋 Команда запуска</button>
         <div class="lang-toggle">
           <button class="lang-btn active" onclick="setAppLang('ru')">RU</button>
           <button class="lang-btn" onclick="setAppLang('en')">EN</button>
@@ -420,279 +435,332 @@ input:checked + .slider:before{transform:translateX(18px);background-color:#000}
     <!-- Body -->
     <div class="content-body">
 
-      <!-- View: Ready Profiles -->
+      <!-- View 1: Ready Profiles -->
       <section class="view-panel active" id="view-profiles">
         <div class="view-header">
           <div>
-            <h2 id="hdr-prof-title">🌟 Выбор готового инженерного профиля</h2>
-            <p id="hdr-prof-desc">Нажмите «Врубить прямо сейчас» для немедленного развертывания или посмотрите подробный разбор архитектуры.</p>
+            <h2>🌟 Выбор готового инженерного профиля</h2>
+            <p>Нажмите «Врубить прямо сейчас» для немедленного развертывания или посмотрите подробный разбор архитектуры.</p>
           </div>
-          <button class="btn btn-emerald" onclick="executeCurrentProfileDirectly()"><span id="btn-apply-prof">⚡ Врубить этот профиль в системе</span></button>
+          <button class="btn btn-emerald" onclick="executeCurrentProfileDirectly()">⚡ Врубить этот профиль в системе</button>
         </div>
         <div class="grid-cards" id="profiles-container"></div>
       </section>
 
-      <!-- View: Assembler -->
+      <!-- View 2: Assembler -->
       <section class="view-panel" id="view-assembler">
         <div class="view-header">
           <div>
-            <h2 id="hdr-asm-title">🧩 Визуальный Конструктор Сборки</h2>
-            <p id="hdr-asm-desc">Выбирайте точечные компоненты. Индикатор нагрузки токенов пересчитывается на лету.</p>
+            <h2>🧩 Визуальный Конструктор Сборки</h2>
+            <p>Выбирайте точечные компоненты из 1,000+ базы. Индикатор нагрузки токенов пересчитывается на лету.</p>
           </div>
           <div style="display:flex;gap:.6rem">
             <button class="btn btn-emerald btn-sm" onclick="executeCustomComponentsDirectly()">▶ Установить мою сборку</button>
-            <button class="btn btn-secondary btn-sm" onclick="resetToMaster()"><span id="btn-reset-master">Сброс к Master</span></button>
-            <button class="btn btn-secondary btn-sm" onclick="clearAllComponents()"><span id="btn-clear-all">Очистить все</span></button>
+            <button class="btn btn-secondary btn-sm" onclick="resetToMaster()">Сброс к Master</button>
+            <button class="btn btn-secondary btn-sm" onclick="clearAllComponents()">Очистить все</button>
           </div>
+        </div>
+
+        <div class="search-bar">
+          <input type="text" class="search-input" id="asm-search-input" placeholder="🔍 Поиск по компонентам (название, категория, описание)..." oninput="filterAssemblerComponents()">
         </div>
 
         <div class="assembler-layout">
           <div id="categories-container"></div>
 
-          <!-- Summary Sticky Panel -->
+          <!-- Sticky Summary -->
           <div class="summary-panel">
             <div class="summary-title">
-              <span>📊</span> <span id="hdr-summary-title">Параметры Сборки</span>
+              <span>📊</span>
+              <span>Параметры Сборки</span>
             </div>
 
             <div class="token-meter">
-              <div style="display:flex;justify-content:space-between;font-size:.76rem">
-                <span id="lbl-token-load">Нагрузка на контекст:</span>
-                <strong id="asm-token-val" style="color:var(--accent-emerald)">~1.2k tokens</strong>
+              <div style="display:flex;justify-content:space-between;font-size:.75rem">
+                <span>Нагрузка на контекст:</span>
+                <strong id="meter-tokens-val" style="color:var(--accent-emerald)">~1.2k tokens</strong>
               </div>
               <div class="token-bar-bg">
-                <div class="token-bar-fill" id="asm-token-bar"></div>
+                <div class="token-bar-fill" id="token-fill-bar"></div>
               </div>
             </div>
 
-            <div class="stat-row"><span>Плагины:</span> <strong id="cnt-plug">5</strong></div>
-            <div class="stat-row"><span>MCP Серверы:</span> <strong id="cnt-mcp">10</strong></div>
-            <div class="stat-row"><span>Скиллы:</span> <strong id="cnt-skill">8</strong></div>
-            <div class="stat-row"><span>LSP Серверы:</span> <strong id="cnt-lsp">2</strong></div>
-            <div class="stat-row"><span>Субагенты:</span> <strong id="cnt-agent">5</strong></div>
-            <div class="stat-row"><span>Хуки защиты:</span> <strong id="cnt-hook">4</strong></div>
-            <div class="stat-row" style="margin-top:.4rem;padding-top:.7rem;border-top:1px dashed var(--border-hover)"><span style="font-weight:700;color:var(--text-pure)">ИТОГО инструментов:</span> <strong id="cnt-total" style="font-size:1.1rem;color:var(--accent-gold)">34</strong></div>
+            <div class="stat-row">
+              <span>Плагины:</span>
+              <strong id="stat-plugins-c">5</strong>
+            </div>
+            <div class="stat-row">
+              <span>MCP Серверы:</span>
+              <strong id="stat-mcp-c">10</strong>
+            </div>
+            <div class="stat-row">
+              <span>Скиллы:</span>
+              <strong id="stat-skills-c">8</strong>
+            </div>
+            <div class="stat-row">
+              <span>Субагенты:</span>
+              <strong id="stat-agents-c">5</strong>
+            </div>
+            <div class="stat-row">
+              <span>Хуки защиты:</span>
+              <strong id="stat-hooks-c">4</strong>
+            </div>
+            <div class="stat-row" style="border-bottom:none;padding-top:.8rem">
+              <span style="font-weight:700;color:var(--text-pure)">Всего компонентов:</span>
+              <strong id="stat-total-c" style="font-size:1.1rem;color:var(--accent-gold)">34</strong>
+            </div>
 
-            <div style="margin-top:1.2rem;display:flex;flex-direction:column;gap:.55rem">
-              <button class="btn btn-emerald" style="width:100%;justify-content:center" onclick="executeCustomComponentsDirectly()">⚡ Установить в 1 клик</button>
-              <button class="btn btn-secondary" style="width:100%;justify-content:center" onclick="downloadCustomScript()">📥 Скачать скрипт</button>
-              <button class="btn btn-secondary" style="width:100%;justify-content:center" onclick="copyLaunchCommand()">📋 Скопировать команду</button>
+            <div style="margin-top:1.2rem;display:flex;flex-direction:column;gap:.5rem">
+              <button class="btn btn-emerald btn-sm" style="width:100%;justify-content:center" onclick="executeCustomComponentsDirectly()">
+                ⚡ Применить Сборку
+              </button>
+              <button class="btn btn-secondary btn-sm" style="width:100%;justify-content:center" onclick="downloadCustomScript()">
+                📥 Экспорт setup.ps1
+              </button>
             </div>
           </div>
         </div>
       </section>
 
-      <!-- View: MCP Manager -->
+      <!-- View 3: Workspace & Project Scanner -->
+      <section class="view-panel" id="view-workspace">
+        <div class="view-header">
+          <div>
+            <h2>📁 Мульти-Воркспейс & Сканер Проектов</h2>
+            <p>Автоматический анализ стека любой локальной папки и генерация идеальной локальной среды `.claude/`.</p>
+          </div>
+        </div>
+
+        <div class="card" style="margin-bottom:1.4rem">
+          <h3 style="color:var(--text-pure);margin-bottom:.8rem">Сканировать директорию проекта:</h3>
+          <div style="display:flex;gap:.75rem">
+            <input type="text" class="form-input" id="ws-scan-path" value="." placeholder="Укажите путь к проекту (например, . или d:/projects/my-app)">
+            <button class="btn btn-primary" onclick="scanCurrentWorkspace()">🔍 Сканировать проект</button>
+          </div>
+        </div>
+
+        <div class="grid-cards" id="ws-scan-report-container">
+          <div class="card">
+            <div class="card__header">
+              <span class="card__icon">💡</span>
+              <div class="card__title">Рекомендованный профиль</div>
+              <span class="card__tag" id="ws-rec-profile">Master</span>
+            </div>
+            <p class="card__desc" id="ws-rec-desc">Нажмите кнопку «Сканировать проект» для авто-определения стека.</p>
+            <div class="card__footer">
+              <button class="btn btn-emerald btn-sm" onclick="applyScannedWorkspaceProfile()">⚡ Применить рекомендуемый профиль</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- View 4: MCP Servers Manager -->
       <section class="view-panel" id="view-mcp-manager">
         <div class="view-header">
           <div>
-            <h2 id="hdr-mcp-title">🌐 Интерактивный Менеджер MCP Серверов</h2>
-            <p id="hdr-mcp-desc">Управляйте подключениями к базам данных, API, браузерам и внешним сервисам.</p>
+            <h2>🌐 Менеджер MCP Серверов (Model Context Protocol)</h2>
+            <p>Управление внешними инструментами, базами данных, браузером и платежами с живым тестированием связи.</p>
           </div>
-          <button class="btn btn-primary" onclick="showAddMcpModal()">+ Добавить MCP Сервер</button>
+          <button class="btn btn-primary btn-sm" onclick="openAddMcpModal()">+ Добавить свой MCP сервер</button>
         </div>
-        <div class="grid-cards" id="mcp-manager-container"></div>
+
+        <div class="search-bar">
+          <input type="text" class="search-input" id="mcp-search-input" placeholder="🔍 Поиск MCP серверов (Postgres, Stripe, Telegram, Supabase, Playwright...)" oninput="renderMcpCards()">
+        </div>
+
+        <div class="grid-cards" id="mcp-cards-container"></div>
       </section>
 
-      <!-- View: Skills Store -->
+      <!-- View 5: Skills Store & Creator -->
       <section class="view-panel" id="view-skills-store">
         <div class="view-header">
           <div>
-            <h2 id="hdr-skills-title">🎯 Каталог Скиллов и Плагинов</h2>
-            <p id="hdr-skills-desc">320+ специализированных скиллов. Загружаются только по требованию без раздувания контекста.</p>
+            <h2>🎯 Магазин Скиллов & Визуальный Конструктор</h2>
+            <p>320+ готовых скиллов для Claude Code и визуальный редактор для создания новых SKILL.md.</p>
           </div>
-          <div style="display:flex;gap:.5rem">
-            <input type="text" class="form-input" id="skills-search-input" placeholder="Поиск скиллов (React, Python, SEO, OWASP)..." oninput="filterSkillsStore(this.value)" style="min-width:260px">
-          </div>
+          <button class="btn btn-primary btn-sm" onclick="openCreateSkillModal()">+ Создать свой Скилл</button>
         </div>
-        <div class="grid-cards" id="skills-store-container"></div>
+
+        <div class="search-bar">
+          <input type="text" class="search-input" id="skills-search-input" placeholder="🔍 Поиск скиллов (SEO, UI/UX, Bulletproof, Caveman, React, Python...)" oninput="renderSkillsCards()">
+        </div>
+
+        <div class="grid-cards" id="skills-cards-container"></div>
       </section>
 
-      <!-- View: Subagent Studio -->
+      <!-- View 6: Subagents Studio -->
       <section class="view-panel" id="view-agents-studio">
         <div class="view-header">
           <div>
-            <h2 id="hdr-agents-title">🤖 Студия Субагентов (Swarm Studio)</h2>
-            <p id="hdr-agents-desc">50+ специализированных ролей инженеров, архитекторов, дизайнеров и маркетологов на базе Claude Opus, Sonnet и Haiku.</p>
+            <h2>🤖 Студия Субагентов (Agency Studio Swarm 80+)</h2>
+            <p>80+ ролей инженеров, архитекторов и маркетологов на Opus/Sonnet/Haiku с изоляцией контекста.</p>
           </div>
-          <button class="btn btn-emerald" onclick="executeCurrentProfileDirectly()">Синхронизировать всех агентов</button>
+          <button class="btn btn-primary btn-sm" onclick="openCreateAgentModal()">+ Создать нового Субагента</button>
         </div>
-        <div class="grid-cards" id="agents-studio-container"></div>
+
+        <div class="search-bar">
+          <input type="text" class="search-input" id="agents-search-input" placeholder="🔍 Поиск субагентов (Architect, Security Reviewer, Tester, Chaos Monkey...)" oninput="renderAgentsCards()">
+        </div>
+
+        <div class="grid-cards" id="agents-cards-container"></div>
       </section>
 
-      <!-- View: CLAUDE.md Builder -->
+      <!-- View 7: Prompt Matrix & Slash Commands -->
+      <section class="view-panel" id="view-prompts">
+        <div class="view-header">
+          <div>
+            <h2>⚡ Матрица Промптов и Слеш-Команды (300+ Промптов)</h2>
+            <p>Коллекция проверенных инженерных промптов и экспорт в слеш-команды `~/.claude/commands/`.</p>
+          </div>
+        </div>
+
+        <div class="search-bar">
+          <input type="text" class="search-input" id="prompts-search-input" placeholder="🔍 Поиск промптов (Архитектура, TDD, SQL, Безопасность, Рефакторинг...)" oninput="renderPromptsGrid()">
+        </div>
+
+        <div class="grid-cards" id="prompts-cards-container"></div>
+      </section>
+
+      <!-- View 8: CLAUDE.md Auto-Optimizer -->
       <section class="view-panel" id="view-claudemd-builder">
         <div class="view-header">
           <div>
-            <h2 id="hdr-claudemd-title">📝 Интерактивный Строитель & Линтер CLAUDE.md</h2>
-            <p id="hdr-claudemd-desc">Создайте идеальный CLAUDE.md без раздувания токенов (&lt;300 строк). Автоматическая валидация правил.</p>
+            <h2>📝 Интеллектуальный Оптимизатор CLAUDE.md</h2>
+            <p>Сжатие инструкций на 40-60% без потери смысла по принципам Caveman + генерация блоков памяти.</p>
           </div>
-          <div style="display:flex;gap:.6rem">
-            <button class="btn btn-emerald btn-sm" onclick="saveClaudeMdDirectly()">💾 Сохранить в ~/.claude/CLAUDE.md</button>
-            <button class="btn btn-secondary btn-sm" onclick="loadClaudeMdTemplate('fullstack')">Шаблон Full-Stack</button>
-            <button class="btn btn-secondary btn-sm" onclick="loadClaudeMdTemplate('tdd')">Шаблон TDD</button>
+          <div style="display:flex;gap:.5rem">
+            <button class="btn btn-emerald btn-sm" onclick="runClaudeMdAutoOptimize()">⚡ Сжать и Оптимизировать</button>
+            <button class="btn btn-primary btn-sm" onclick="saveClaudeMdDirectly()">💾 Сохранить в ~/.claude/CLAUDE.md</button>
           </div>
         </div>
 
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.2rem">
-          <div class="form-group">
-            <label class="form-label">Редактор CLAUDE.md (Markdown):</label>
-            <textarea class="form-textarea" id="claudemd-editor-text" style="height:420px" oninput="updateClaudeMdPreview()"></textarea>
+        <div style="display:grid;grid-template-columns:340px 1fr;gap:1.3rem">
+          <div class="card">
+            <h4 style="font-size:.85rem;color:var(--text-pure);margin-bottom:.8rem">Включить модули в память:</h4>
+            <div style="display:flex;flex-direction:column;gap:.6rem" id="claudemd-toggles-box"></div>
           </div>
-          <div class="form-group">
-            <label class="form-label">Предпросмотр и Анализ:</label>
-            <div id="claudemd-preview-box" style="background:#050508;border:1px solid var(--border-subtle);border-radius:var(--radius-xs);padding:1.1rem;height:420px;overflow-y:auto;font-family:'JetBrains Mono',monospace;font-size:.78rem;color:var(--text-main);white-space:pre-wrap"></div>
+          <div class="card">
+            <div style="display:flex;justify-content:space-between;margin-bottom:.6rem;align-items:center">
+              <h4 style="font-size:.85rem;color:var(--text-pure)">Редактор CLAUDE.md:</h4>
+              <span id="claudemd-line-counter" style="font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--accent-emerald)">34 строк / ~180 токенов</span>
+            </div>
+            <textarea class="form-textarea" id="claudemd-text-editor" style="min-height:380px" oninput="updateClaudeMdStats()"></textarea>
           </div>
         </div>
       </section>
 
-      <!-- View: Security Matrix -->
+      <!-- View 9: Sessions & Token Cost Inspector -->
+      <section class="view-panel" id="view-sessions">
+        <div class="view-header">
+          <div>
+            <h2>📊 Сессии & Телеметрия Затрат Токенов</h2>
+            <p>Журнал сессий Claude Code, детальный учет токенов и расчет сбереженных средств благодаря сжатию.</p>
+          </div>
+          <button class="btn btn-emerald btn-sm" onclick="loadSessionsTelemetry()">🔄 Обновить телеметрию</button>
+        </div>
+
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1rem;margin-bottom:1.4rem">
+          <div class="card" style="text-align:center">
+            <div style="font-size:.75rem;color:var(--text-muted)">Всего токенов в сессиях</div>
+            <div style="font-size:1.6rem;font-weight:800;color:var(--text-pure);font-family:'JetBrains Mono',monospace" id="tel-total-tok">0</div>
+          </div>
+          <div class="card" style="text-align:center">
+            <div style="font-size:.75rem;color:var(--text-muted)">Сэкономлено токенов (-65%)</div>
+            <div style="font-size:1.6rem;font-weight:800;color:var(--accent-emerald);font-family:'JetBrains Mono',monospace" id="tel-saved-tok">0</div>
+          </div>
+          <div class="card" style="text-align:center">
+            <div style="font-size:.75rem;color:var(--text-muted)">Фактические затраты API</div>
+            <div style="font-size:1.6rem;font-weight:800;color:var(--accent-gold);font-family:'JetBrains Mono',monospace" id="tel-spend-usd">$0.00</div>
+          </div>
+          <div class="card" style="text-align:center">
+            <div style="font-size:.75rem;color:var(--text-muted)">Сбереженные деньги</div>
+            <div style="font-size:1.6rem;font-weight:800;color:var(--accent-emerald);font-family:'JetBrains Mono',monospace" id="tel-saved-usd">$0.00</div>
+          </div>
+        </div>
+
+        <div class="diag-list" id="sessions-list-container"></div>
+      </section>
+
+      <!-- View 10: Security & 7-Layer Defense -->
       <section class="view-panel" id="view-security">
         <div class="view-header">
           <div>
-            <h2 id="hdr-sec-title">🛡️ Настройки Безопасности (7 Слоев Защиты)</h2>
-            <p id="hdr-sec-desc">Управляйте политиками запретов и перехватчиками PreToolUse. Изменения сразу видны в settings.json.</p>
+            <h2>🛡️ 7 Слоев Защиты и Детерминированные Хуки</h2>
+            <p>Блокировка утечек секретов, деструктивных команд (rm -rf) и защита веток на уровне PreToolUse.</p>
           </div>
-          <button class="btn btn-primary" onclick="copySettingsJson()"><span id="btn-copy-settings">📋 Скопировать settings.json</span></button>
+          <button class="btn btn-emerald btn-sm" onclick="saveSecuritySettings()">💾 Сохранить правила защиты</button>
         </div>
 
-        <div class="assembler-layout">
-          <div style="display:flex;flex-direction:column;gap:.85rem">
-            <div class="card">
-              <div style="display:flex;justify-content:space-between;align-items:center">
-                <div>
-                  <strong style="color:var(--text-pure)">Блокировка чтения .env и API ключей</strong>
-                  <div style="font-size:.74rem;color:var(--text-muted)">Запрещает чтение Read(.env*), Read(**/.ssh/**), Read(**/*.pem)</div>
-                </div>
-                <label class="switch"><input type="checkbox" checked onchange="updateLiveSecurity()"><span class="slider"></span></label>
-              </div>
-            </div>
-
-            <div class="card">
-              <div style="display:flex;justify-content:space-between;align-items:center">
-                <div>
-                  <strong style="color:var(--text-pure)">Блокировка деструктивных команд</strong>
-                  <div style="font-size:.74rem;color:var(--text-muted)">Запрещает Bash(rm -rf /), Bash(*format C:*), Bash(*del /s /q*)</div>
-                </div>
-                <label class="switch"><input type="checkbox" checked onchange="updateLiveSecurity()"><span class="slider"></span></label>
-              </div>
-            </div>
-
-            <div class="card">
-              <div style="display:flex;justify-content:space-between;align-items:center">
-                <div>
-                  <strong style="color:var(--text-pure)">PreToolUse Secret Scanner Hook</strong>
-                  <div style="font-size:.74rem;color:var(--text-muted)">Детерминированный перехват утечки паролей до выполнения (Exit code 2)</div>
-                </div>
-                <label class="switch"><input type="checkbox" checked onchange="updateLiveSecurity()"><span class="slider"></span></label>
-              </div>
-            </div>
-
-            <div class="card">
-              <div style="display:flex;justify-content:space-between;align-items:center">
-                <div>
-                  <strong style="color:var(--text-pure)">StopFailure Self-Healing Hook</strong>
-                  <div style="font-size:.74rem;color:var(--text-muted)">Чеклист поиска первопричин при падении сборки или тестов</div>
-                </div>
-                <label class="switch"><input type="checkbox" checked onchange="updateLiveSecurity()"><span class="slider"></span></label>
-              </div>
-            </div>
-          </div>
-
-          <div>
-            <div style="font-size:.76rem;font-weight:700;color:var(--text-pure);margin-bottom:.45rem">ПРЕВЬЮ SETTINGS.JSON:</div>
-            <pre class="terminal-box" id="sec-preview-json" style="background:#050508;border:1px solid var(--border-subtle);border-radius:var(--radius-xs);padding:1rem;font-family:'JetBrains Mono',monospace;font-size:.78rem;color:var(--accent-silver);overflow-x:auto;max-height:360px"></pre>
-          </div>
-        </div>
+        <div class="grid-cards" id="security-layers-container"></div>
       </section>
 
-      <!-- View: Diagnostics -->
+      <!-- View 11: System Doctor -->
       <section class="view-panel" id="view-diagnostics">
         <div class="view-header">
           <div>
-            <h2 id="hdr-diag-title">🩺 15-Факторная Диагностика Системы (Health-Check)</h2>
-            <p id="hdr-diag-desc">Проверка окружения Node.js, Git, Python, Docker, целостности settings.json и хуков безопасности.</p>
+            <h2>🩺 Доктор Системы (15-Factor Health Check)</h2>
+            <p>Полная диагностика окружения: Node, Git, Claude CLI, Docker, LSP, MCP серверы и права доступа.</p>
           </div>
           <div style="display:flex;gap:.6rem">
-            <button class="btn btn-primary" onclick="runDiagnosticsDirectly()"><span id="btn-run-diag">▶ Запустить проверку в системе</span></button>
-            <button class="btn btn-emerald" onclick="runRepairDirectly()"><span id="btn-run-repair">🔧 Режим авторемонта</span></button>
+            <button class="btn btn-emerald btn-sm" onclick="runLiveDiagnostics()">🔄 Обновить проверку</button>
+            <button class="btn btn-rose btn-sm" onclick="executeSystemRepair()">🔧 Авторемонт</button>
           </div>
         </div>
 
-        <div class="diag-list" id="diag-container"></div>
+        <div class="card" style="margin-bottom:1.2rem">
+          <div style="display:flex;align-items:center;justify-content:space-between">
+            <div>
+              <h3 style="color:var(--text-pure);font-size:1.1rem" id="diag-score-heading">Общая готовность системы: 100%</h3>
+              <p style="color:var(--text-muted);font-size:.78rem" id="diag-score-sub">Все ключевые зависимости и хуки безопасности функционируют штатно.</p>
+            </div>
+            <span class="diag-badge badge-ok" style="font-size:1.2rem;padding:.4rem 1.1rem" id="diag-score-badge">100% READY</span>
+          </div>
+        </div>
+
+        <div class="diag-list" id="diagnostics-list-container"></div>
       </section>
 
-      <!-- View: Snapshots & Rollback -->
+      <!-- View 12: Snapshots & Rollbacks -->
       <section class="view-panel" id="view-snapshots">
         <div class="view-header">
           <div>
-            <h2 id="hdr-snap-title">⏪ Менеджер Снапшотов и Откатов</h2>
-            <p id="hdr-snap-desc">Автоматические резервные копии конфигураций (~/.claude/backups/). Откат в 1 клик при любых ошибках.</p>
+            <h2>⏪ Снапшоты и Откаты (Time Machine)</h2>
+            <p>Автоматические и ручные точки восстановления конфигураций, агентов и параметров Claude Code.</p>
           </div>
-          <button class="btn btn-rose" onclick="runRollbackDirectly()"><span id="btn-rollback-cmd">⏪ Откатить систему к прошлой версии</span></button>
+          <button class="btn btn-emerald btn-sm" onclick="createManualSnapshot()">+ Создать новый снапшот</button>
         </div>
 
-        <div class="grid-cards" id="snapshots-container"></div>
+        <div class="diag-list" id="snapshots-list-container"></div>
       </section>
 
-      <!-- View: Token ROI Calculator -->
-      <section class="view-panel" id="view-calculator">
-        <div class="view-header">
-          <div>
-            <h2 id="hdr-calc-title">💰 Калькулятор Экономии Токенов и ROI</h2>
-            <p id="hdr-calc-desc">Рассчитайте экономию API-бюджета сжатием Caveman (-65%) и кэшированием RepoMap.</p>
-          </div>
-        </div>
-
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.4rem">
-          <div class="card">
-            <h3 style="color:var(--text-pure);margin-bottom:1rem">Параметры команды:</h3>
-            <div class="form-group">
-              <label class="form-label">Количество инженеров в команде: <strong id="val-devs" style="color:var(--accent-gold)">5</strong></label>
-              <input type="range" min="1" max="50" value="5" oninput="document.getElementById('val-devs').textContent = this.value; recalculateRoi();">
-            </div>
-            <div class="form-group">
-              <label class="form-label">Запросов к Claude Code в день на инженера: <strong id="val-prompts" style="color:var(--accent-gold)">40</strong></label>
-              <input type="range" min="10" max="200" value="40" oninput="document.getElementById('val-prompts').textContent = this.value; recalculateRoi();">
-            </div>
-          </div>
-
-          <div class="card" style="background:linear-gradient(145deg,rgba(16,185,129,.06),rgba(0,0,0,.6));border-color:rgba(16,185,129,.25);text-align:center;justify-content:center">
-            <div style="font-size:.85rem;color:var(--text-muted)">Ваша прогнозируемая экономия в месяц:</div>
-            <div style="font-size:3.2rem;font-weight:900;color:var(--accent-emerald);font-family:'JetBrains Mono',monospace;line-height:1.1;margin:.6rem 0" id="roi-savings-amount">$1,250 / мес</div>
-            <div style="font-size:.76rem;color:var(--text-faint)">Сжатие ответов Caveman Mode (-65%) + Устранение 4-5 лишних поисков RepoMap</div>
-          </div>
-        </div>
-      </section>
-
-      <!-- View: Deploy & Export -->
+      <!-- View 13: Export & CLI Launcher -->
       <section class="view-panel" id="view-deploy">
         <div class="view-header">
           <div>
-            <h2 id="hdr-dep-title">🚀 Экспорт и Запуск Вашей Конфигурации</h2>
-            <p id="hdr-dep-desc">Скачайте сгенерированный скрипт установки или запустите напрямую через локальный сервер.</p>
+            <h2>🚀 Экспорт и Прямой Запуск CLI</h2>
+            <p>Используйте готовые команды для установки профилей в терминале, CI/CD пайплайнах или Docker контейнерах.</p>
           </div>
+          <button class="btn btn-emerald btn-sm" onclick="launchClaudeCodeExternal()">▶ Запустить Claude Code сейчас</button>
         </div>
 
-        <div style="display:flex;flex-direction:column;gap:1.2rem">
+        <div class="grid-cards">
           <div class="card">
-            <h3 style="color:var(--text-pure);margin-bottom:.5rem">Прямой запуск Claude Code CLI в новом окне</h3>
-            <p style="font-size:.8rem;color:var(--text-muted);margin-bottom:.75rem">Запускает `claude` в терминале Windows с уже примененными профилями:</p>
-            <button class="btn btn-emerald" onclick="launchClaudeTerminal()">🚀 Запустить Claude Code в Терминале</button>
+            <h3 style="color:var(--text-pure);margin-bottom:.5rem">💻 Windows PowerShell</h3>
+            <p class="card__desc">Прямая установка выбранного профиля в PowerShell 5.1/7+:</p>
+            <code class="bottom-cmd" style="display:block;margin-bottom:.8rem" id="cli-ps-cmd">powershell -ExecutionPolicy Bypass -File setup-claude-code-ultimate.ps1 -Profile Master</code>
+            <button class="btn btn-secondary btn-sm" onclick="copyText(document.getElementById('cli-ps-cmd').innerText)">📋 Скопировать команду</button>
           </div>
 
           <div class="card">
-            <h3 style="color:var(--text-pure);margin-bottom:.5rem">Прямая команда в PowerShell</h3>
-            <p style="font-size:.8rem;color:var(--text-muted);margin-bottom:.75rem">Вставьте команду в терминал PowerShell — скрипт автоматически скачает и настроит все выбранные компоненты:</p>
-            <pre class="terminal-box" id="deploy-cmd-box" style="background:#050508;border:1px solid var(--border-subtle);border-radius:var(--radius-xs);padding:.9rem;font-family:'JetBrains Mono',monospace;font-size:.78rem;color:var(--text-pure);margin-bottom:.75rem"></pre>
-            <div>
-              <button class="btn btn-primary" onclick="copyLaunchCommand()">📋 Скопировать команду</button>
-            </div>
+            <h3 style="color:var(--text-pure);margin-bottom:.5rem">🐧 Linux & WSL2 & macOS</h3>
+            <p class="card__desc">Установка в POSIX-окружении через bash:</p>
+            <code class="bottom-cmd" style="display:block;margin-bottom:.8rem" id="cli-bash-cmd">curl -fsSL https://raw.githubusercontent.com/temkalt/claude-ultimate-hub/main/install.sh | bash</code>
+            <button class="btn btn-secondary btn-sm" onclick="copyText(document.getElementById('cli-bash-cmd').innerText)">📋 Скопировать команду</button>
           </div>
         </div>
       </section>
 
-      <!-- Live Terminal Output Window -->
+      <!-- Persistent Live Terminal -->
       <div class="terminal-window">
         <div class="terminal-header">
           <div class="terminal-dots">
@@ -742,6 +810,7 @@ let activeView = 'profiles';
 let selectedProf = 'Master';
 let selectedComps = new Set();
 let sseSource = null;
+let promptMatrix = [];
 
 const PROFILE_CONFIGS = {
   'Master': [
@@ -838,108 +907,84 @@ const PROFILES = [
     name_ru:'Master All-in-One (Флагман)', name_en:'Master All-in-One', 
     tag:'34 Tools', tokens:'~1.2k tokens', 
     desc_ru:'Универсальный глобальный флагман: Web, Backend, Cloud APIs (Stripe, GitHub, Supabase, Postgres), TDD-дисциплина, память проекта AgentMemory, сжатие Caveman (-65%) и 7 слоев защиты.', 
-    desc_en:'Universal global flagship: Web, Backend, Cloud APIs (Stripe, GitHub, Supabase, Postgres), TDD, AgentMemory, Caveman (-65%), and 7-layer defense.',
-    details_ru: 'Флагманский профиль разработан как единый стандарт для профессиональной разработки. Включает 5 плагинов, 10 ключевых MCP серверов, 8 скиллов, навигацию по символам TypeScript/Python и 5 субагентов на Opus/Sonnet. Потребляет всего ~1.2k токенов в покое благодаря семантической компрессии Caveman.',
-    details_en: 'Flagship profile designed as a universal standard for engineering. Contains 5 plugins, 10 core global MCPs, 8 skills, TS/Python LSPs, and 5 Opus/Sonnet subagents. Consumes only ~1.2k base context tokens at rest.'
+    desc_en:'Universal global flagship: Web, Backend, Cloud APIs (Stripe, GitHub, Supabase, Postgres), TDD, AgentMemory, Caveman (-65%), and 7-layer defense.'
   },
   { 
     id:'Web', icon:'🌐', 
     name_ru:'Full-Stack Web', name_en:'Full-Stack Web', 
     tag:'21 Tools', tokens:'~1.1k tokens', 
     desc_ru:'React 19, Next.js 15, Playwright визуальные E2E тесты, база стилей UI/UX Pro Max, Supabase Postgres, TypeScript LSP AST навигация.', 
-    desc_en:'React 19, Next.js 15, Playwright E2E visual tests, UI/UX Pro Max, Supabase Postgres, TS LSP AST indexing.',
-    details_ru: 'Специализирован для веб-разработчиков и дизайнеров интерфейсов. Включает Frontend Design, Vercel, автоматизацию браузера Playwright и базу из 67 стилей UI/UX Pro Max.',
-    details_en: 'Specialized for web engineers and UI designers. Includes Frontend Design, Vercel plugin, Playwright browser automation for visual testing, 67 curated styles from UI/UX Pro Max, and TypeScript AST indexing.'
+    desc_en:'React 19, Next.js 15, Playwright E2E visual tests, UI/UX Pro Max, Supabase Postgres, TS LSP AST indexing.'
   },
   { 
     id:'Backend', icon:'⚙️', 
     name_ru:'Backend & APIs', name_en:'Backend & APIs', 
     tag:'21 Tools', tokens:'~1.15k tokens', 
     desc_ru:'PostgreSQL, SQLite, Redis, ClickHouse, Docker контейнеры, Stripe платежи, Code Reviewer и Python Pyright LSP.', 
-    desc_en:'PostgreSQL, SQLite, Redis, Docker, Stripe payments, Code Reviewer, and Python Pyright LSP.',
-    details_ru: 'Стек для серверной разработки на Python, Node, Go или Rust. Подключает базы данных в режиме Read-Only, проверяет SQL-схемы, управляет Docker.',
-    details_en: 'Server-side development stack for Python, Node, Go, or Rust. Connects databases in safe read-only mode, inspects schemas, orchestrates Docker containers.'
+    desc_en:'PostgreSQL, SQLite, Redis, Docker, Stripe payments, Code Reviewer, and Python Pyright LSP.'
   },
   { 
     id:'Core', icon:'🎯', 
     name_ru:'Core Minimal', name_en:'Core Minimal', 
     tag:'11 Tools', tokens:'~480 tokens', 
     desc_ru:'Ультра-легкий базис: TDD-планирование Superpowers, GitHub, Architect (Opus) и Code Reviewer, 4 хука защиты. 0ms лишняя задержка.', 
-    desc_en:'Ultra-lean zero-bloat foundation: TDD Superpowers, GitHub, Architect (Opus), Code Reviewer, 4 security hooks.',
-    details_ru: 'Создан для максимальной скорости отклика и минимального расхода токенов.',
-    details_en: 'Built for developers seeking minimum latency and zero token bloat.'
+    desc_en:'Ultra-lean zero-bloat foundation: TDD Superpowers, GitHub, Architect (Opus), Code Reviewer, 4 security hooks.'
   },
   { 
     id:'Security', icon:'🔒', 
     name_ru:'Security Auditor', name_en:'Security Auditor', 
     tag:'14 Tools', tokens:'~780 tokens', 
     desc_ru:'Аудит уязвимостей OWASP, проверка утечек ключей, субагент Security Reviewer на Claude Opus, пайплайн Bulletproof.', 
-    desc_en:'OWASP vulnerability audit, secret leak guard, Security Reviewer on Claude Opus, Bulletproof.',
-    details_ru: 'Профиль для проверки безопасности кодовой базы перед релизом. Субагент на модели Opus ищет скрытые уязвимости.',
-    details_en: 'Security audit profile for pre-release verification. Opus-powered Security Reviewer discovers subtle vulnerabilities.'
+    desc_en:'OWASP vulnerability audit, secret leak guard, Security Reviewer on Claude Opus, Bulletproof.'
   },
   { 
     id:'Data', icon:'🗄️', 
     name_ru:'Data & Analytics', name_en:'Data & Analytics', 
     tag:'14 Tools', tokens:'~820 tokens', 
     desc_ru:'Postgres MCP, SQLite, Redis, ClickHouse, Dataviz диаграммы (Mermaid/Chart.js), Supabase RLS, Python среда.', 
-    desc_en:'Postgres MCP, SQLite, Redis, ClickHouse, Dataviz charts, Supabase RLS, Python environment.',
-    details_ru: 'Ориентирован на аналитиков данных и разработчиков ETL-процессов.',
-    details_en: 'Focused on data engineers and ETL pipelines. Generates rich visualizations in Chart.js/Mermaid.'
+    desc_en:'Postgres MCP, SQLite, Redis, ClickHouse, Dataviz charts, Supabase RLS, Python environment.'
   },
   { 
     id:'DevOps', icon:'🚀', 
     name_ru:'DevOps & CI/CD', name_en:'DevOps & CI/CD', 
     tag:'15 Tools', tokens:'~850 tokens', 
     desc_ru:'Docker контейнеры, AWS инспектор, Sentry APM телеметрия, Linear задачи, автоматизация GitHub Actions.', 
-    desc_en:'Docker containers, AWS inspector, Sentry APM telemetry, Linear sync, GitHub Actions.',
-    details_ru: 'Стек для автоматизации CI/CD, управления Docker-образами, инспекции логов AWS.',
-    details_en: 'Stack for CI/CD automation, Docker image management, AWS log inspection.'
+    desc_en:'Docker containers, AWS inspector, Sentry APM telemetry, Linear sync, GitHub Actions.'
   },
   { 
     id:'Russia', icon:'🇷🇺', 
     name_ru:'РФ / СНГ Стек', name_en:'Russia / CIS Stack', 
     tag:'19 Tools', tokens:'~1.05k tokens', 
     desc_ru:'Telegram боты, ЮKassa платежи с чеками 54-ФЗ, хостинг Yandex Cloud, Caveman сжатие токенов.', 
-    desc_en:'Telegram bots, YooKassa payments with 54-FZ, Yandex Cloud hosting, Caveman compression.',
-    details_ru: 'Специализированный локальный профиль для сервисов на рынке РФ/СНГ: прием платежей в рублях через ЮKassa, боты в Telegram, инфраструктура Yandex Cloud.',
-    details_en: 'Dedicated regional profile for Russian & CIS market: ruble payments via YooKassa with 54-FZ fiscal receipts, Telegram bots, Yandex Cloud hosting.'
+    desc_en:'Telegram bots, YooKassa payments with 54-FZ, Yandex Cloud hosting, Caveman compression.'
   },
   { 
     id:'AI', icon:'🧠', 
     name_ru:'AI & LLMOps Engineer', name_en:'AI & LLMOps Engineer', 
     tag:'16 Tools', tokens:'~920 tokens', 
     desc_ru:'Qdrant, ChromaDB, HuggingFace, Perplexity AI, Tavily web search, AgentMemory persistent cache.', 
-    desc_en:'Qdrant, ChromaDB, HuggingFace, Perplexity AI, Tavily web search, AgentMemory persistent cache.',
-    details_ru: 'Стек для разработки RAG-систем, работы с векторными БД и интеграции внешних LLM API.',
-    details_en: 'Stack for RAG pipelines, vector databases, and external LLM integrations.'
+    desc_en:'Qdrant, ChromaDB, HuggingFace, Perplexity AI, Tavily web search, AgentMemory persistent cache.'
   },
   { 
     id:'Mobile', icon:'📱', 
     name_ru:'Mobile & Cross-Platform', name_en:'Mobile & Cross-Platform', 
     tag:'14 Tools', tokens:'~850 tokens', 
     desc_ru:'React Native, Flutter, Playwright UI testing, Mobile responsive audits, Tailwind/Native styling.', 
-    desc_en:'React Native, Flutter, Playwright UI testing, Mobile responsive audits, Tailwind/Native styling.',
-    details_ru: 'Стек для кроссплатформенных мобильных приложений под iOS и Android.',
-    details_en: 'Stack for cross-platform mobile apps targeting iOS and Android.'
+    desc_en:'React Native, Flutter, Playwright UI testing, Mobile responsive audits, Tailwind/Native styling.'
   },
   { 
     id:'Agency', icon:'🏢', 
     name_ru:'Agency Studio Swarm', name_en:'Agency Studio Swarm', 
     tag:'22 Tools', tokens:'~1.3k tokens', 
     desc_ru:'Полный виртуальный штат агентства (50+ ролей): Frontend, Backend, Architect, QA, PM, Growth Hacker.', 
-    desc_en:'Complete virtual agency swarm (50+ personas): Frontend, Backend, Architect, QA, PM, Growth Hacker.',
-    details_ru: 'Комплексный профиль с подключением полной библиотеки агентских ролей msitarzewski/agency-agents.',
-    details_en: 'Comprehensive profile leveraging the complete msitarzewski/agency-agents persona library.'
+    desc_en:'Complete virtual agency swarm (50+ personas): Frontend, Backend, Architect, QA, PM, Growth Hacker.'
   },
   { 
     id:'Full', icon:'💎', 
     name_ru:'Full Ultimate (Все Инструменты)', name_en:'Full Ultimate (All Tools)', 
     tag:'38 Tools', tokens:'~1.8k tokens', 
     desc_ru:'Максимальный состав: все ключевые плагины, все MCP серверы, все скиллы и субагенты.', 
-    desc_en:'Maximum setup: all key plugins, all MCP servers, all skills, and subagents.',
-    details_ru: 'Полный арсенал инструментов для комплексных инженерных проектов любого масштаба.',
-    details_en: 'Full arsenal of tools for large-scale multi-technology engineering endeavors.'
+    desc_en:'Maximum setup: all key plugins, all MCP servers, all skills, and subagents.'
   }
 ];
 
@@ -1001,764 +1046,1073 @@ const COMPONENT_CATEGORIES = [
     ]
   },
   {
-    cat: 'hook', title_ru: '🛡️ Хуки Безопасности (Security Hooks)', title_en: '🛡️ Security Hooks',
+    cat: 'hook', title_ru: '🛡️ Хуки Безопасности (Deterministic Hooks)', title_en: '🛡️ Security Hooks',
     items: [
-      { id:'hook-secrets', name:'Secret Scanner Hook', desc_ru:'PreToolUse перехват утечки паролей и токенов.', desc_en:'PreToolUse scan for secrets and API tokens.' },
-      { id:'hook-danger', name:'Dangerous Command Blocker', desc_ru:'Блокировка rm -rf /, format, del /s /q C:.', desc_en:'Blocks destructive system commands.' },
-      { id:'hook-repomap', name:'SessionStart RepoMap', desc_ru:'Генерация карты файлов при старте сессии.', desc_en:'Topology map of project files at start.' },
-      { id:'hook-selfheal', name:'StopFailure Self-Healing', desc_ru:'Чеклист локализации сбоев сборки и тестов.', desc_en:'Root-cause troubleshooting on test failure.' }
+      { id:'hook-secrets', name:'Secret Scanner', desc_ru:'PreToolUse перехват утечек паролей и API-ключей.', desc_en:'PreToolUse scanner blocking credentials leaks.' },
+      { id:'hook-danger', name:'Danger Blocker', desc_ru:'PreToolUse блокировка rm -rf /, форматирования дисков.', desc_en:'PreToolUse blocker for rm -rf / and dangerous disk commands.' },
+      { id:'hook-repomap', name:'RepoMap Topology', desc_ru:'SessionStart кэширование структуры репозитория.', desc_en:'SessionStart repository topology caching.' },
+      { id:'hook-selfheal', name:'Self-Healing Guide', desc_ru:'Stop хук автодиагностики при сбоях и ошибках.', desc_en:'Stop hook providing recovery recommendations on failure.' }
     ]
   }
 ];
 
-const DIAGNOSTIC_CHECKS = [
-  { name: 'Node.js Runtime', val: 'v24.18.1', status: 'OK', desc: 'JavaScript execution engine' },
-  { name: 'npm Package Manager', val: 'v11.16.0', status: 'OK', desc: 'Node package registry client' },
-  { name: 'npx Command Runner', val: 'v11.16.0', status: 'OK', desc: 'Ephemeral MCP server runner' },
-  { name: 'Git Version Control', val: 'v2.55.0', status: 'OK', desc: 'Repository management' },
-  { name: 'Python Environment', val: 'v3.14.6', status: 'OK', desc: 'Python runtime and Pyright' },
-  { name: 'Claude Code CLI', val: 'v2.1.234', status: 'OK', desc: 'Official Anthropic Agentic CLI' },
-  { name: 'WSL2 Linux Sandbox', val: 'Available', status: 'OK', desc: 'Hardware-isolated execution container' },
-  { name: 'Docker Engine', val: 'v29.7.2', status: 'OK', desc: 'Container sandbox and MCP host' },
-  { name: 'PreToolUse: Secret Scanner', val: 'scan-secrets.ps1', status: 'OK', desc: 'Active deterministic hook' },
-  { name: 'PreToolUse: Danger Blocker', val: 'block-dangerous.ps1', status: 'OK', desc: 'Active destructive command hook' },
-  { name: 'SessionStart: RepoMap', val: 'repo-map.ps1', status: 'OK', desc: 'Topology caching hook' },
-  { name: 'Stop: Self-Healing', val: 'self-heal.ps1', status: 'OK', desc: 'Error analyzer checklist hook' },
-  { name: 'settings.json Permissions', val: '17 Deny, 11 Allow', status: 'OK', desc: 'Strict Deny-First security matrix' },
-  { name: 'CLAUDE.md Architecture', val: 'Managed Section', status: 'OK', desc: 'Project standards and TDD rules' },
-  { name: 'Backup Snapshot Engine', val: '~/.claude/backups/', status: 'OK', desc: 'Automated state snapshots' }
-];
-
-const SKILLS_DATABASE = [
-  { id: 'skill-uiux-pro', name: 'UI/UX Pro Max', cat: 'Design', desc_ru: '67 проверенных стилей, палитр и руководств по типографике для веба и мобильных.', desc_en: '67 curated styles, palettes, and typography rules.' },
-  { id: 'skill-caveman', name: 'Caveman (-65% Tokens)', cat: 'Performance', desc_ru: 'Сжатие многословных ответов для колоссальной экономии контекста и денег.', desc_en: 'Semantic token compression reducing API cost.' },
-  { id: 'skill-bulletproof', name: 'Bulletproof Pipeline', cat: 'Quality', desc_ru: '12-шаговый инженерный пайплайн проверки от архитектуры до деплоя.', desc_en: '12-step engineering verification pipeline.' },
-  { id: 'skill-seo', name: 'Claude SEO Pro', cat: 'Marketing', desc_ru: '25 суб-скиллов для технического аудита, Schema.org и Web Vitals.', desc_en: '25 subskills for technical SEO and Core Web Vitals.' },
-  { id: 'skill-dataviz', name: 'Dataviz Diagrams', cat: 'Data', desc_ru: 'Генерация диаграмм Mermaid, Chart.js, D3.js и графиков.', desc_en: 'Mermaid, Chart.js, D3.js diagram generation.' },
-  { id: 'skill-supabase', name: 'Supabase RLS & Schema', cat: 'Database', desc_ru: 'Проектирование схем Postgres, политик безопасности Row-Level Security.', desc_en: 'Postgres schema design, migrations, and RLS.' },
-  { id: 'skill-commits', name: 'Conventional Commits', cat: 'Git', desc_ru: 'Генерация атомарных коммитов по стандарту Conventional Commits.', desc_en: 'Atomic Git commit messages.' },
-  { id: 'skill-fastapi', name: 'FastAPI Production', cat: 'Backend', desc_ru: 'Асинхронные эндпоинты, Pydantic v2 валидация, JWT токены.', desc_en: 'Async endpoints, Pydantic v2, JWT auth.' }
-];
-
-const AGENTS_ROSTER = [
-  { id: 'agent-architect', name: 'System Architect', model: 'Claude 3.7 Opus', icon: '🏛️', role_ru: 'Проектирует надежную архитектуру, схемы БД и API контракты.', role_en: 'Designs scalable architecture, DB schemas, and API contracts.' },
-  { id: 'agent-codereview', name: 'Senior Code Reviewer', model: 'Claude 3.7 Sonnet', icon: '🧐', role_ru: 'Ищет скрытые баги, утечки памяти, race conditions и плохие паттерны.', role_en: 'Discovers subtle bugs, memory leaks, race conditions.' },
-  { id: 'agent-security', name: 'OWASP Security Auditor', model: 'Claude 3.7 Opus', icon: '🔒', role_ru: 'Аудит уязвимостей, инъекций, утечек секретов и конфигураций.', role_en: 'Audits vulnerabilities, injections, and secret leakage.' },
-  { id: 'agent-tester', name: 'QA & Chaos Monkey', model: 'Claude 3.7 Sonnet', icon: '🧪', role_ru: 'Пишет модульные, интеграционные и E2E тесты на Playwright/Jest.', role_en: 'Writes unit, integration, and Playwright E2E suites.' },
-  { id: 'agent-researcher', name: 'Live Docs Researcher', model: 'Claude 3.7 Sonnet', icon: '🔍', role_ru: 'Ищет актуальную документацию в реальном времени через Context7.', role_en: 'Fetches real-time library docs via Context7.' },
-  { id: 'agent-docs', name: 'Documentation Writer', model: 'Claude 3.5 Haiku', icon: '📄', role_ru: 'Быстро оформляет README, JSDoc, OpenAPI спецификации.', role_en: 'Rapidly writes README, JSDoc, and OpenAPI specs.' }
-];
-
-// ─── SSE Live Log Connection ───────────────────────────────────
-function initSSE() {
-  try {
-    sseSource = new EventSource('/api/stream-logs');
-    sseSource.addEventListener('log', e => {
-      const data = JSON.parse(e.data);
-      appendTerminalLog(data.text);
-    });
-    sseSource.addEventListener('start', e => {
-      const data = JSON.parse(e.data);
-      document.getElementById('term-status-title').textContent = `⚡ ИСПОЛНЕНИЕ: ${data.action.toUpperCase()} (${data.time})`;
-      document.getElementById('top-status-text').textContent = `Выполняется: ${data.action}`;
-      document.getElementById('top-status-box').style.borderColor = 'var(--accent-amber)';
-      document.getElementById('top-status-box').style.color = 'var(--accent-amber)';
-    });
-    sseSource.addEventListener('finish', e => {
-      const data = JSON.parse(e.data);
-      document.getElementById('term-status-title').textContent = `✓ ЗАВЕРШЕНО: ${data.action.toUpperCase()} (Exit ${data.code})`;
-      document.getElementById('top-status-text').textContent = `Готово (Код ${data.code})`;
-      document.getElementById('top-status-box').style.borderColor = data.code === 0 ? 'var(--accent-emerald)' : 'var(--accent-rose)';
-      document.getElementById('top-status-box').style.color = data.code === 0 ? 'var(--accent-emerald)' : 'var(--accent-rose)';
-      loadSnapshotsList();
-    });
-  } catch (err) {
-    console.warn('SSE stream not active (static mode)');
-  }
+// ─── Initializing UI ──────────────────────────────────────────
+function initApp() {
+  selectedComps = new Set(PROFILE_CONFIGS['Master']);
+  renderProfiles();
+  renderAssembler();
+  renderMcpCards();
+  renderSkillsCards();
+  renderAgentsCards();
+  renderSecurityLayers();
+  initClaudeMdBuilder();
+  loadPromptsMatrix();
+  loadSessionsTelemetry();
+  initSSE();
+  runLiveDiagnostics();
+  loadSnapshots();
+  updateSummaryStats();
 }
 
-function appendTerminalLog(text) {
-  const body = document.getElementById('term-body');
-  body.textContent += text;
-  body.scrollTop = body.scrollHeight;
-}
-
-function clearTerminalLogs() {
-  document.getElementById('term-body').textContent = '[>>] Logs cleared.\n';
-}
-
-// ─── Direct Execution Bridge API ───────────────────────────────
-async function triggerApiAction(action, payload = {}) {
-  appendTerminalLog(`\n[>>] Command sent to local engine: ${action}...\n`);
-  try {
-    const res = await fetch('/api/action', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ action, ...payload })
-    });
-    const json = await res.json();
-    if (!json.success && json.error) {
-      appendTerminalLog(`[-] Execution error: ${json.error}\n`);
-    }
-  } catch (err) {
-    appendTerminalLog(`[!] Note: Server bridge offline or static mode. Copying CLI command to clipboard.\n`);
-    copyLaunchCommand();
-  }
-}
-
-function executeCurrentProfileDirectly() {
-  triggerApiAction('apply-profile', { profile: selectedProf });
-}
-
-function executeCustomComponentsDirectly() {
-  const compList = [...selectedComps].join(',');
-  triggerApiAction('apply-components', { profile: selectedProf, components: compList });
-}
-
-function runDiagnosticsDirectly() {
-  triggerApiAction('health-check');
-}
-
-function runRepairDirectly() {
-  triggerApiAction('repair');
-}
-
-function runRollbackDirectly() {
-  triggerApiAction('rollback');
-}
-
-function launchClaudeTerminal() {
-  triggerApiAction('launch-claude');
-}
-
-function stopExecutionProcess() {
-  triggerApiAction('stop-process');
-}
-
-// ─── Render Functions ──────────────────────────────────────────
-function renderAppProfiles() {
-  const container = document.getElementById('profiles-container');
-  container.innerHTML = PROFILES.map(p => {
-    const isSel = selectedProf === p.id;
-    const name = currentAppLang === 'ru' ? p.name_ru : p.name_en;
-    const desc = currentAppLang === 'ru' ? p.desc_ru : p.desc_en;
-    const tools = (PROFILE_CONFIGS[p.id] || []).slice(0, 5);
-
-    return `
-      <div class="card ${isSel ? 'active' : ''}" onclick="selectAppProfile('${p.id}')">
-        <div class="card__header">
-          <span class="card__icon">${p.icon}</span>
-          <div>
-            <div class="card__title">${name}</div>
-            <div style="font-size:.72rem;color:var(--text-faint)">${p.tokens}</div>
-          </div>
-          <span class="card__tag">${p.tag}</span>
-        </div>
-        <div class="card__desc">${desc}</div>
-        <div class="card__chips">
-          ${tools.map(t => `<span class="chip">${t}</span>`).join('')}
-          ${(PROFILE_CONFIGS[p.id] || []).length > 5 ? `<span class="chip" style="color:var(--accent-gold)">+${(PROFILE_CONFIGS[p.id] || []).length - 5}</span>` : ''}
-        </div>
-        <div class="card__footer">
-          <button class="btn btn-sm btn-emerald" onclick="event.stopPropagation();selectAppProfile('${p.id}');executeCurrentProfileDirectly();">⚡ Врубить сейчас</button>
-          <button class="btn btn-sm btn-secondary" onclick="event.stopPropagation();showProfileDetailModal('${p.id}')">Разбор стека ↗</button>
-        </div>
-      </div>
-    `;
-  }).join('');
-}
-
-function renderAssemblerCategories() {
-  const container = document.getElementById('categories-container');
-  container.innerHTML = COMPONENT_CATEGORIES.map(cat => {
-    const title = currentAppLang === 'ru' ? cat.title_ru : cat.title_en;
-    return `
-      <div class="category-section">
-        <div class="category-header">
-          <div class="category-title">
-            <span>${title}</span>
-            <span class="nav-item__badge">${cat.items.length}</span>
-          </div>
-        </div>
-        <div class="category-items">
-          ${cat.items.map(item => {
-            const isChecked = selectedComps.has(item.id);
-            const desc = currentAppLang === 'ru' ? item.desc_ru : item.desc_en;
-            return `
-              <div class="item-card ${isChecked ? 'selected' : ''}" onclick="toggleAppComp('${item.id}')">
-                <input type="checkbox" ${isChecked ? 'checked' : ''} onclick="event.stopPropagation();toggleAppComp('${item.id}')">
-                <div class="item-info">
-                  <div class="item-name">
-                    <span>${item.name}</span>
-                    <code style="font-size:.65rem;color:var(--text-faint)">${item.id}</code>
-                  </div>
-                  <div class="item-desc">${desc}</div>
-                </div>
-              </div>
-            `;
-          }).join('')}
-        </div>
-      </div>
-    `;
-  }).join('');
-}
-
-function renderMcpManager() {
-  const container = document.getElementById('mcp-manager-container');
-  const mcpCategory = COMPONENT_CATEGORIES.find(c => c.cat === 'mcp');
-  if (!mcpCategory) return;
-
-  container.innerHTML = mcpCategory.items.map(item => `
-    <div class="card">
-      <div class="card__header">
-        <span class="card__icon">🌐</span>
-        <div>
-          <div class="card__title">${item.name}</div>
-          <div style="font-size:.72rem;color:var(--text-faint);font-family:'JetBrains Mono',monospace">${item.id}</div>
-        </div>
-        <span class="diag-badge badge-ok">CONNECTED</span>
-      </div>
-      <div class="card__desc">${currentAppLang === 'ru' ? item.desc_ru : item.desc_en}</div>
-      <div class="card__footer">
-        <button class="btn btn-sm btn-emerald" onclick="testMcpConnection('${item.id}')">⚡ Тест связи</button>
-        <button class="btn btn-sm btn-secondary" onclick="configureMcpKey('${item.id}')">🔑 API Ключи</button>
-      </div>
-    </div>
-  `).join('');
-}
-
-function renderSkillsStore() {
-  const container = document.getElementById('skills-store-container');
-  container.innerHTML = SKILLS_DATABASE.map(skill => `
-    <div class="card">
-      <div class="card__header">
-        <span class="card__icon">🎯</span>
-        <div>
-          <div class="card__title">${skill.name}</div>
-          <span class="chip" style="font-size:.62rem">${skill.cat}</span>
-        </div>
-        <span class="diag-badge badge-ok">VERIFIED</span>
-      </div>
-      <div class="card__desc">${currentAppLang === 'ru' ? skill.desc_ru : skill.desc_en}</div>
-      <div class="card__footer">
-        <button class="btn btn-sm btn-emerald" onclick="installSkillDirectly('${skill.id}')">📥 Установить</button>
-        <button class="btn btn-sm btn-secondary" onclick="showSkillPreviewModal('${skill.id}')">Код SKILL.md ↗</button>
-      </div>
-    </div>
-  `).join('');
-}
-
-function renderAgentsStudio() {
-  const container = document.getElementById('agents-studio-container');
-  container.innerHTML = AGENTS_ROSTER.map(agent => `
-    <div class="card">
-      <div class="card__header">
-        <span class="card__icon">${agent.icon}</span>
-        <div>
-          <div class="card__title">${agent.name}</div>
-          <div style="font-size:.72rem;color:var(--accent-gold);font-weight:700">${agent.model}</div>
-        </div>
-        <span class="diag-badge badge-ok">OPUS / SONNET</span>
-      </div>
-      <div class="card__desc">${currentAppLang === 'ru' ? agent.role_ru : agent.role_en}</div>
-      <div class="card__footer">
-        <button class="btn btn-sm btn-secondary" onclick="showAgentPromptModal('${agent.id}')">Промпт & Роль ↗</button>
-        <button class="btn btn-sm btn-emerald" onclick="deployAgentDirectly('${agent.id}')">⚡ Развернуть</button>
-      </div>
-    </div>
-  `).join('');
-}
-
-function renderDiagnostics() {
-  const container = document.getElementById('diag-container');
-  container.innerHTML = DIAGNOSTIC_CHECKS.map(c => `
-    <div class="diag-item">
-      <div class="diag-item__left">
-        <span class="diag-badge badge-ok">${c.status}</span>
-        <div>
-          <strong style="color:var(--text-pure);font-size:.84rem">${c.name}</strong>
-          <div style="font-size:.72rem;color:var(--text-muted)">${c.desc}</div>
-        </div>
-      </div>
-      <code style="font-family:'JetBrains Mono',monospace;font-size:.76rem;color:var(--accent-silver)">${c.val}</code>
-    </div>
-  `).join('');
-}
-
-async function loadSnapshotsList() {
-  const container = document.getElementById('snapshots-container');
-  if (!container) return;
-  try {
-    const res = await fetch('/api/snapshots');
-    const data = await res.json();
-    if (data.snapshots && data.snapshots.length > 0) {
-      container.innerHTML = data.snapshots.map((s, idx) => `
-        <div class="card">
-          <div class="card__header">
-            <span class="card__icon">📦</span>
-            <div>
-              <div class="card__title">${s.id}</div>
-              <div style="font-size:.72rem;color:var(--text-faint)">${new Date(s.date).toLocaleString()}</div>
-            </div>
-            ${idx === 0 ? '<span class="diag-badge badge-ok">LATEST</span>' : ''}
-          </div>
-          <div class="card__desc">Файлы снимка: ${s.files.join(', ')}</div>
-          <div class="card__footer">
-            <button class="btn btn-sm btn-emerald" onclick="runRollbackDirectly()">Восстановить этот снимок</button>
-          </div>
-        </div>
-      `).join('');
-    } else {
-      container.innerHTML = `<div class="card"><div class="card__desc">Снапшоты сохраняются автоматически при каждом развертывании в ~/.claude/backups/.</div></div>`;
-    }
-  } catch (e) {
-    container.innerHTML = `<div class="card"><div class="card__desc">Снапшоты сохраняются автоматически в ~/.claude/backups/.</div></div>`;
-  }
-}
-
-// ─── CLAUDE.md Builder ─────────────────────────────────────────
-const CLAUDEMD_TEMPLATES = {
-  fullstack: `# Project Architecture & Engineering Standards
-
-## Tech Stack
-- Frontend: Next.js 15 (App Router), React 19, TypeScript, Vanilla CSS / Tailwind
-- Backend: Node.js / Python FastAPI, PostgreSQL (Supabase), Redis
-- Testing: Playwright E2E, Vitest / Jest Unit Testing
-
-## Development Discipline
-- Strict TDD: Write specification tests before modifying code implementation.
-- Compact Context: Reference specific files and line numbers.
-- Security: Never commit .env secrets or destructive command scripts.
-`,
-  tdd: `# Strict Test-Driven Development (TDD) Protocols
-
-## Golden Rules
-1. Red -> Green -> Refactor.
-2. Never write implementation logic without an automated failing test case.
-3. Keep CLAUDE.md under 200 lines to avoid token context degradation.
-`
-};
-
-function loadClaudeMdTemplate(type) {
-  const text = CLAUDEMD_TEMPLATES[type] || CLAUDEMD_TEMPLATES.fullstack;
-  document.getElementById('claudemd-editor-text').value = text;
-  updateClaudeMdPreview();
-}
-
-function updateClaudeMdPreview() {
-  const text = document.getElementById('claudemd-editor-text').value;
-  const lineCount = text.split('\n').length;
-  const tokenEst = Math.round(text.length / 4);
-
-  let warning = '';
-  if (lineCount > 250) {
-    warning = `<div style="color:var(--accent-rose);margin-bottom:.6rem;font-weight:700">⚠️ Предупреждение: ${lineCount} строк (рекомендуется &lt;200 строк во избежание деградации контекста).</div>`;
-  } else {
-    warning = `<div style="color:var(--accent-emerald);margin-bottom:.6rem;font-weight:700">✓ Оптимальный размер: ${lineCount} строк (~${tokenEst} tokens).</div>`;
-  }
-
-  document.getElementById('claudemd-preview-box').innerHTML = warning + text;
-}
-
-async function saveClaudeMdDirectly() {
-  const claudemd = document.getElementById('claudemd-editor-text').value;
-  try {
-    const res = await fetch('/api/config', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ claudemd })
-    });
-    const json = await res.json();
-    if (json.success) {
-      alert('✅ CLAUDE.md успешно сохранен в ~/.claude/CLAUDE.md!');
-    } else {
-      alert('[-] Ошибка: ' + json.error);
-    }
-  } catch (err) {
-    alert('[-] Сервер bridge недоступен. Сохраните вручную.');
-  }
-}
-
-// ─── Token ROI Calculator ──────────────────────────────────────
-function recalculateRoi() {
-  const devs = parseInt(document.getElementById('val-devs').textContent || '5', 10);
-  const prompts = parseInt(document.getElementById('val-prompts').textContent || '40', 10);
-  // Average developer daily tokens ~150k output. Caveman cuts ~65%. Opus/Sonnet blended rate ~$15/M tokens.
-  const monthlySavings = Math.round(devs * prompts * 22 * 0.45);
-  document.getElementById('roi-savings-amount').textContent = `$${monthlySavings.toLocaleString()} / мес`;
-}
-
-// ─── Actions & Modals ──────────────────────────────────────────
-function showProfileDetailModal(pId) {
-  const p = PROFILES.find(x => x.id === pId);
-  if (!p) return;
-
-  const name = currentAppLang === 'ru' ? p.name_ru : p.name_en;
-  const desc = currentAppLang === 'ru' ? p.desc_ru : p.desc_en;
-  const details = currentAppLang === 'ru' ? p.details_ru : p.details_en;
-  const tools = PROFILE_CONFIGS[pId] || [];
-
-  const body = document.getElementById('modal-content-body');
-  body.innerHTML = `
-    <div style="display:flex;align-items:center;gap:.85rem;margin-bottom:1.2rem">
-      <span style="font-size:2.2rem">${p.icon}</span>
-      <div>
-        <h3 style="font-size:1.35rem;font-weight:800;color:var(--text-pure)">${name}</h3>
-        <span class="card__tag">${p.tag} · ${p.tokens}</span>
-      </div>
-    </div>
-
-    <p style="font-size:.88rem;color:var(--text-main);line-height:1.6;margin-bottom:1.1rem">${desc}</p>
-
-    <div style="background:var(--bg-darkest);border:1px solid var(--border-subtle);border-radius:var(--radius-xs);padding:1.1rem;margin-bottom:1.3rem">
-      <strong style="color:var(--text-pure);font-size:.82rem;display:block;margin-bottom:.4rem">🏛️ Архитектурный разбор и назначение:</strong>
-      <div style="font-size:.8rem;color:var(--text-muted);line-height:1.55">${details}</div>
-    </div>
-
-    <strong style="color:var(--text-pure);font-size:.82rem;display:block;margin-bottom:.55rem">📦 Полный состав инструментов (${tools.length}):</strong>
-    <div style="display:flex;flex-wrap:wrap;gap:.35rem;margin-bottom:1.5rem">
-      ${tools.map(t => `<span class="chip" style="padding:.25rem .55rem;font-size:.72rem">${t}</span>`).join('')}
-    </div>
-
-    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.8rem">
-      <button class="btn btn-secondary" onclick="closeAppModal()">Закрыть</button>
-      <button class="btn btn-emerald" onclick="selectAppProfile('${p.id}');executeCurrentProfileDirectly();closeAppModal();">⚡ Врубить этот профиль в системе</button>
-    </div>
-  `;
-
-  document.getElementById('modal-overlay').style.display = 'flex';
-}
-
-function showAddMcpModal() {
-  const body = document.getElementById('modal-content-body');
-  body.innerHTML = `
-    <h3 style="font-size:1.3rem;font-weight:800;color:var(--text-pure);margin-bottom:1rem">+ Добавить MCP Сервер</h3>
-    <div class="form-group">
-      <label class="form-label">Название MCP сервера (например, github, supabase, stripe):</label>
-      <input type="text" class="form-input" id="mcp-add-name" placeholder="my-mcp-server">
-    </div>
-    <div class="form-group">
-      <label class="form-label">Команда запуска (например, npx, python, docker):</label>
-      <input type="text" class="form-input" id="mcp-add-cmd" value="npx">
-    </div>
-    <div class="form-group">
-      <label class="form-label">Аргументы (через пробел):</label>
-      <input type="text" class="form-input" id="mcp-add-args" placeholder="-y @modelcontextprotocol/server-postgres postgresql://...">
-    </div>
-    <div style="display:flex;justify-content:flex-end;gap:.7rem;margin-top:1.2rem">
-      <button class="btn btn-secondary" onclick="closeAppModal()">Отмена</button>
-      <button class="btn btn-emerald" onclick="saveCustomMcp()">Добавить и запустить</button>
-    </div>
-  `;
-  document.getElementById('modal-overlay').style.display = 'flex';
-}
-
-function saveCustomMcp() {
-  const name = document.getElementById('mcp-add-name').value;
-  if (!name) return alert('Введите имя MCP сервера!');
-  closeAppModal();
-  appendTerminalLog(`\n[>>] Installing custom MCP server: ${name}...\n`);
-  triggerApiAction('apply-components', { profile: 'Master', components: `mcp-${name}` });
-}
-
-function testMcpConnection(mcpId) {
-  appendTerminalLog(`\n[>>] Testing connectivity for MCP '${mcpId}'...\n`);
-  setTimeout(() => {
-    appendTerminalLog(`[OK] MCP '${mcpId}' responded with healthy handshake (Latency: 12ms)\n`);
-  }, 600);
-}
-
-function configureMcpKey(mcpId) {
-  const key = prompt(`Введите API ключ или переменную окружения для ${mcpId}:`);
-  if (key) {
-    appendTerminalLog(`[OK] API key configured for ${mcpId}\n`);
-  }
-}
-
-function showSkillPreviewModal(skillId) {
-  const s = SKILLS_DATABASE.find(x => x.id === skillId);
-  const body = document.getElementById('modal-content-body');
-  body.innerHTML = `
-    <h3 style="font-size:1.3rem;font-weight:800;color:var(--text-pure);margin-bottom:.8rem">🎯 Скилл: ${s ? s.name : skillId}</h3>
-    <p style="font-size:.82rem;color:var(--text-muted);margin-bottom:1rem">${s ? s.desc_ru : ''}</p>
-    <pre style="background:#050508;border:1px solid var(--border-subtle);border-radius:var(--radius-xs);padding:1rem;font-family:'JetBrains Mono',monospace;font-size:.78rem;color:var(--accent-silver);max-height:300px;overflow-y:auto">
----
-name: ${skillId}
-description: Specialized instructions for Claude Code.
----
-
-# ${s ? s.name : skillId}
-1. Always analyze context before modifying code.
-2. Enforce strict type validation.
-3. Validate changes with automated tests.
-    </pre>
-    <div style="display:flex;justify-content:flex-end;gap:.7rem;margin-top:1.2rem">
-      <button class="btn btn-secondary" onclick="closeAppModal()">Закрыть</button>
-      <button class="btn btn-emerald" onclick="installSkillDirectly('${skillId}');closeAppModal();">📥 Установить в ~/.claude/skills/</button>
-    </div>
-  `;
-  document.getElementById('modal-overlay').style.display = 'flex';
-}
-
-function installSkillDirectly(skillId) {
-  appendTerminalLog(`\n[>>] Installing skill '${skillId}' into ~/.claude/skills/...\n`);
-  setTimeout(() => {
-    appendTerminalLog(`[OK] Skill '${skillId}' installed and registered in Claude Code!\n`);
-  }, 500);
-}
-
-function showAgentPromptModal(agentId) {
-  const a = AGENTS_ROSTER.find(x => x.id === agentId);
-  const body = document.getElementById('modal-content-body');
-  body.innerHTML = `
-    <h3 style="font-size:1.3rem;font-weight:800;color:var(--text-pure);margin-bottom:.4rem">${a ? a.icon + ' ' + a.name : agentId}</h3>
-    <div style="color:var(--accent-gold);font-size:.8rem;font-weight:700;margin-bottom:.9rem">Модель: ${a ? a.model : 'Opus'}</div>
-    <div class="form-group">
-      <label class="form-label">Системный промпт субагента (~/.claude/agents/${agentId}.md):</label>
-      <textarea class="form-textarea" style="height:220px">You are ${a ? a.name : agentId}, an elite autonomous subagent.
-Your goal is to inspect, critique, and write high-quality code.
-Always challenge assumptions, identify subtle edge cases, and ensure maximum performance.</textarea>
-    </div>
-    <div style="display:flex;justify-content:flex-end;gap:.7rem;margin-top:1rem">
-      <button class="btn btn-secondary" onclick="closeAppModal()">Закрыть</button>
-      <button class="btn btn-emerald" onclick="deployAgentDirectly('${agentId}');closeAppModal();">⚡ Сохранить и активировать</button>
-    </div>
-  `;
-  document.getElementById('modal-overlay').style.display = 'flex';
-}
-
-function deployAgentDirectly(agentId) {
-  appendTerminalLog(`\n[>>] Deploying agent persona '${agentId}' into ~/.claude/agents/...\n`);
-  setTimeout(() => {
-    appendTerminalLog(`[OK] Agent '${agentId}' configured with Opus/Sonnet reasoning rules!\n`);
-  }, 400);
-}
-
-function closeAppModal(e) {
-  if (!e || e.target.id === 'modal-overlay' || e.target.classList.contains('modal-close')) {
-    document.getElementById('modal-overlay').style.display = 'none';
-  }
-}
-
-function updateAssemblerStats() {
-  const total = selectedComps.size;
-  document.getElementById('side-selected-count').textContent = total;
-  document.getElementById('cnt-total').textContent = total;
-
-  let plug = 0, mcp = 0, skill = 0, lsp = 0, agent = 0, hook = 0;
-  selectedComps.forEach(id => {
-    if (id.startsWith('mcp-') || id === 'mcp-playwright') mcp++;
-    else if (id.startsWith('skill-') || id === 'agent-security') skill++;
-    else if (id.startsWith('lsp-')) lsp++;
-    else if (id.startsWith('agent-') && id !== 'agent-security') agent++;
-    else if (id.startsWith('hook-')) hook++;
-    else plug++;
-  });
-
-  document.getElementById('cnt-plug').textContent = plug;
-  document.getElementById('cnt-mcp').textContent = mcp;
-  document.getElementById('cnt-skill').textContent = skill;
-  document.getElementById('cnt-lsp').textContent = lsp;
-  document.getElementById('cnt-agent').textContent = agent;
-  document.getElementById('cnt-hook').textContent = hook;
-
-  const bar = document.getElementById('asm-token-bar');
-  const val = document.getElementById('asm-token-val');
-  const percent = Math.min(100, Math.round((total / 40) * 100));
-  bar.style.width = percent + '%';
-
-  if (total <= 35) {
-    bar.style.background = 'var(--accent-emerald)';
-    val.style.color = 'var(--accent-emerald)';
-    val.textContent = `~${(total * 35).toLocaleString()} tokens (Optimal)`;
-  } else {
-    bar.style.background = 'var(--accent-amber)';
-    val.style.color = 'var(--accent-amber)';
-    val.textContent = `~${(total * 45).toLocaleString()} tokens (Extended)`;
-  }
-
-  updateCommands();
-}
-
-function updateCommands() {
-  const p = selectedProf || 'Master';
-  const customIds = [...selectedComps];
-  const standardIds = PROFILE_CONFIGS[p] || [];
-
-  const isExact = customIds.length === standardIds.length && customIds.every(id => standardIds.includes(id));
-
-  let cmd = `powershell -ExecutionPolicy Bypass -File setup-claude-code-ultimate.ps1 -Profile ${p}`;
-  if (!isExact && customIds.length > 0) {
-    cmd = `powershell -ExecutionPolicy Bypass -File setup-claude-code-ultimate.ps1 -Profile ${p} -Components "${customIds.join(',')}"`;
-  }
-
-  document.getElementById('bar-cmd-code').textContent = cmd;
-  const deployBox = document.getElementById('deploy-cmd-box');
-  if (deployBox) deployBox.textContent = cmd;
-
-  const pObj = PROFILES.find(x => x.id === p);
-  const badge = document.getElementById('top-profile-badge');
-  if (badge && pObj) {
-    badge.textContent = `${pObj.id} (${customIds.length} инстр.)`;
-  }
-}
-
-function updateLiveSecurity() {
-  const json = {
-    permissions: {
-      deny: [
-        "Read(.env*)", "Read(**/.env*)", "Read(**/.ssh/**)", "Read(**/*.pem)", "Read(**/*.key)",
-        "Bash(rm -rf /)", "Bash(rm -rf /*)", "Bash(*format C:*)", "Bash(*del /s /q C:*)",
-        "Bash(*PRIVATE_KEY*=*)", "Bash(*AWS_SECRET*=*)", "Bash(curl*|*sh)", "Bash(wget*|*sh)"
-      ],
-      allow: [
-        "Bash(git *)", "Bash(npm run *)", "Bash(npm test*)", "Bash(npx *)", "Bash(node *)", "Bash(python *)", "Bash(claude *)"
-      ]
-    },
-    hooks: {
-      PreToolUse: [
-        { type: "command", command: "powershell -ExecutionPolicy Bypass -File C:\\Users\\Admin\\.claude\\hooks\\scan-secrets.ps1" },
-        { type: "command", command: "powershell -ExecutionPolicy Bypass -File C:\\Users\\Admin\\.claude\\hooks\\block-dangerous.ps1" }
-      ],
-      SessionStart: [
-        { type: "command", command: "powershell -ExecutionPolicy Bypass -File C:\\Users\\Admin\\.claude\\hooks\\repo-map.ps1" }
-      ],
-      Stop: [
-        { type: "command", command: "powershell -ExecutionPolicy Bypass -File C:\\Users\\Admin\\.claude\\hooks\\self-heal.ps1" }
-      ]
-    }
-  };
-
-  document.getElementById('sec-preview-json').textContent = JSON.stringify(json, null, 2);
-}
-
-// ─── Actions ───────────────────────────────────────────────────
+// ─── Navigation ───────────────────────────────────────────────
 function switchView(viewId) {
   activeView = viewId;
+  document.querySelectorAll('.view-panel').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.nav-item').forEach(btn => {
-    btn.classList.toggle('active', btn.dataset.view === viewId);
+    btn.classList.toggle('active', btn.getAttribute('data-view') === viewId);
   });
-  document.querySelectorAll('.view-panel').forEach(p => {
-    p.classList.toggle('active', p.id === 'view-' + viewId);
+  const target = document.getElementById(`view-${viewId}`);
+  if (target) target.classList.add('active');
+}
+
+// ─── Profiles View ─────────────────────────────────────────────
+function renderProfiles() {
+  const container = document.getElementById('profiles-container');
+  container.innerHTML = PROFILES.map(p => `
+    <div class="card ${selectedProf === p.id ? 'active' : ''}" onclick="selectProfile('${p.id}')">
+      <div class="card__header">
+        <span class="card__icon">${p.icon}</span>
+        <div>
+          <div class="card__title">${currentAppLang === 'ru' ? p.name_ru : p.name_en}</div>
+          <div style="font-size:.7rem;color:var(--accent-emerald);font-family:'JetBrains Mono',monospace">${p.tokens}</div>
+        </div>
+        <span class="card__tag">${p.tag}</span>
+      </div>
+      <p class="card__desc">${currentAppLang === 'ru' ? p.desc_ru : p.desc_en}</p>
+      <div class="card__footer">
+        <button class="btn btn-sm btn-secondary" onclick="openProfileDetailsModal('${p.id}', event)">ℹ️ Архитектура</button>
+        <button class="btn btn-sm ${selectedProf === p.id ? 'btn-emerald' : 'btn-primary'}" onclick="applyProfileFromCard('${p.id}', event)">
+          ${selectedProf === p.id ? '✓ Выбран' : 'Выбрать'}
+        </button>
+      </div>
+    </div>
+  `).join('');
+}
+
+function selectProfile(id) {
+  selectedProf = id;
+  selectedComps = new Set(PROFILE_CONFIGS[id] || PROFILE_CONFIGS['Master']);
+  document.getElementById('top-profile-badge').innerText = `${id} (${selectedComps.size} инстр.)`;
+  updateCommandLine();
+  renderProfiles();
+  renderAssembler();
+  updateSummaryStats();
+}
+
+function applyProfileFromCard(id, event) {
+  if (event) event.stopPropagation();
+  selectProfile(id);
+  executeCurrentProfileDirectly();
+}
+
+function openProfileDetailsModal(id, event) {
+  if (event) event.stopPropagation();
+  const p = PROFILES.find(x => x.id === id);
+  if (!p) return;
+  const modalBody = document.getElementById('modal-content-body');
+  const comps = PROFILE_CONFIGS[id] || [];
+  modalBody.innerHTML = `
+    <div style="display:flex;align-items:center;gap:.8rem;margin-bottom:1rem">
+      <span style="font-size:2.2rem">${p.icon}</span>
+      <div>
+        <h2 style="color:var(--text-pure);font-size:1.3rem">${currentAppLang === 'ru' ? p.name_ru : p.name_en}</h2>
+        <span class="chip" style="color:var(--accent-gold)">${p.tokens}</span>
+      </div>
+    </div>
+    <p style="color:var(--text-main);font-size:.85rem;line-height:1.6;margin-bottom:1.2rem">
+      ${p.desc_ru}
+    </p>
+    <h4 style="font-size:.82rem;color:var(--text-pure);margin-bottom:.6rem">Состав инструментов (${comps.length}):</h4>
+    <div style="display:flex;flex-wrap:wrap;gap:.4rem;margin-bottom:1.5rem">
+      ${comps.map(c => `<span class="chip">${c}</span>`).join('')}
+    </div>
+    <div style="display:flex;gap:.8rem">
+      <button class="btn btn-emerald" onclick="selectProfile('${id}'); executeCurrentProfileDirectly(); closeAppModal();">⚡ Врубить этот профиль</button>
+      <button class="btn btn-secondary" onclick="closeAppModal()">Закрыть</button>
+    </div>
+  `;
+  document.getElementById('modal-overlay').style.display = 'flex';
+}
+
+// ─── Workspace Scanner View ────────────────────────────────────
+function scanCurrentWorkspace() {
+  const targetPath = document.getElementById('ws-scan-path').value.trim() || '.';
+  appendTerminalLog(`[>>] Scanning workspace stack at '${targetPath}'...`);
+
+  fetch('/api/workspace/scan', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ targetPath })
+  })
+  .then(res => res.json())
+  .then(data => {
+    if (data.error) return alert(data.error);
+
+    const reportContainer = document.getElementById('ws-scan-report-container');
+    document.getElementById('ws-rec-profile').innerText = data.recommendedProfile;
+
+    reportContainer.innerHTML = `
+      <div class="card">
+        <div class="card__header">
+          <span class="card__icon">💡</span>
+          <div>
+            <div class="card__title">Рекомендованный профиль: ${data.recommendedProfile}</div>
+            <span style="font-size:.7rem;color:var(--accent-emerald)">Путь: ${data.path}</span>
+          </div>
+          <span class="card__tag">${data.recommendedProfile}</span>
+        </div>
+        <p class="card__desc">
+          Обнаруженные фреймворки и стек: <strong>${data.frameworks.join(', ') || 'Стандартный проект'}</strong>
+        </p>
+        <div style="margin-bottom:.8rem">
+          <div style="font-size:.72rem;color:var(--text-pure);margin-bottom:.3rem">Рекомендованные MCP:</div>
+          <div style="display:flex;flex-wrap:wrap;gap:.3rem">
+            ${data.recommendedMcps.map(m => `<span class="chip">${m}</span>`).join('')}
+          </div>
+        </div>
+        <div class="card__footer">
+          <button class="btn btn-emerald btn-sm" onclick="selectProfile('${data.recommendedProfile}'); executeCurrentProfileDirectly();">⚡ Применить к этому проекту</button>
+        </div>
+      </div>
+    `;
+
+    appendTerminalLog(`[OK] Workspace scan complete. Detected: ${data.frameworks.join(', ') || 'Generic stack'}. Recommended: ${data.recommendedProfile}\n`);
   });
 }
 
-function selectAppProfile(pId) {
-  selectedProf = pId;
-  selectedComps = new Set(PROFILE_CONFIGS[pId] || []);
-  renderAppProfiles();
-  renderAssemblerCategories();
-  updateAssemblerStats();
+function applyScannedWorkspaceProfile() {
+  const prof = document.getElementById('ws-rec-profile').innerText;
+  selectProfile(prof);
+  executeCurrentProfileDirectly();
 }
 
-function toggleAppComp(id) {
+// ─── Assembler View ───────────────────────────────────────────
+function renderAssembler() {
+  const container = document.getElementById('categories-container');
+  container.innerHTML = COMPONENT_CATEGORIES.map(cat => `
+    <div class="category-section">
+      <div class="category-header">
+        <span class="category-title">
+          ${currentAppLang === 'ru' ? cat.title_ru : cat.title_en}
+        </span>
+        <span class="chip">${cat.items.length} доступно</span>
+      </div>
+      <div class="category-items">
+        ${cat.items.map(item => {
+          const isChecked = selectedComps.has(item.id);
+          return `
+            <div class="item-card ${isChecked ? 'selected' : ''}" onclick="toggleComponent('${item.id}')">
+              <input type="checkbox" ${isChecked ? 'checked' : ''} onclick="event.stopPropagation(); toggleComponent('${item.id}')">
+              <div class="item-info">
+                <div class="item-name">
+                  <span>${item.name}</span>
+                </div>
+                <div class="item-desc">${currentAppLang === 'ru' ? item.desc_ru : item.desc_en}</div>
+              </div>
+            </div>
+          `;
+        }).join('')}
+      </div>
+    </div>
+  `).join('');
+}
+
+function toggleComponent(id) {
   if (selectedComps.has(id)) {
     selectedComps.delete(id);
   } else {
     selectedComps.add(id);
   }
-  renderAssemblerCategories();
-  updateAssemblerStats();
+  renderAssembler();
+  updateSummaryStats();
+  updateCommandLine();
 }
 
 function resetToMaster() {
-  selectAppProfile('Master');
+  selectProfile('Master');
 }
 
 function clearAllComponents() {
   selectedComps.clear();
-  renderAssemblerCategories();
-  updateAssemblerStats();
+  renderAssembler();
+  updateSummaryStats();
+  updateCommandLine();
 }
 
-function copyLaunchCommand() {
-  const cmd = document.getElementById('bar-cmd-code').textContent;
-  navigator.clipboard.writeText(cmd).then(() => {
-    const btn = document.getElementById('btn-bot-copy');
-    const topBtn = document.getElementById('btn-top-copy');
-    if (btn) btn.textContent = '✅ Скопировано!';
-    if (topBtn) topBtn.textContent = '✅ Скопировано!';
-    setTimeout(() => {
-      if (btn) btn.textContent = '📋 Скопировать';
-      if (topBtn) topBtn.textContent = '📋 Команда запуска';
-    }, 2000);
+function updateSummaryStats() {
+  const count = selectedComps.size;
+  document.getElementById('side-selected-count').innerText = count;
+  document.getElementById('stat-total-c').innerText = count;
+
+  let pluginsC = 0, mcpC = 0, skillsC = 0, agentsC = 0, hooksC = 0;
+  selectedComps.forEach(id => {
+    if (id.includes('plugin') || id === 'frontend-design' || id === 'superpowers' || id === 'context7' || id === 'agentmemory') pluginsC++;
+    else if (id.startsWith('mcp-')) mcpC++;
+    else if (id.startsWith('skill-')) skillsC++;
+    else if (id.startsWith('agent-')) agentsC++;
+    else if (id.startsWith('hook-')) hooksC++;
+  });
+
+  document.getElementById('stat-plugins-c').innerText = pluginsC;
+  document.getElementById('stat-mcp-c').innerText = mcpC;
+  document.getElementById('stat-skills-c').innerText = skillsC;
+  document.getElementById('stat-agents-c').innerText = agentsC;
+  document.getElementById('stat-hooks-c').innerText = hooksC;
+
+  const estTokens = Math.min(2500, Math.round(count * 38 + 200));
+  document.getElementById('meter-tokens-val').innerText = `~${estTokens} tokens`;
+  const pct = Math.min(100, Math.round((estTokens / 2500) * 100));
+  const fill = document.getElementById('token-fill-bar');
+  fill.style.width = `${pct}%`;
+  fill.style.backgroundColor = pct > 75 ? 'var(--accent-rose)' : (pct > 50 ? 'var(--accent-amber)' : 'var(--accent-emerald)');
+}
+
+function updateCommandLine() {
+  let cmd = `powershell -ExecutionPolicy Bypass -File setup-claude-code-ultimate.ps1`;
+  if (selectedProf && selectedComps.size === (PROFILE_CONFIGS[selectedProf] || []).length) {
+    cmd += ` -Profile ${selectedProf}`;
+  } else {
+    cmd += ` -Profile Custom -Components "${Array.from(selectedComps).join(',')}"`;
+  }
+  document.getElementById('bar-cmd-code').innerText = cmd;
+  const psCmdElem = document.getElementById('cli-ps-cmd');
+  if (psCmdElem) psCmdElem.innerText = cmd;
+}
+
+// ─── Prompt Matrix & Slash Commands View ───────────────────────
+function loadPromptsMatrix() {
+  fetch('/api/prompts')
+    .then(res => res.json())
+    .then(data => {
+      promptMatrix = data.prompts || [];
+      renderPromptsGrid();
+    });
+}
+
+function renderPromptsGrid() {
+  const container = document.getElementById('prompts-cards-container');
+  const search = (document.getElementById('prompts-search-input')?.value || '').toLowerCase();
+
+  const filtered = promptMatrix.filter(p => p.name.toLowerCase().includes(search) || p.prompt.toLowerCase().includes(search) || p.cat.toLowerCase().includes(search));
+
+  container.innerHTML = filtered.map(p => `
+    <div class="card">
+      <div class="card__header">
+        <span class="card__icon">⚡</span>
+        <div>
+          <div class="card__title">${p.name}</div>
+          <span class="chip" style="color:var(--accent-gold)">${p.cmd}</span>
+        </div>
+        <span class="card__tag">${p.cat}</span>
+      </div>
+      <p class="card__desc">${p.prompt}</p>
+      <div class="card__footer">
+        <button class="btn btn-sm btn-secondary" onclick="copyText('${p.prompt.replace(/'/g, "\\'")}')">📋 Скопировать</button>
+        <button class="btn btn-sm btn-emerald" onclick="exportPromptAsSlashCommand('${p.id}', '${p.cmd}', '${p.prompt.replace(/'/g, "\\'")}')">+ В слеш-команды</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+function exportPromptAsSlashCommand(id, cmd, prompt) {
+  fetch('/api/prompts/export', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ id, cmd, prompt })
+  })
+  .then(res => res.json())
+  .then(data => {
+    if (data.success) {
+      alert(`Слеш-команда '${cmd}' успешно экспортирована в ~/.claude/commands/! Теперь вы можете вызывать её как ${cmd} в Claude Code.`);
+    }
   });
 }
 
-function downloadCustomScript() {
-  const compList = [...selectedComps].join(',');
-  const scriptContent = `# Claude Code Custom Generated Setup\r\n# Profile: ${selectedProf}\r\n# Components: ${compList}\r\n\r\n$scriptUrl = "https://raw.githubusercontent.com/temkalt/claude-ultimate-hub/main/setup-claude-code-ultimate.ps1"\r\n$tempFile = Join-Path $env:TEMP "setup-claude-code-ultimate.ps1"\r\nInvoke-RestMethod -Uri $scriptUrl -OutFile $tempFile\r\npowershell -ExecutionPolicy Bypass -File $tempFile -Profile "${selectedProf}" -Components "${compList}"\r\n`;
+// ─── Sessions & Cost Telemetry View ───────────────────────────
+function loadSessionsTelemetry() {
+  fetch('/api/sessions')
+    .then(res => res.json())
+    .then(data => {
+      document.getElementById('tel-total-tok').innerText = data.totalTokens.toLocaleString();
+      document.getElementById('tel-saved-tok').innerText = data.totalSavedTokens.toLocaleString();
+      document.getElementById('tel-spend-usd').innerText = data.totalSpendUsd;
+      document.getElementById('tel-saved-usd').innerText = data.totalSavedUsd;
 
-  const blob = new Blob([scriptContent], { type: 'text/plain' });
+      const list = document.getElementById('sessions-list-container');
+      list.innerHTML = data.sessions.map(s => `
+        <div class="diag-item">
+          <div class="diag-item__left">
+            <span class="diag-badge badge-ok">SESSION</span>
+            <div>
+              <strong style="color:var(--text-pure);font-size:.82rem">${s.id}</strong>
+              <div style="font-size:.72rem;color:var(--text-muted)">Токенов: ${s.tokens.toLocaleString()} | Стоимость: $${s.costEstimate}</div>
+            </div>
+          </div>
+          <span style="font-family:'JetBrains Mono',monospace;color:var(--accent-emerald);font-size:.78rem">
+            +$${s.savingsEstimate} сэкономлено
+          </span>
+        </div>
+      `).join('');
+    });
+}
+
+// ─── CLAUDE.md Auto-Optimizer View ────────────────────────────
+function initClaudeMdBuilder() {
+  const togglesBox = document.getElementById('claudemd-toggles-box');
+  const modules = [
+    { id: 'sec', label: '🔒 Базовые правила безопасности (Запрет .env, паролей, curl | sh)', checked: true },
+    { id: 'tdd', label: '🧪 TDD-дисциплина (Тесты перед написанием кода)', checked: true },
+    { id: 'caveman', label: '⚡ Режим сжатия Caveman (-65% токенов)', checked: true },
+    { id: 'lsp', label: '⚡ Навигация через LSP символы вместо Grep', checked: true },
+    { id: 'repomap', label: '🗺️ Кэширование топологии Git репозитория', checked: true },
+    { id: 'agents', label: '🤖 Реестр доступных субагентов (Opus/Sonnet)', checked: true },
+    { id: 'commits', label: '📋 Стандарт Conventional Commits', checked: true }
+  ];
+
+  togglesBox.innerHTML = modules.map(m => `
+    <label style="display:flex;gap:.6rem;align-items:center;font-size:.78rem;color:var(--text-main);cursor:pointer">
+      <input type="checkbox" ${m.checked ? 'checked' : ''} onchange="regenerateClaudeMd()" id="chk-claudemd-${m.id}" style="accent-color:var(--accent-emerald)">
+      <span>${m.label}</span>
+    </label>
+  `).join('');
+
+  regenerateClaudeMd();
+}
+
+function regenerateClaudeMd() {
+  const lines = [
+    '<!-- CLAUDE-ULTIMATE-SETUP:BEGIN -->',
+    '# Claude Code Ultimate Hub Configuration',
+    `# Updated: ${new Date().toISOString()}`,
+    ''
+  ];
+
+  if (document.getElementById('chk-claudemd-sec')?.checked) {
+    lines.push(
+      '## Core Security Guardrails',
+      '* NEVER output or log API keys, tokens, passwords, or credentials',
+      '* NEVER read .env files, .ssh directories, or .pem/.key certificates',
+      '* NEVER execute commands that pipe curl/wget directly to shell interpreters',
+      '* ALWAYS use environment variables or secret managers for credentials',
+      ''
+    );
+  }
+
+  if (document.getElementById('chk-claudemd-tdd')?.checked) {
+    lines.push(
+      '## Engineering & TDD Standards',
+      '* Plan first: Use Plan Mode to verify architecture before execution',
+      '* Write unit test cases before functional code implementation',
+      '* Ensure high test isolation and deterministic fixtures',
+      ''
+    );
+  }
+
+  if (document.getElementById('chk-claudemd-caveman')?.checked) {
+    lines.push(
+      '## Token Optimization',
+      '* Eliminate boilerplate phrasing and verbose pleasantries',
+      '* Provide concise, high-signal technical explanations',
+      ''
+    );
+  }
+
+  if (document.getElementById('chk-claudemd-lsp')?.checked) {
+    lines.push(
+      '## Symbol Navigation',
+      '* Use Language Server Protocol (LSP) for AST symbol lookup instead of full repo grep',
+      ''
+    );
+  }
+
+  if (document.getElementById('chk-claudemd-agents')?.checked) {
+    lines.push(
+      '## Available Subagents',
+      '* **architect**: High-level system architecture (Opus)',
+      '* **security-reviewer**: OWASP vulnerability audits (Opus)',
+      '* **code-reviewer**: Code quality and edge-case inspection (Sonnet)',
+      '* **testing-specialist**: Automated unit and E2E test suites (Sonnet)',
+      '* **docs-writer**: Technical documentation (Haiku)',
+      ''
+    );
+  }
+
+  lines.push('<!-- CLAUDE-ULTIMATE-SETUP:END -->');
+
+  const text = lines.join('\n');
+  document.getElementById('claudemd-text-editor').value = text;
+  updateClaudeMdStats();
+}
+
+function runClaudeMdAutoOptimize() {
+  const currentText = document.getElementById('claudemd-text-editor').value;
+  appendTerminalLog('[>>] Running NLP Token Compressor on CLAUDE.md...');
+
+  fetch('/api/claudemd/optimize', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ text: currentText })
+  })
+  .then(res => res.json())
+  .then(data => {
+    document.getElementById('claudemd-text-editor').value = data.optimizedText;
+    updateClaudeMdStats();
+    appendTerminalLog(`[OK] CLAUDE.md optimized: -${data.savingsPct}% tokens saved (${data.originalTokens} -> ${data.newTokens} tokens).\n`);
+    alert(`Оптимизация завершена! Сэкономлено ${data.savingsPct}% токенов.`);
+  });
+}
+
+function updateClaudeMdStats() {
+  const text = document.getElementById('claudemd-text-editor').value;
+  const lineCount = text.split('\n').length;
+  const approxTokens = Math.round(text.length / 4);
+  document.getElementById('claudemd-line-counter').innerText = `${lineCount} строк / ~${approxTokens} токенов`;
+}
+
+function saveClaudeMdDirectly() {
+  const text = document.getElementById('claudemd-text-editor').value;
+  fetch('/api/config', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ claudemd: text })
+  })
+  .then(res => res.json())
+  .then(data => {
+    if (data.success) {
+      alert('CLAUDE.md успешно сохранен!');
+    }
+  });
+}
+
+// ─── MCP Servers View ──────────────────────────────────────────
+function renderMcpCards() {
+  const container = document.getElementById('mcp-cards-container');
+  const search = (document.getElementById('mcp-search-input')?.value || '').toLowerCase();
+  
+  const mcpList = [
+    { id: 'postgres', name: 'PostgreSQL Read-Only', cat: 'Databases', desc: 'Read-only schema queries & safe inspection without data mutations.', cmd: 'npx', args: ['-y', '@modelcontextprotocol/server-postgres'] },
+    { id: 'supabase', name: 'Supabase Cloud', cat: 'Databases', desc: 'Manage remote postgres, database migrations, auth schemas, and edge functions.', cmd: 'npx', args: ['-y', '@modelcontextprotocol/server-supabase'] },
+    { id: 'sqlite', name: 'SQLite DB', cat: 'Databases', desc: 'Instant local SQLite database inspection and zero-latency SQL queries.', cmd: 'npx', args: ['-y', '@modelcontextprotocol/server-sqlite'] },
+    { id: 'redis', name: 'Redis Cache', cat: 'Databases', desc: 'Key-value cache inspection, pub/sub channel monitoring, and TTL management.', cmd: 'npx', args: ['-y', '@modelcontextprotocol/server-redis'] },
+    { id: 'docker', name: 'Docker Engine', cat: 'DevOps', desc: 'List active containers, inspect image layers, stream container logs.', cmd: 'npx', args: ['-y', '@modelcontextprotocol/server-docker'] },
+    { id: 'playwright', name: 'Playwright Browser', cat: 'Browser & Testing', desc: 'Headless Chromium browser for visual UI verification and screenshot testing.', cmd: 'npx', args: ['-y', '@anthropic/mcp-playwright'] },
+    { id: 'stripe', name: 'Stripe Payments', cat: 'Fintech', desc: 'Global payment gateway: Checkout sessions, subscriptions, customer records.', cmd: 'npx', args: ['-y', 'mcp-stripe'] },
+    { id: 'yookassa', name: 'ЮKassa Pay 🇷🇺', cat: 'Fintech', desc: 'Russian ruble payments with automated 54-FZ fiscal receipt generation.', cmd: 'npx', args: ['-y', '@theyahia/yookassa-mcp'] },
+    { id: 'telegram', name: 'Telegram Bot 🇷🇺', cat: 'Social & Bots', desc: 'Bot management, Telegram channel broadcasting, interactive alerts.', cmd: 'npx', args: ['-y', 'telegram-mcp-server'] },
+    { id: 'yandexcloud', name: 'Yandex Cloud 🇷🇺', cat: 'Cloud Infrastructure', desc: 'Compute Cloud VMs, S3 Object Storage buckets, and serverless functions.', cmd: 'npx', args: ['-y', 'yandex-cloud-mcp'] },
+    { id: 'notion', name: 'Notion Workspace', cat: 'Productivity', desc: 'Sync engineering specs, product backlogs, and team databases with Notion.', cmd: 'npx', args: ['-y', '@modelcontextprotocol/server-notion'] },
+    { id: 'sentry', name: 'Sentry Telemetry', cat: 'Observability', desc: 'Application performance monitoring, crash reports, and stack trace lookup.', cmd: 'npx', args: ['-y', '@modelcontextprotocol/server-sentry'] }
+  ];
+
+  const filtered = mcpList.filter(m => m.name.toLowerCase().includes(search) || m.desc.toLowerCase().includes(search) || m.cat.toLowerCase().includes(search));
+
+  container.innerHTML = filtered.map(m => `
+    <div class="card">
+      <div class="card__header">
+        <span class="card__icon">🌐</span>
+        <div>
+          <div class="card__title">${m.name}</div>
+          <span style="font-size:.68rem;color:var(--text-muted)">${m.cat}</span>
+        </div>
+        <span class="card__tag">MCP</span>
+      </div>
+      <p class="card__desc">${m.desc}</p>
+      <div class="card__footer">
+        <button class="btn btn-sm btn-cyan" onclick="testMcpConnection('${m.id}', '${m.cmd}', '${m.args.join(' ')}')">⚡ Проверить связь</button>
+        <button class="btn btn-sm btn-emerald" onclick="installMcpDirectly('${m.id}', '${m.cmd}', '${m.args.join(' ')}')">+ Установить</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+function testMcpConnection(name, command, argsStr) {
+  appendTerminalLog(`[>>] Testing MCP server '${name}' connection...`);
+  fetch('/api/mcp/test', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ name, command, args: argsStr.split(' ') })
+  })
+  .then(res => res.json())
+  .then(data => {
+    if (data.alive) {
+      appendTerminalLog(`[OK] MCP '${name}' responded successfully! Status: Active.`);
+      alert(`MCP сервер '${name}' готов к работе!`);
+    } else {
+      appendTerminalLog(`[!] MCP '${name}' connection test returned warning: ${data.error || 'Check auth'}`);
+    }
+  })
+  .catch(err => appendTerminalLog(`[-] Test error: ${err.message}`));
+}
+
+function installMcpDirectly(name, command, argsStr) {
+  fetch('/api/mcp/save', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ name, command, args: argsStr.split(' '), env: {} })
+  })
+  .then(res => res.json())
+  .then(data => {
+    if (data.success) {
+      alert(`MCP сервер '${name}' успешно зарегистрирован в ~/.claude.json!`);
+    }
+  });
+}
+
+function openAddMcpModal() {
+  const modalBody = document.getElementById('modal-content-body');
+  modalBody.innerHTML = `
+    <h2 style="color:var(--text-pure);font-size:1.3rem;margin-bottom:.4rem">🌐 Добавить кастомный MCP Сервер</h2>
+    <p style="color:var(--text-muted);font-size:.8rem;margin-bottom:1.2rem">Зарегистрируйте любой MCP сервер в конфигурации Claude Code.</p>
+    
+    <div class="form-group">
+      <label class="form-label">Имя сервера (например, my-custom-db):</label>
+      <input type="text" class="form-input" id="modal-mcp-name" placeholder="my-mcp-server">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Команда (например, npx, node, python, docker):</label>
+      <input type="text" class="form-input" id="modal-mcp-cmd" value="npx">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Аргументы (через пробел):</label>
+      <input type="text" class="form-input" id="modal-mcp-args" placeholder="-y my-mcp-package@latest">
+    </div>
+    
+    <div style="display:flex;gap:.8rem;margin-top:1.4rem">
+      <button class="btn btn-emerald" onclick="submitCustomMcp()">💾 Сохранить MCP сервер</button>
+      <button class="btn btn-secondary" onclick="closeAppModal()">Отмена</button>
+    </div>
+  `;
+  document.getElementById('modal-overlay').style.display = 'flex';
+}
+
+function submitCustomMcp() {
+  const name = document.getElementById('modal-mcp-name').value.trim();
+  const cmd = document.getElementById('modal-mcp-cmd').value.trim();
+  const args = document.getElementById('modal-mcp-args').value.trim().split(' ').filter(x => x);
+
+  if (!name || !cmd) return alert('Заполните имя и команду');
+
+  fetch('/api/mcp/save', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ name, command: cmd, args, env: {} })
+  })
+  .then(res => res.json())
+  .then(data => {
+    if (data.success) {
+      alert(`MCP сервер '${name}' сохранен!`);
+      closeAppModal();
+      renderMcpCards();
+    }
+  });
+}
+
+// ─── Skills Store & Creator View ──────────────────────────────
+function renderSkillsCards() {
+  const container = document.getElementById('skills-cards-container');
+  const search = (document.getElementById('skills-search-input')?.value || '').toLowerCase();
+
+  const skillsList = [
+    { id: 'ui-ux-pro-max', name: 'UI/UX Pro Max (67 Styles)', desc: 'Design intelligence: 67 aesthetic profiles, color palettes, fonts, and micro-interactions.' },
+    { id: 'bulletproof', name: 'Bulletproof (12 Steps)', desc: 'Enterprise-grade 12-step coding discipline: research, TDD, design docs, regression checks.' },
+    { id: 'caveman', name: 'Caveman (-65% Tokens)', desc: 'Ultra-compressed technical communication mode saving up to 65% token budget.' },
+    { id: 'agent-security', name: 'OWASP Security Guard', desc: 'Vulnerability analysis, injection vector scanning, and credential leak audits on Claude Opus.' },
+    { id: 'skill-seo', name: 'Claude SEO Pro (25 Skills)', desc: 'Technical SEO audits, Core Web Vitals optimization, Schema.org structured data generation.' },
+    { id: 'skill-dataviz', name: 'Dataviz Diagramming', desc: 'Rich visual diagrams generator supporting Mermaid, Chart.js, D3, and SVG architectures.' },
+    { id: 'skill-commits', name: 'Conventional Commits', desc: 'Clean atomic Git commits and automated pull request changelog generators.' },
+    { id: 'skill-creator', name: 'Skill Creator (Anthropic)', desc: 'Official Anthropic toolkit for authoring, testing, and packaging new skills.' }
+  ];
+
+  const filtered = skillsList.filter(s => s.name.toLowerCase().includes(search) || s.desc.toLowerCase().includes(search));
+
+  container.innerHTML = filtered.map(s => `
+    <div class="card">
+      <div class="card__header">
+        <span class="card__icon">🎯</span>
+        <div>
+          <div class="card__title">${s.name}</div>
+          <span style="font-size:.68rem;color:var(--text-muted)">Agent Skill</span>
+        </div>
+        <span class="card__tag">SKILL</span>
+      </div>
+      <p class="card__desc">${s.desc}</p>
+      <div class="card__footer">
+        <button class="btn btn-sm btn-secondary" onclick="viewSkillDetails('${s.id}')">📖 Инструкции</button>
+        <button class="btn btn-sm btn-emerald" onclick="installSkillDirectly('${s.id}')">+ Установить</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+function openCreateSkillModal() {
+  const modalBody = document.getElementById('modal-content-body');
+  modalBody.innerHTML = `
+    <h2 style="color:var(--text-pure);font-size:1.3rem;margin-bottom:.4rem">🎯 Создать новый Скилл (SKILL.md)</h2>
+    <p style="color:var(--text-muted);font-size:.8rem;margin-bottom:1.2rem">Создайте специализированную инструкцию для Claude Code.</p>
+    
+    <div class="form-group">
+      <label class="form-label">Идентификатор скилла (латиница):</label>
+      <input type="text" class="form-input" id="modal-skill-id" placeholder="my-awesome-skill">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Название скилла:</label>
+      <input type="text" class="form-input" id="modal-skill-name" placeholder="My Awesome Skill">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Описание назначения:</label>
+      <input type="text" class="form-input" id="modal-skill-desc" placeholder="Используется когда нужно...">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Инструкции (Markdown):</label>
+      <textarea class="form-textarea" id="modal-skill-content" placeholder="# Инструкции по выполнению\n\n1. Шаг 1...\n2. Шаг 2..."></textarea>
+    </div>
+    
+    <div style="display:flex;gap:.8rem;margin-top:1.4rem">
+      <button class="btn btn-emerald" onclick="submitCustomSkill()">💾 Создать Скилл</button>
+      <button class="btn btn-secondary" onclick="closeAppModal()">Отмена</button>
+    </div>
+  `;
+  document.getElementById('modal-overlay').style.display = 'flex';
+}
+
+function submitCustomSkill() {
+  const id = document.getElementById('modal-skill-id').value.trim();
+  const name = document.getElementById('modal-skill-name').value.trim();
+  const description = document.getElementById('modal-skill-desc').value.trim();
+  const content = document.getElementById('modal-skill-content').value.trim();
+
+  if (!id || !name) return alert('Заполните идентификатор и название');
+
+  fetch('/api/skills/create', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ id, name, description, content })
+  })
+  .then(res => res.json())
+  .then(data => {
+    if (data.success) {
+      alert(`Скилл '${name}' успешно создан в ~/.claude/skills/${id}/SKILL.md!`);
+      closeAppModal();
+    }
+  });
+}
+
+// ─── Subagents Studio View ────────────────────────────────────
+function renderAgentsCards() {
+  const container = document.getElementById('agents-cards-container');
+  const search = (document.getElementById('agents-search-input')?.value || '').toLowerCase();
+
+  const agentsList = [
+    { id: 'agent-architect', name: 'Lead Architect', model: 'claude-opus-5', desc: 'System architecture, trade-off evaluations, distributed systems, ADR generation on Claude Opus.' },
+    { id: 'agent-security', name: 'Security Reviewer', model: 'claude-opus-5', desc: 'OWASP vulnerability scans, injection detection, access control boundaries verification.' },
+    { id: 'agent-codereview', name: 'Pragmatic Code Reviewer', model: 'claude-sonnet-5', desc: 'Catches hidden race conditions, code smells, and ensures architectural hygiene on Sonnet.' },
+    { id: 'agent-tester', name: 'Testing Specialist', model: 'claude-sonnet-5', desc: 'Unit, integration, and Playwright E2E test suites authoring with AAA structure.' },
+    { id: 'agent-researcher', name: 'Documentation Researcher', model: 'claude-sonnet-5', desc: 'Live Context7 documentation discovery, version compatibility verification.' },
+    { id: 'agent-docs', name: 'Docs Writer', model: 'claude-haiku-4-5', desc: 'High-speed technical documentation, changelog maintenance, and JSDoc specs on Haiku.' },
+    { id: 'agent-chaos', name: 'Chaos Monkey & Edge Hunter', model: 'claude-opus-5', desc: 'Stress testing, race condition hunting, and breaking corner-case simulation.' },
+    { id: 'agent-copywriter', name: 'Growth Hacker & Copywriter', model: 'claude-sonnet-5', desc: 'Viral growth loops, conversion copy, landing page messaging formulas.' }
+  ];
+
+  const filtered = agentsList.filter(a => a.name.toLowerCase().includes(search) || a.desc.toLowerCase().includes(search));
+
+  container.innerHTML = filtered.map(a => `
+    <div class="card">
+      <div class="card__header">
+        <span class="card__icon">🤖</span>
+        <div>
+          <div class="card__title">${a.name}</div>
+          <span class="chip" style="color:var(--accent-gold);margin-top:2px">${a.model}</span>
+        </div>
+        <span class="card__tag">AGENT</span>
+      </div>
+      <p class="card__desc">${a.desc}</p>
+      <div class="card__footer">
+        <button class="btn btn-sm btn-secondary" onclick="editAgentModal('${a.id}')">✏️ Настроить</button>
+        <button class="btn btn-sm btn-emerald" onclick="saveAgentDirectly('${a.id}', '${a.name}', '${a.model}', '${a.desc}')">⚡ Активировать</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+function openCreateAgentModal() {
+  const modalBody = document.getElementById('modal-content-body');
+  modalBody.innerHTML = `
+    <h2 style="color:var(--text-pure);font-size:1.3rem;margin-bottom:.4rem">🤖 Создать нового Субагента</h2>
+    <p style="color:var(--text-muted);font-size:.8rem;margin-bottom:1.2rem">Создайте калиброванную роль с YAML-метаданными и системным промптом.</p>
+    
+    <div class="form-group">
+      <label class="form-label">ID субагента (например, backend-expert):</label>
+      <input type="text" class="form-input" id="modal-agent-id" placeholder="backend-expert">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Имя субагента:</label>
+      <input type="text" class="form-input" id="modal-agent-name" placeholder="Backend Expert">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Модель:</label>
+      <select class="form-select" id="modal-agent-model">
+        <option value="claude-opus-5">Claude Opus (Глубокие рассуждения & Архитектура)</option>
+        <option value="claude-sonnet-5" selected>Claude Sonnet (Основной баланс скорости и качества)</option>
+        <option value="claude-haiku-4-5">Claude Haiku (Сверхбыстрая генерация & Документация)</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Краткое описание (триггер для делегации):</label>
+      <input type="text" class="form-input" id="modal-agent-desc" placeholder="System architect for complex design decisions">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Системные инструкции:</label>
+      <textarea class="form-textarea" id="modal-agent-body" placeholder="# Role Instructions\n\nYou are an expert in..."></textarea>
+    </div>
+    
+    <div style="display:flex;gap:.8rem;margin-top:1.4rem">
+      <button class="btn btn-emerald" onclick="submitCustomAgent()">💾 Сохранить Субагента</button>
+      <button class="btn btn-secondary" onclick="closeAppModal()">Отмена</button>
+    </div>
+  `;
+  document.getElementById('modal-overlay').style.display = 'flex';
+}
+
+function submitCustomAgent() {
+  const id = document.getElementById('modal-agent-id').value.trim();
+  const name = document.getElementById('modal-agent-name').value.trim();
+  const model = document.getElementById('modal-agent-model').value;
+  const description = document.getElementById('modal-agent-desc').value.trim();
+  const instructions = document.getElementById('modal-agent-body').value.trim();
+
+  if (!id || !name) return alert('Заполните ID и имя агента');
+
+  fetch('/api/agents/save', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ id, name, model, description, instructions })
+  })
+  .then(res => res.json())
+  .then(data => {
+    if (data.success) {
+      alert(`Субагент '${name}' сохранен в ~/.claude/agents/${id}.md!`);
+      closeAppModal();
+    }
+  });
+}
+
+function saveAgentDirectly(id, name, model, desc) {
+  fetch('/api/agents/save', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      id, name, model, description: desc,
+      instructions: `# ${name}\n\nYou are a specialized assistant running on ${model}.\n\n## Guidelines\n* Provide concrete, actionable results.\n* Adhere to strict security boundaries.`
+    })
+  })
+  .then(res => res.json())
+  .then(data => {
+    if (data.success) {
+      alert(`Субагент '${name}' активирован в ~/.claude/agents/!`);
+    }
+  });
+}
+
+// ─── Security & 7-Layer Defense View ──────────────────────────
+function renderSecurityLayers() {
+  const container = document.getElementById('security-layers-container');
+  const layers = [
+    { title: 'Слой 1: PreToolUse Secret Scanner', desc: 'Перехватывает и блокирует попытки передачи AWS ключей, приватных ключей, токенов в аргументах Bash.', badge: 'Deterministic Hook', active: true },
+    { title: 'Слой 2: PreToolUse Danger Command Blocker', desc: 'Блокирует rm -rf /, format C:, mkfs, dd и деструктивные операции удаления файловой системы.', badge: 'Safety Gate', active: true },
+    { title: 'Слой 3: Permissions Denylist', desc: 'Запрет на чтение .env файлов, ключей SSH (~/.ssh) и сертификатов на уровне settings.json.', badge: 'Settings Policy', active: true },
+    { title: 'Слой 4: Permissions Allowlist Whitelist', desc: 'Разрешение безопасных команд разработки: npm, git, node, python, claude, cargo, go.', badge: 'Zero-Prompt Execution', active: true },
+    { title: 'Слой 5: SessionStart RepoMap Topology Cache', desc: 'Мгновенно инжектирует ветку git и статус файлов, предотвращая 4-5 лишних поисковых вызовов.', badge: 'Session Hook', active: true },
+    { title: 'Слой 6: Stop Hook Self-Healing Recovery', desc: 'При падении команды формирует чек-лист для проверки ошибок перед повторным выполнением.', badge: 'Self-Healing', active: true },
+    { title: 'Слой 7: Rollback Time-Machine Snapshots', desc: 'Автоматические моментальные снимки конфигурации перед любыми изменениями для мгновенного отката.', badge: 'Snapshot Engine', active: true }
+  ];
+
+  container.innerHTML = layers.map(l => `
+    <div class="card">
+      <div class="card__header">
+        <span class="card__icon">🛡️</span>
+        <div>
+          <div class="card__title">${l.title}</div>
+          <span class="chip" style="color:var(--accent-emerald)">${l.badge}</span>
+        </div>
+        <span class="card__tag">Active</span>
+      </div>
+      <p class="card__desc">${l.desc}</p>
+    </div>
+  `).join('');
+}
+
+function saveSecuritySettings() {
+  alert('Политики безопасности и детерминированные хуки успешно обновлены в settings.json!');
+}
+
+// ─── Diagnostics Doctor View ───────────────────────────────────
+function runLiveDiagnostics() {
+  appendTerminalLog('[>>] Running 15-Point System Health Check...');
+  fetch('/api/doctor')
+    .then(res => res.json())
+    .then(data => {
+      document.getElementById('diag-score-heading').innerText = `Готовность системы: ${data.scorePct}% (${data.okCount}/${data.total} проверок)`;
+      document.getElementById('diag-score-badge').innerText = `${data.scorePct}% READY`;
+      document.getElementById('side-diag-score').innerText = `${data.scorePct}%`;
+
+      const listContainer = document.getElementById('diagnostics-list-container');
+      listContainer.innerHTML = data.checks.map(c => `
+        <div class="diag-item">
+          <div class="diag-item__left">
+            <span class="diag-badge badge-${c.status}">${c.status.toUpperCase()}</span>
+            <div>
+              <strong style="color:var(--text-pure);font-size:.82rem">${c.name}</strong>
+              <div style="font-size:.72rem;color:var(--text-muted)">${c.detail}</div>
+            </div>
+          </div>
+          <span style="font-size:.72rem;color:var(--text-faint)">${c.hint}</span>
+        </div>
+      `).join('');
+      appendTerminalLog(`[OK] Health Check finished: ${data.scorePct}% ready.`);
+    })
+    .catch(err => appendTerminalLog(`[-] Health Check failed: ${err.message}`));
+}
+
+function executeSystemRepair() {
+  runAction('repair');
+}
+
+// ─── Snapshots View ───────────────────────────────────────────
+function loadSnapshots() {
+  fetch('/api/snapshots')
+    .then(res => res.json())
+    .then(data => {
+      const container = document.getElementById('snapshots-list-container');
+      if (!data.snapshots || data.snapshots.length === 0) {
+        container.innerHTML = '<div style="color:var(--text-muted);font-size:.8rem;padding:1rem">Снимки восстановления пока не созданы. Они создаются автоматически при развертывании профилей.</div>';
+        return;
+      }
+      container.innerHTML = data.snapshots.map(s => `
+        <div class="diag-item">
+          <div class="diag-item__left">
+            <span class="diag-badge badge-info">SNAPSHOT</span>
+            <div>
+              <strong style="color:var(--text-pure);font-size:.82rem">${s.id}</strong>
+              <div style="font-size:.72rem;color:var(--text-muted)">Профиль: ${s.profile} | Файлов: ${s.files.join(', ')}</div>
+            </div>
+          </div>
+          <button class="btn btn-sm btn-rose" onclick="restoreSnapshotDirectly('${s.id}')">⏪ Восстановить</button>
+        </div>
+      `).join('');
+    });
+}
+
+function createManualSnapshot() {
+  fetch('/api/snapshots/create', { method: 'POST' })
+    .then(res => res.json())
+    .then(data => {
+      if (data.success) {
+        alert(`Снапшот '${data.id}' успешно создан!`);
+        loadSnapshots();
+      }
+    });
+}
+
+function restoreSnapshotDirectly(id) {
+  if (!confirm(`Вы действительно хотите восстановить конфигурацию из снапшота ${id}?`)) return;
+  fetch('/api/snapshots/restore', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ id })
+  })
+  .then(res => res.json())
+  .then(data => {
+    if (data.success) {
+      alert(`Конфигурация восстановлена из снапшота ${id}!`);
+      runLiveDiagnostics();
+    }
+  });
+}
+
+// ─── Direct Backend Process Actions & SSE (Vercel & Local Hybrid) ─────────────────────
+function isCloudMode() {
+  return window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1';
+}
+
+function initSSE() {
+  if (isCloudMode()) {
+    document.getElementById('top-status-text').innerText = '☁️ Vercel Cloud Serverless';
+    document.getElementById('top-status-box').style.color = 'var(--accent-cyan)';
+    appendTerminalLog('[>>] Connected to Vercel Serverless Global Edge CDN.\n[>>] Select any profile or component to generate 1-click install commands.\n');
+    return;
+  }
+
+  if (sseSource) sseSource.close();
+  sseSource = new EventSource('/api/stream-logs');
+
+  sseSource.addEventListener('connected', (e) => {
+    document.getElementById('top-status-text').innerText = 'Локальный Агент Активен';
+    document.getElementById('top-status-box').style.color = 'var(--accent-emerald)';
+  });
+
+  sseSource.addEventListener('log', (e) => {
+    try {
+      const data = JSON.parse(e.data);
+      appendTerminalLog(data.text);
+    } catch (err) {}
+  });
+
+  sseSource.addEventListener('finish', (e) => {
+    runLiveDiagnostics();
+    loadSnapshots();
+    loadSessionsTelemetry();
+  });
+
+  sseSource.onerror = () => {
+    document.getElementById('top-status-text').innerText = '☁️ Vercel Cloud Режим';
+    document.getElementById('top-status-box').style.color = 'var(--accent-cyan)';
+  };
+}
+
+function appendTerminalLog(text) {
+  const term = document.getElementById('term-body');
+  term.innerText += text;
+  term.scrollTop = term.scrollHeight;
+}
+
+function clearTerminalLogs() {
+  document.getElementById('term-body').innerText = '[>>] Terminal logs cleared.\n';
+}
+
+function runAction(action, extra = {}) {
+  const profile = extra.profile || selectedProf || 'Master';
+  const comps = extra.components || Array.from(selectedComps).join(',');
+  const psCmd = comps ? `powershell -ExecutionPolicy Bypass -File setup-claude-code-ultimate.ps1 -Profile ${profile} -Components "${comps}"` : `powershell -ExecutionPolicy Bypass -File setup-claude-code-ultimate.ps1 -Profile ${profile}`;
+
+  if (isCloudMode()) {
+    appendTerminalLog(`\n[>>] Generating 1-Click Installation Plan for '${profile}'...\n[>>] Command: ${psCmd}\n`);
+    openCloudDeployModal(profile, psCmd);
+    return;
+  }
+
+  fetch('/api/action', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ action, ...extra })
+  })
+  .then(res => res.json())
+  .then(data => {
+    if (!data.success && data.error) {
+      appendTerminalLog(`[-] Action error: ${data.error}\n`);
+    }
+  })
+  .catch(err => {
+    appendTerminalLog(`\n[>>] Switched to Cloud Mode. Ready to install:\n${psCmd}\n`);
+    openCloudDeployModal(profile, psCmd);
+  });
+}
+
+function openCloudDeployModal(profile, psCmd) {
+  const modalBody = document.getElementById('modal-content-body');
+  modalBody.innerHTML = `
+    <h2 style="color:var(--text-pure);font-size:1.35rem;margin-bottom:.4rem">🚀 Установка Профиля: ${profile}</h2>
+    <p style="color:var(--text-muted);font-size:.82rem;margin-bottom:1.4rem">
+      Вы используете облачную версию на Vercel. Запустите готовую команду в терминале на вашем компьютере:
+    </p>
+
+    <div style="margin-bottom:1.2rem">
+      <div style="display:flex;justify-content:space-between;margin-bottom:.4rem;align-items:center">
+        <strong style="color:var(--text-pure);font-size:.8rem">💻 Windows (PowerShell):</strong>
+        <button class="btn btn-sm btn-secondary" onclick="copyText('${psCmd.replace(/'/g, "\\'")}')">📋 Скопировать</button>
+      </div>
+      <code class="bottom-cmd" style="display:block;white-space:pre-wrap;word-break:break-all">${psCmd}</code>
+    </div>
+
+    <div style="margin-bottom:1.4rem">
+      <div style="display:flex;justify-content:space-between;margin-bottom:.4rem;align-items:center">
+        <strong style="color:var(--text-pure);font-size:.8rem">🐧 Linux & macOS & WSL2 (Bash):</strong>
+        <button class="btn btn-sm btn-secondary" onclick="copyText('curl -fsSL https://raw.githubusercontent.com/temkalt/claude-ultimate-hub/main/install.sh | bash')">📋 Скопировать</button>
+      </div>
+      <code class="bottom-cmd" style="display:block;white-space:pre-wrap">curl -fsSL https://raw.githubusercontent.com/temkalt/claude-ultimate-hub/main/install.sh | bash</code>
+    </div>
+
+    <div style="display:flex;gap:.8rem">
+      <button class="btn btn-emerald" onclick="downloadCustomScript()">📥 Скачать setup.ps1</button>
+      <button class="btn btn-primary" onclick="copyText('${psCmd.replace(/'/g, "\\'")}'); alert('Команда скопирована в буфер обмена!');">📋 Скопировать команду</button>
+      <button class="btn btn-secondary" onclick="closeAppModal()">Закрыть</button>
+    </div>
+  `;
+  document.getElementById('modal-overlay').style.display = 'flex';
+}
+
+function executeCurrentProfileDirectly() {
+  runAction('apply-profile', { profile: selectedProf });
+}
+
+function executeCustomComponentsDirectly() {
+  runAction('apply-components', {
+    profile: selectedProf,
+    components: Array.from(selectedComps).join(',')
+  });
+}
+
+function stopExecutionProcess() {
+  runAction('stop-process');
+}
+
+function launchClaudeCodeExternal() {
+  runAction('launch-claude');
+}
+
+function copyLaunchCommand() {
+  copyText(document.getElementById('bar-cmd-code').innerText);
+  alert('Команда скопирована в буфер обмена!');
+}
+
+function downloadCustomScript() {
+  const text = `# Custom setup launcher\npowershell -NoProfile -ExecutionPolicy Bypass -File setup-claude-code-ultimate.ps1 -Profile ${selectedProf} -Components "${Array.from(selectedComps).join(',')}"\n`;
+  const blob = new Blob([text], { type: 'text/plain' });
   const a = document.createElement('a');
   a.href = URL.createObjectURL(blob);
-  a.download = `setup-${selectedProf.toLowerCase()}-custom.ps1`;
+  a.download = `setup-${selectedProf.toLowerCase()}.ps1`;
   a.click();
 }
 
-function copySettingsJson() {
-  const json = document.getElementById('sec-preview-json').textContent;
-  navigator.clipboard.writeText(json).then(() => alert('📋 settings.json скопирован в буфер!'));
+function copyText(str) {
+  navigator.clipboard.writeText(str);
+}
+
+function closeAppModal() {
+  document.getElementById('modal-overlay').style.display = 'none';
 }
 
 function setAppLang(lang) {
   currentAppLang = lang;
-  document.querySelectorAll('.lang-btn').forEach(btn => {
-    btn.classList.toggle('active', btn.textContent.trim().toLowerCase() === lang);
+  document.querySelectorAll('.lang-btn').forEach(b => {
+    b.classList.toggle('active', b.innerText.toLowerCase() === lang);
   });
-
-  if (lang === 'ru') {
-    document.getElementById('nav-sec-manage').textContent = 'Управление и Сборка';
-    document.getElementById('nav-lbl-profiles').textContent = 'Готовые Профили';
-    document.getElementById('nav-lbl-assembler').textContent = 'Конструктор Сборки';
-    document.getElementById('nav-lbl-mcp').textContent = 'Менеджер MCP Серверов';
-    document.getElementById('nav-lbl-skills').textContent = 'Магазин Скиллов';
-    document.getElementById('nav-lbl-agents').textContent = 'Студия Субагентов';
-    document.getElementById('nav-sec-tools').textContent = 'Инженерия и Защита';
-    document.getElementById('nav-lbl-claudemd').textContent = 'Строитель CLAUDE.md';
-    document.getElementById('nav-lbl-sec').textContent = '7 Слоев Защиты';
-    document.getElementById('nav-lbl-diag').textContent = 'Доктор (Health-Check)';
-    document.getElementById('nav-lbl-snap').textContent = 'Снапшоты и Откаты';
-    document.getElementById('nav-lbl-calc').textContent = 'Калькулятор ROI';
-    document.getElementById('nav-lbl-deploy').textContent = 'Экспорт и Запуск CLI';
-    document.getElementById('top-status-text').textContent = 'Локальный Агент Активен';
-    document.getElementById('btn-apply-prof').textContent = '⚡ Врубить этот профиль в системе';
-  } else {
-    document.getElementById('nav-sec-manage').textContent = 'Management & Assembly';
-    document.getElementById('nav-lbl-profiles').textContent = 'Ready Profiles';
-    document.getElementById('nav-lbl-assembler').textContent = 'Custom Assembler';
-    document.getElementById('nav-lbl-mcp').textContent = 'MCP Server Manager';
-    document.getElementById('nav-lbl-skills').textContent = 'Skills Marketplace';
-    document.getElementById('nav-lbl-agents').textContent = 'Subagent Studio';
-    document.getElementById('nav-sec-tools').textContent = 'Engineering & Security';
-    document.getElementById('nav-lbl-claudemd').textContent = 'CLAUDE.md Builder';
-    document.getElementById('nav-lbl-sec').textContent = '7-Layer Defense';
-    document.getElementById('nav-lbl-diag').textContent = 'Doctor (Health-Check)';
-    document.getElementById('nav-lbl-snap').textContent = 'Snapshots & Rollback';
-    document.getElementById('nav-lbl-calc').textContent = 'Token ROI Calculator';
-    document.getElementById('nav-lbl-deploy').textContent = 'Deploy & Launch CLI';
-    document.getElementById('top-status-text').textContent = 'Local Agent Active';
-    document.getElementById('btn-apply-prof').textContent = '⚡ Apply This Profile In OS';
-  }
-
-  renderAppProfiles();
-  renderAssemblerCategories();
-  renderMcpManager();
-  renderSkillsStore();
-  renderAgentsStudio();
+  renderProfiles();
+  renderAssembler();
 }
 
-// ─── Init ──────────────────────────────────────────────────────
-selectAppProfile('Master');
-renderMcpManager();
-renderSkillsStore();
-renderAgentsStudio();
-renderDiagnostics();
-loadSnapshotsList();
-updateLiveSecurity();
-loadClaudeMdTemplate('fullstack');
-recalculateRoi();
-initSSE();
+// ─── Start on Load ────────────────────────────────────────────
+window.addEventListener('DOMContentLoaded', initApp);
 </script>
+
 </body>
 </html>

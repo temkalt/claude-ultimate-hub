@@ -1,7 +1,7 @@
 {
   "name": "claude-ultimate-hub",
-  "version": "2.0.0",
-  "description": "The world's largest engineering ecosystem and web control center for Claude Code: 1,000+ tools, direct web control, and calibrated profiles.",
+  "version": "3.0.0",
+  "description": "The world's largest engineering ecosystem and web control center for Claude Code: 1,000+ tools, direct web control, workspace stack scanner, session cost telemetry, and calibrated profiles.",
   "main": "server.js",
   "bin": {
     "claude-hub": "server.js"
@@ -21,7 +21,9 @@
     "subagents",
     "hooks",
     "web-control-center",
-    "token-roi"
+    "token-roi",
+    "prompt-matrix",
+    "workspace-scanner"
   ],
   "author": "temkalt",
   "license": "MIT",

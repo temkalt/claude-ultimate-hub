@@ -36,7 +36,7 @@
 
 [CmdletBinding()]
 param(
-    [ValidateSet('Master','Core','Russia','Web','Frontend','Backend','Security','Data','DevOps','Research','Marketing','AI','Full')]
+    [ValidateSet('Master','Core','Russia','Web','Frontend','Backend','Security','Data','DevOps','Research','Marketing','AI','Mobile','Agency','Full')]
     [string]$Profile = 'Master',
     [string]$Components = '',
     [switch]$DryRun,
@@ -319,6 +319,8 @@ $script:ProfileMap = @{
     'Research' = @('superpowers','context7','mcp-notion','skill-dataviz','skill-caveman','agent-researcher','agent-docs','agent-architect','hook-secrets','hook-danger','hook-repomap')
     'Marketing'= @('superpowers','mcp-playwright','mcp-notion','skill-seo','skill-uiux','skill-hyperframes','skill-caveman','agent-researcher','agent-docs','hook-secrets','hook-danger','hook-repomap')
     'AI'       = @('superpowers','context7','agentmemory','skill-creator','skill-caveman','agent-architect','agent-codereview','agent-researcher','hook-secrets','hook-danger','hook-repomap','hook-selfheal')
+    'Mobile'   = @('frontend-design','superpowers','context7','github-plugin','mcp-playwright','skill-uiux','skill-commits','lsp-typescript','agent-architect','agent-codereview','agent-tester','hook-secrets','hook-danger','hook-repomap')
+    'Agency'   = @('frontend-design','superpowers','context7','agentmemory','github-plugin','mcp-notion','mcp-linear','mcp-playwright','skill-uiux','skill-seo','skill-caveman','agent-architect','agent-codereview','agent-tester','agent-researcher','agent-docs','hook-secrets','hook-danger','hook-repomap','hook-selfheal')
     'Russia'   = @('frontend-design','superpowers','context7','mcp-telegram','mcp-yookassa','mcp-yandexcloud','mcp-supabase','mcp-notion','skill-uiux','skill-seo','skill-caveman','agent-security','lsp-typescript','agent-architect','agent-codereview','hook-secrets','hook-danger','hook-repomap','hook-selfheal')
     'Full'     = @('frontend-design','superpowers','gstack','context7','marketing','agentmemory','skill-anthropic','mcp-playwright','github-plugin','vercel-plugin','skill-creator','skill-seo','skill-caveman','agent-security','skill-hyperframes','skill-uiux','skill-bulletproof','skill-dataviz','skill-supabase','skill-commits','skill-astgrep','skill-openapi','mcp-telegram','mcp-yookassa','mcp-yandexcloud','mcp-github','mcp-supabase','mcp-notion','mcp-firecrawl','mcp-n8n','mcp-docker','mcp-linear','mcp-obsidian','mcp-sentry','mcp-postgres','mcp-sqlite','mcp-redis','mcp-sequential','lsp-typescript','lsp-python','lsp-rust','lsp-golang','agent-architect','agent-codereview','agent-researcher','agent-tester','agent-docs','hook-secrets','hook-danger','hook-repomap','hook-selfheal')
 }
