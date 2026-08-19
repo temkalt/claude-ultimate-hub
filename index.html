@@ -553,9 +553,12 @@ body{
         <span id="txt-badge">Claude Code 2.1.234+ · 1,000+ Global Ecosystem Hub</span>
       </div>
 
-      <div class="lang-switch">
-        <button class="lang-btn active" onclick="setLang('en')">EN</button>
-        <button class="lang-btn" onclick="setLang('ru')">RU</button>
+      <div style="display:flex;align-items:center;gap:.6rem">
+        <a href="app.html" class="btn btn-primary btn-sm" style="box-shadow:none;text-decoration:none">⚡ <span id="btn-open-ctrl">Launch Web Control Center</span></a>
+        <div class="lang-switch">
+          <button class="lang-btn active" onclick="setLang('en')">EN</button>
+          <button class="lang-btn" onclick="setLang('ru')">RU</button>
+        </div>
       </div>
     </div>
 
@@ -1301,6 +1304,7 @@ function setLang(lang) {
     document.getElementById('tab-lbl-claude').textContent = 'CLAUDE.md';
     document.getElementById('tab-lbl-repos').textContent = 'Репозитории';
     document.getElementById('tab-lbl-security').textContent = 'Безопасность';
+    document.getElementById('btn-open-ctrl').textContent = 'Центр Управления Web';
     document.getElementById('float-copy-btn').innerHTML = '📋 Скопировать команду';
     document.getElementById('pill-all').textContent = 'Все (1,000+)';
     document.getElementById('pill-plugin').textContent = 'Плагины (120+)';
@@ -1332,6 +1336,7 @@ function setLang(lang) {
     document.getElementById('tab-lbl-claude').textContent = 'CLAUDE.md';
     document.getElementById('tab-lbl-repos').textContent = 'Repositories';
     document.getElementById('tab-lbl-security').textContent = 'Security';
+    document.getElementById('btn-open-ctrl').textContent = 'Launch Web Control Center';
     document.getElementById('float-copy-btn').innerHTML = '📋 Copy Command';
     document.getElementById('pill-all').textContent = 'All (1,000+)';
     document.getElementById('pill-plugin').textContent = 'Plugins (120+)';
@@ -1385,11 +1390,63 @@ function renderProfiles() {
 
         <div class="profile-card__meta">
           <span>⚡ ${p.tokens}</span>
-          <span style="color:var(--text-pure);font-weight:700">${isSel ? (currentLang === 'ru' ? '✓ Активен' : '✓ Active') : (currentLang === 'ru' ? 'Выбрать →' : 'Select →')}</span>
+          <div style="display:flex;gap:.4rem;align-items:center">
+            <button class="btn btn-secondary btn-sm" style="padding:.2rem .5rem;font-size:.68rem" onclick="event.stopPropagation();showProfileArchitectureModal('${p.id}')">${currentLang === 'ru' ? 'Разбор Архитектуры ↗' : 'Architecture ↗'}</button>
+            <span style="color:var(--text-pure);font-weight:700">${isSel ? (currentLang === 'ru' ? '✓ Активен' : '✓ Active') : (currentLang === 'ru' ? 'Выбрать →' : 'Select →')}</span>
+          </div>
         </div>
       </div>
     `;
   }).join('');
+}
+
+function showProfileArchitectureModal(pId) {
+  const p = PROFILES.find(x => x.id === pId);
+  if (!p) return;
+
+  const rawTools = getComponentsForProfile(pId);
+  const tools = Array.isArray(rawTools) ? rawTools : [];
+  const name = currentLang === 'ru' ? p.name_ru : p.name_en;
+  const desc = currentLang === 'ru' ? p.desc_ru : p.desc_en;
+  const scenario = currentLang === 'ru' ? p.scenario_ru : p.scenario_en;
+
+  const modal = document.getElementById('component-modal');
+  const body = document.getElementById('modal-body');
+  if (!modal || !body) return;
+
+  body.innerHTML = `
+    <div style="display:flex;align-items:center;gap:.85rem;margin-bottom:1.2rem">
+      <span style="font-size:2.2rem">${p.icon}</span>
+      <div>
+        <h3 style="font-size:1.4rem;font-weight:800;color:var(--text-pure)">${name}</h3>
+        <span class="card__tag" style="background:rgba(229,192,123,.12);color:var(--accent-gold);border:1px solid rgba(229,192,123,.25);padding:.2rem .55rem;border-radius:9999px;font-size:.7rem;font-weight:700">${p.tag} · ${p.tokens}</span>
+      </div>
+    </div>
+
+    <p style="font-size:.9rem;color:var(--text-main);line-height:1.65;margin-bottom:1.2rem">${desc}</p>
+
+    <div style="background:var(--bg-darkest);border:1px solid var(--border-subtle);border-radius:var(--radius-xs);padding:1.2rem;margin-bottom:1.4rem">
+      <strong style="color:var(--text-pure);font-size:.85rem;display:block;margin-bottom:.5rem">🎯 ${currentLang === 'ru' ? 'Назначение и сценарии использования:' : 'Mission & Real-World Use Cases:'}</strong>
+      <div style="font-size:.82rem;color:var(--text-muted);line-height:1.6">${scenario}</div>
+    </div>
+
+    <strong style="color:var(--text-pure);font-size:.85rem;display:block;margin-bottom:.6rem">📦 ${currentLang === 'ru' ? 'Полный список подключенных инструментов' : 'Full Installed Tools Stack'} (${tools.length}):</strong>
+    <div style="display:flex;flex-wrap:wrap;gap:.4rem;margin-bottom:1.6rem">
+      ${tools.map(t => `<span class="chip" style="padding:.3rem .6rem;font-size:.75rem">${t}</span>`).join('')}
+    </div>
+
+    <div style="background:#050508;border:1px solid var(--border-subtle);border-radius:var(--radius-xs);padding:1rem;margin-bottom:1.4rem">
+      <div style="font-size:.75rem;color:var(--text-faint);margin-bottom:.4rem">${currentLang === 'ru' ? 'Команда установки профиля:' : 'Installation Command:'}</div>
+      <code style="font-family:'JetBrains Mono',monospace;font-size:.8rem;color:var(--text-pure)">powershell -ExecutionPolicy Bypass -File setup-claude-code-ultimate.ps1 -Profile ${p.id}</code>
+    </div>
+
+    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem">
+      <button class="btn btn-secondary" onclick="closeModal()">${currentLang === 'ru' ? 'Закрыть' : 'Close'}</button>
+      <button class="btn btn-primary" onclick="selectProfile('${p.id}');closeModal();copyCommand();">${currentLang === 'ru' ? '✓ Выбрать этот профиль и скопировать команду' : '✓ Select Profile & Copy Command'}</button>
+    </div>
+  `;
+
+  modal.style.display = 'flex';
 }
 
 function renderComponents() {

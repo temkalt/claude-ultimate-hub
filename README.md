@@ -1,4 +1,4 @@
-# 🌟 Claude Code Ultimate Hub — 1,000+ Global Ecosystem
+# 🌟 Claude Code Ultimate Hub — Web Control Center & 1,000+ Global Ecosystem
 
 <div align="center">
 
@@ -6,20 +6,44 @@
 [![Claude Code](https://img.shields.io/badge/Claude_Code-2.1.234+-blue.svg)](https://github.com/anthropics/claude-code)
 [![Onyx Luxury](https://img.shields.io/badge/Design-Onyx_Luxury_Black-black.svg)](https://github.com/temkalt/claude-ultimate-hub)
 [![Verified Tools](https://img.shields.io/badge/Tools-1%2C000%2B_Verified-emerald.svg)](https://github.com/temkalt/claude-ultimate-hub)
+[![Web First](https://img.shields.io/badge/Control_Center-Web_Interactive-cyan.svg)](http://localhost:3456)
 [![Translations](https://img.shields.io/badge/Language-English_%7C_Русский-purple.svg)](README_RU.md)
 
-**The world's largest open-source engineering ecosystem for Claude Code.**  
+**The world's largest open-source engineering ecosystem & interactive web control center for Claude Code.**  
 *1,000+ verified MCP servers, skills, plugins, LSPs, subagent swarms, token ROI savings (-65%), and 7-layer defense.*
 
-[Quick Install](#-one-click-installer) • [Master Flagship (34 Core)](#-calibrated-master-profile-34-core-tools) • [1,000+ Catalog](#-1000-tools-ecosystem) • [Agency Studio](#-agency-studio-50-ai-roles) • [Token ROI Calculator](#-token-roi--budget-calculator) • [Russian Guide (RU)](README_RU.md)
+[⚡ Web Control Center](#-web-control-center-launch) • [Master Flagship (34 Core)](#-calibrated-master-profile-34-core-tools) • [1,000+ Catalog](#-1000-tools-ecosystem) • [Agency Studio](#-agency-studio-50-ai-roles) • [Token ROI Calculator](#-token-roi--budget-calculator) • [Russian Guide (RU)](README_RU.md)
 
 </div>
 
 ---
 
-## ⚡ One-Click Installer
+## ⚡ Web Control Center (Single-Command Launch)
 
-Launch the interactive Terminal TUI wizard in **PowerShell**:
+Launch the interactive Web Control Center directly in your browser with zero manual configuration:
+
+```bash
+npm start
+```
+*Or double-click `start.bat` on Windows.*
+
+The local bridge starts on `http://localhost:3456/` and automatically opens the full visual studio:
+- **🌟 Ready Profiles**: 1-click apply for 12 calibrated engineering stacks.
+- **🧩 Visual Assembler**: Drag & select any of 1,000+ tools with live token load calculation.
+- **🌐 MCP Manager**: Test connections and manage API keys directly from the UI.
+- **🎯 Skills & Plugins Store**: Browse 320+ skills and 120+ plugins with 1-click install.
+- **🤖 Subagent Swarm Studio**: 50+ specialized personas on Opus, Sonnet, and Haiku.
+- **📝 CLAUDE.md Builder**: Real-time markdown editor with token bloat validator.
+- **🛡️ 7-Layer Defense Matrix**: Visual permission editor and deterministic PreToolUse hooks.
+- **🩺 Doctor Health-Check**: 15-point diagnostic scanner with 1-click auto-repair.
+- **⏪ Snapshots & Rollback**: Automatic backups and instant config restoration.
+- **⚡ Live Terminal**: Real-time SSE streaming logs with ANSI coloring.
+
+---
+
+## 🎮 Terminal TUI Installer
+
+If you prefer terminal-only installation in **PowerShell**:
 
 ```powershell
 irm https://raw.githubusercontent.com/temkalt/claude-ultimate-hub/main/install.ps1 | iex
@@ -27,16 +51,19 @@ irm https://raw.githubusercontent.com/temkalt/claude-ultimate-hub/main/install.p
 
 ### 🎮 Terminal Menu:
 ```
+  [0] ★ LAUNCH WEB CONTROL CENTER IN BROWSER (Recommended)
   [1] 🌟 Master All-in-One (Calibrated Global Flagship: 34 Core Tools)
   [2] 🌐 Full-Stack Web (Next.js 15, Playwright, UI/UX Pro, TS LSP, Supabase)
-  [3] ⚙️ Backend & APIs (PostgreSQL, SQLite, Redis, Python Pyright, AST-Grep)
-  [4] 🎯 Core (Minimal zero-bloat foundation)
+  [3] ⚙️ Backend & APIs (PostgreSQL, SQLite, Redis, Python Pyright, Docker)
+  [4] 🎯 Core (Minimal zero-bloat foundation, ~480 tokens)
   [5] 🔒 Security Auditor (OWASP, Bulletproof, Opus Reviewer)
   [6] 🇷🇺 Russia / CIS Stack (Telegram, YooKassa, Yandex Cloud, Caveman)
-  [7] 💎 Full Ultimate (All 1,000+ Tools)
-  [8] 🩺 System Health-Check Diagnostics
-  [9] 🔧 Repair & Hook Reset
-  [0] 🌐 Open Interactive Web Hub in Browser
+  [7] 🧠 AI & LLMOps Engineer (Qdrant, ChromaDB, Context7, HuggingFace)
+  [8] 🏢 Agency Studio Swarm (50+ Specialized AI Roles)
+  [9] 💎 Full Ultimate (All 1,000+ Tools)
+  [D] 🩺 15-Point System Health-Check Diagnostics
+  [F] 🔧 Auto-Repair Mode & Hook Reset
+  [R] ⏪ Rollback to Previous Snapshot
 ```
 
 ---
@@ -59,7 +86,7 @@ The flagship stack is **Global-First** and precision-calibrated: **100% full-sta
 
 ## 📚 1,000+ Tools Ecosystem
 
-* **🔌 Plugins (120+)**: Frontend Design, Superpowers, gstack (23 Garry Tan roles), Context7, AgentMemory, Anthropic Office, Playwright, Vercel, AWS, Cloudflare, Neon, Convex, Figma, Stripe, Sentry.
+* **🔌 Plugins (120+)**: Frontend Design, Superpowers, gstack, Context7, AgentMemory, Anthropic Office, Playwright, Vercel, AWS, Cloudflare, Neon, Convex, Figma, Stripe, Sentry.
 * **🌐 MCP Servers (350+)**: PostgreSQL, MySQL, SQLite, Redis, ClickHouse, Neo4j, MongoDB, Qdrant, ChromaDB, Pinecone, Brave, Exa, Tavily, Perplexity, ArXiv, Telegram, Slack, Discord, Stripe, PayPal, Docker, Kubernetes.
 * **🎯 Skills (320+)**: React 19, Next.js 15, FastAPI, Django, NestJS, Go, Rust, Clean Architecture, DDD, Event-Driven, Saga, Kafka, RabbitMQ, WebSockets, OAuth2, OWASP, UI/UX Pro Max (67 styles).
 * **⚡ LSP Servers (40+)**: TypeScript, Python (Pyright/Ruff), Rust Analyzer, Go Gopls, C#, C++, Java, Kotlin, Swift, PHP, Ruby, Scala, Dart, Elixir, Haskell, Lua, Zig, SQL, HTML/CSS, JSON/YAML.
@@ -86,14 +113,6 @@ Integrated in the Web Hub:
 * **RepoMap Topology Caching**: Eliminates 4-5 redundant file search steps at session start.
 * **LSP Symbol Navigation**: Prevents scanning thousands of unneeded lines.
 * **Average developer savings**: **$100 – $400 / month** on Anthropic API bills.
-
----
-
-## 🖥️ Launch Interactive Web Hub Locally
-
-```powershell
-Start-Process "D:\claude optimiz\index.html"
-```
 
 ---
 
