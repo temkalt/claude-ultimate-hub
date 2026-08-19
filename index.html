@@ -2654,6 +2654,10 @@ updateCalculator();
 updateHookPreview();
 updateSkillPreview();
 updateClaudeMdPreview();
+
+window.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') closeModal();
+});
 </script>
 </body>
 </html>

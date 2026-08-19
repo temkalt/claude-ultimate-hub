@@ -3121,6 +3121,11 @@ function setAppLang(lang) {
   renderAssembler();
 }
 
+// ─── Global Keybindings ───────────────────────────────────────
+window.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') closeAppModal();
+});
+
 // ─── Start on Load ────────────────────────────────────────────
 window.addEventListener('DOMContentLoaded', initApp);
 </script>
