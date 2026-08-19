@@ -352,6 +352,10 @@ html,body{height:100%;font-family:'Plus Jakarta Sans',system-ui,sans-serif;backg
       <span>🌟</span> <span>Готовые Профили</span>
       <span class="nav-item__badge">14</span>
     </button>
+    <button class="nav-item" data-view="installed" onclick="switchView('installed')">
+      <span>📦</span> <span>Установленный Стек</span>
+      <span class="nav-item__badge" id="side-installed-count" style="background:rgba(16,185,129,0.15);color:var(--accent-emerald);border-color:rgba(16,185,129,0.3)">Live</span>
+    </button>
     <button class="nav-item" data-view="assembler" onclick="switchView('assembler')">
       <span>🧩</span> <span>Конструктор Сборки</span>
       <span class="nav-item__badge" id="side-selected-count">34</span>
@@ -445,6 +449,55 @@ html,body{height:100%;font-family:'Plus Jakarta Sans',system-ui,sans-serif;backg
           <button class="btn btn-emerald" onclick="executeCurrentProfileDirectly()">⚡ Врубить этот профиль в системе</button>
         </div>
         <div class="grid-cards" id="profiles-container"></div>
+      </section>
+
+      <!-- View: Installed Stack Inspector -->
+      <section class="view-panel" id="view-installed">
+        <div class="view-header">
+          <div>
+            <h2>📦 Инспектор Установленного Стека (~/.claude)</h2>
+            <p>Полный обзор всех активных MCP серверов, установленных скиллов, субагентов, хуков и политик безопасности.</p>
+          </div>
+          <div style="display:flex;gap:.6rem">
+            <button class="btn btn-emerald btn-sm" onclick="loadInstalledStack()">🔄 Обновить статус</button>
+            <button class="btn btn-primary btn-sm" onclick="openRawConfigModal()">📄 Raw JSON Конфиги</button>
+          </div>
+        </div>
+
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1rem;margin-bottom:1.4rem">
+          <div class="card" style="text-align:center;padding:1rem">
+            <div style="font-size:.72rem;color:var(--text-muted)">🌐 MCP Серверы</div>
+            <div style="font-size:1.6rem;font-weight:800;color:var(--accent-gold);font-family:'JetBrains Mono',monospace" id="inst-cnt-mcp">0</div>
+          </div>
+          <div class="card" style="text-align:center;padding:1rem">
+            <div style="font-size:.72rem;color:var(--text-muted)">🎯 Скиллы (SKILL.md)</div>
+            <div style="font-size:1.6rem;font-weight:800;color:var(--accent-emerald);font-family:'JetBrains Mono',monospace" id="inst-cnt-skills">0</div>
+          </div>
+          <div class="card" style="text-align:center;padding:1rem">
+            <div style="font-size:.72rem;color:var(--text-muted)">🤖 Субагенты (.md)</div>
+            <div style="font-size:1.6rem;font-weight:800;color:var(--accent-cyan);font-family:'JetBrains Mono',monospace" id="inst-cnt-agents">0</div>
+          </div>
+          <div class="card" style="text-align:center;padding:1rem">
+            <div style="font-size:.72rem;color:var(--text-muted)">🛡️ Хуки Безопасности</div>
+            <div style="font-size:1.6rem;font-weight:800;color:var(--accent-rose);font-family:'JetBrains Mono',monospace" id="inst-cnt-hooks">0</div>
+          </div>
+          <div class="card" style="text-align:center;padding:1rem">
+            <div style="font-size:.72rem;color:var(--text-muted)">⚡ Слеш-Команды</div>
+            <div style="font-size:1.6rem;font-weight:800;color:var(--text-pure);font-family:'JetBrains Mono',monospace" id="inst-cnt-cmds">0</div>
+          </div>
+        </div>
+
+        <!-- Filter pills for installed tools -->
+        <div style="display:flex;gap:.5rem;margin-bottom:1.2rem;border-bottom:1px solid var(--border-subtle);padding-bottom:.8rem;flex-wrap:wrap">
+          <button class="btn btn-sm btn-secondary active" id="btn-inst-all" onclick="filterInstalledTab('all')">Все компоненты</button>
+          <button class="btn btn-sm btn-secondary" id="btn-inst-mcp" onclick="filterInstalledTab('mcp')">🌐 MCP Серверы</button>
+          <button class="btn btn-sm btn-secondary" id="btn-inst-skills" onclick="filterInstalledTab('skills')">🎯 Скиллы</button>
+          <button class="btn btn-sm btn-secondary" id="btn-inst-agents" onclick="filterInstalledTab('agents')">🤖 Субагенты</button>
+          <button class="btn btn-sm btn-secondary" id="btn-inst-hooks" onclick="filterInstalledTab('hooks')">🛡️ Хуки</button>
+          <button class="btn btn-sm btn-secondary" id="btn-inst-commands" onclick="filterInstalledTab('commands')">⚡ Слеш-команды</button>
+        </div>
+
+        <div class="grid-cards" id="installed-cards-container"></div>
       </section>
 
       <!-- View 2: Assembler -->
@@ -1077,6 +1130,7 @@ function initApp() {
   initClaudeMdBuilder();
   loadPromptsMatrix();
   loadSessionsTelemetry();
+  loadInstalledStack();
   initSSE();
   runLiveDiagnostics();
   loadSnapshots();
@@ -1092,6 +1146,254 @@ function switchView(viewId) {
   });
   const target = document.getElementById(`view-${viewId}`);
   if (target) target.classList.add('active');
+
+  if (viewId === 'installed') {
+    loadInstalledStack();
+  }
+}
+
+// ─── Installed Stack Inspector ────────────────────────────────
+let installedData = null;
+let currentInstalledFilter = 'all';
+
+function loadInstalledStack() {
+  fetch('/api/installed')
+    .then(res => res.json())
+    .then(data => {
+      installedData = data;
+      renderInstalledStack();
+    })
+    .catch(err => {
+      const container = document.getElementById('installed-cards-container');
+      if (container) {
+        container.innerHTML = `
+          <div class="card" style="grid-column:1/-1;text-align:center;padding:2rem">
+            <div style="font-size:2rem;margin-bottom:.5rem">⚠️</div>
+            <h3 style="color:var(--text-pure);margin-bottom:.5rem">Не удалось подключиться к серверу</h3>
+            <p style="color:var(--text-muted);font-size:.85rem">Убедитесь, что server.js запущен на localhost:3456</p>
+          </div>
+        `;
+      }
+    });
+}
+
+function filterInstalledTab(tab) {
+  currentInstalledFilter = tab;
+  document.querySelectorAll('[id^="btn-inst-"]').forEach(b => b.classList.remove('active'));
+  const activeBtn = document.getElementById(`btn-inst-${tab}`);
+  if (activeBtn) activeBtn.classList.add('active');
+  renderInstalledStack();
+}
+
+function renderInstalledStack() {
+  if (!installedData) return;
+
+  const counts = installedData.counts || {};
+  document.getElementById('inst-cnt-mcp').innerText = counts.mcpServers || 0;
+  document.getElementById('inst-cnt-skills').innerText = counts.skills || 0;
+  document.getElementById('inst-cnt-agents').innerText = counts.agents || 0;
+  document.getElementById('inst-cnt-hooks').innerText = counts.hooks || 0;
+  document.getElementById('inst-cnt-cmds').innerText = counts.commands || 0;
+
+  const totalInstalled = (counts.mcpServers || 0) + (counts.skills || 0) + (counts.agents || 0) + (counts.hooks || 0) + (counts.commands || 0);
+  const badge = document.getElementById('side-installed-count');
+  if (badge) badge.innerText = `${totalInstalled} active`;
+
+  const container = document.getElementById('installed-cards-container');
+  if (!container) return;
+
+  let items = [];
+
+  // MCP
+  if (currentInstalledFilter === 'all' || currentInstalledFilter === 'mcp') {
+    (installedData.mcpServers || []).forEach(m => {
+      items.push({
+        type: 'MCP',
+        icon: '🌐',
+        badgeColor: 'var(--accent-gold)',
+        title: m.name,
+        subtitle: `${m.command} ${m.args.join(' ')}`,
+        desc: `Model Context Protocol server registered in ~/.claude.json`,
+        actions: `
+          <button class="btn btn-sm btn-cyan" onclick="testMcpConnection('${m.name}', '${m.command}', '${m.args.join(' ')}')">⚡ Тест связи</button>
+          <button class="btn btn-sm btn-secondary" style="color:var(--accent-rose)" onclick="deleteInstalledMcp('${m.name}')">✕ Удалить</button>
+        `
+      });
+    });
+  }
+
+  // Skills
+  if (currentInstalledFilter === 'all' || currentInstalledFilter === 'skills') {
+    (installedData.skills || []).forEach(s => {
+      items.push({
+        type: 'SKILL',
+        icon: '🎯',
+        badgeColor: 'var(--accent-emerald)',
+        title: s.name,
+        subtitle: `Path: ${s.path}`,
+        desc: s.description || 'Specialized skill instructions in SKILL.md',
+        actions: `
+          <button class="btn btn-sm btn-secondary" onclick="viewInstalledSkillMd('${s.id}')">📖 Просмотр SKILL.md</button>
+        `
+      });
+    });
+  }
+
+  // Agents
+  if (currentInstalledFilter === 'all' || currentInstalledFilter === 'agents') {
+    (installedData.agents || []).forEach(a => {
+      items.push({
+        type: 'AGENT',
+        icon: '🤖',
+        badgeColor: 'var(--accent-cyan)',
+        title: a.name,
+        subtitle: `Model: ${a.model} | File: ${a.fileName}`,
+        desc: a.description || 'Calibrated subagent persona in ~/.claude/agents/',
+        actions: `
+          <button class="btn btn-sm btn-secondary" onclick="editAgentModal('${a.id}')">✏️ Настроить</button>
+          <button class="btn btn-sm btn-secondary" style="color:var(--accent-rose)" onclick="deleteInstalledAgent('${a.id}')">✕ Удалить</button>
+        `
+      });
+    });
+  }
+
+  // Hooks
+  if (currentInstalledFilter === 'all' || currentInstalledFilter === 'hooks') {
+    (installedData.hooks || []).forEach(h => {
+      items.push({
+        type: 'HOOK',
+        icon: '🛡️',
+        badgeColor: 'var(--accent-rose)',
+        title: h.fileName,
+        subtitle: `Type: ${h.type} | Size: ${(h.size / 1024).toFixed(1)} KB`,
+        desc: `Security / automation hook script in ~/.claude/hooks/`,
+        actions: `
+          <span class="chip" style="color:var(--accent-emerald)">✓ Защита активна</span>
+        `
+      });
+    });
+  }
+
+  // Commands
+  if (currentInstalledFilter === 'all' || currentInstalledFilter === 'commands') {
+    (installedData.commands || []).forEach(c => {
+      items.push({
+        type: 'COMMAND',
+        icon: '⚡',
+        badgeColor: 'var(--text-pure)',
+        title: c.name,
+        subtitle: `File: ~/.claude/commands/${c.fileName}`,
+        desc: c.prompt,
+        actions: `
+          <button class="btn btn-sm btn-secondary" onclick="copyText('${c.prompt.replace(/'/g, "\\'")}')">📋 Скопировать</button>
+        `
+      });
+    });
+  }
+
+  if (items.length === 0) {
+    container.innerHTML = `
+      <div class="card" style="grid-column:1/-1;text-align:center;padding:2.5rem">
+        <div style="font-size:2.2rem;margin-bottom:.5rem">📦</div>
+        <h3 style="color:var(--text-pure);margin-bottom:.5rem">В этой категории пока ничего не установлено</h3>
+        <p style="color:var(--text-muted);font-size:.85rem;margin-bottom:1rem">Выберите готовый профиль или соберите свой стек в Конструкторе!</p>
+        <button class="btn btn-emerald btn-sm" onclick="switchView('profiles')">🌟 Перейти к выбору профилей</button>
+      </div>
+    `;
+    return;
+  }
+
+  container.innerHTML = items.map(it => `
+    <div class="card">
+      <div class="card__header">
+        <span class="card__icon">${it.icon}</span>
+        <div style="flex:1;overflow:hidden">
+          <div class="card__title" style="text-overflow:ellipsis;overflow:hidden;white-space:nowrap">${it.title}</div>
+          <div style="font-size:.68rem;color:var(--text-muted);font-family:'JetBrains Mono',monospace;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${it.subtitle}</div>
+        </div>
+        <span class="chip" style="color:${it.badgeColor};font-size:.65rem">${it.type}</span>
+      </div>
+      <p class="card__desc">${it.desc}</p>
+      <div class="card__footer">
+        ${it.actions}
+      </div>
+    </div>
+  `).join('');
+}
+
+function deleteInstalledMcp(name) {
+  if (!confirm(`Удалить MCP сервер '${name}' из ~/.claude.json?`)) return;
+  fetch('/api/mcp/delete', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ name })
+  })
+  .then(res => res.json())
+  .then(data => {
+    if (data.success) {
+      appendTerminalLog(`[-] MCP Server '${name}' removed.\n`);
+      loadInstalledStack();
+    }
+  });
+}
+
+function deleteInstalledAgent(id) {
+  if (!confirm(`Удалить субагента '${id}' из ~/.claude/agents/?`)) return;
+  fetch('/api/agents/delete', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ id })
+  })
+  .then(res => res.json())
+  .then(data => {
+    if (data.success) {
+      appendTerminalLog(`[-] Subagent '${id}' deleted.\n`);
+      loadInstalledStack();
+    }
+  });
+}
+
+function viewInstalledSkillMd(id) {
+  const skill = (installedData?.skills || []).find(s => s.id === id);
+  if (!skill) return viewSkillDetails(id);
+
+  const modalBody = document.getElementById('modal-content-body');
+  modalBody.innerHTML = `
+    <h2 style="color:var(--text-pure);font-size:1.3rem;margin-bottom:.4rem">🎯 Скилл: ${skill.name}</h2>
+    <p style="color:var(--text-muted);font-size:.8rem;margin-bottom:1.2rem">Расположение: ${skill.path}</p>
+    <div style="font-size:.8rem;color:var(--text-pure);margin-bottom:.4rem"><strong>Описание:</strong> ${skill.description || '—'}</div>
+    <div style="display:flex;justify-content:space-between;margin-top:1.4rem">
+      <button class="btn btn-secondary" onclick="closeAppModal()">Закрыть</button>
+    </div>
+  `;
+  document.getElementById('modal-overlay').style.display = 'flex';
+}
+
+function openRawConfigModal() {
+  fetch('/api/config')
+    .then(res => res.json())
+    .then(data => {
+      const modalBody = document.getElementById('modal-content-body');
+      modalBody.innerHTML = `
+        <h2 style="color:var(--text-pure);font-size:1.3rem;margin-bottom:.4rem">📄 Конфигурационные файлы (~/.claude)</h2>
+        <p style="color:var(--text-muted);font-size:.8rem;margin-bottom:1rem">Актуальное состояние файлов на вашем компьютере.</p>
+        
+        <div style="margin-bottom:1rem">
+          <div style="font-size:.8rem;font-weight:700;color:var(--accent-gold);margin-bottom:.3rem">~/.claude.json (MCP Servers):</div>
+          <pre class="terminal" style="max-height:160px;overflow-y:auto;font-size:.74rem">${JSON.stringify(data.claudejson || {}, null, 2)}</pre>
+        </div>
+
+        <div style="margin-bottom:1rem">
+          <div style="font-size:.8rem;font-weight:700;color:var(--accent-cyan);margin-bottom:.3rem">~/.claude/settings.json (Permissions & Policies):</div>
+          <pre class="terminal" style="max-height:160px;overflow-y:auto;font-size:.74rem">${JSON.stringify(data.settings || {}, null, 2)}</pre>
+        </div>
+
+        <div style="display:flex;justify-content:space-between;margin-top:1rem">
+          <button class="btn btn-secondary" onclick="closeAppModal()">Закрыть</button>
+        </div>
+      `;
+      document.getElementById('modal-overlay').style.display = 'flex';
+    });
 }
 
 // ─── Profiles View ─────────────────────────────────────────────

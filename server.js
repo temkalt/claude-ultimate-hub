@@ -253,6 +253,47 @@ function getSnapshotsList() {
   }
 }
 
+// ─── Hooks & Commands Readers ───────────────────────────────────────────────
+function getHooksList() {
+  const hooks = [];
+  if (fs.existsSync(HOOKS_DIR)) {
+    try {
+      const files = fs.readdirSync(HOOKS_DIR).filter(f => f.endsWith('.ps1') || f.endsWith('.sh') || f.endsWith('.js'));
+      files.forEach(f => {
+        const fullPath = path.join(HOOKS_DIR, f);
+        const stat = fs.statSync(fullPath);
+        hooks.push({
+          fileName: f,
+          size: stat.size,
+          modified: stat.mtime.toISOString(),
+          type: f.includes('PreToolUse') ? 'PreToolUse' : (f.includes('PostToolUse') ? 'PostToolUse' : (f.includes('SessionStart') ? 'SessionStart' : 'Hook'))
+        });
+      });
+    } catch (e) {}
+  }
+  return hooks;
+}
+
+function getCommandsList() {
+  const commands = [];
+  if (fs.existsSync(COMMANDS_DIR)) {
+    try {
+      const files = fs.readdirSync(COMMANDS_DIR).filter(f => f.endsWith('.md') || f.endsWith('.txt'));
+      files.forEach(f => {
+        const fullPath = path.join(COMMANDS_DIR, f);
+        const name = '/' + path.basename(f, path.extname(f));
+        const content = fs.readFileSync(fullPath, 'utf8');
+        commands.push({
+          name,
+          fileName: f,
+          prompt: content.slice(0, 300)
+        });
+      });
+    } catch (e) {}
+  }
+  return commands;
+}
+
 // ─── Workspace Scanner & Auto-Detection Engine ────────────────────────────────
 function scanWorkspace(targetPath = ROOT_DIR) {
   const fullPath = path.resolve(targetPath);
@@ -696,6 +737,53 @@ const server = http.createServer((req, res) => {
       subagentsCount: getSubagentsList().length,
       skillsCount: getSkillsList().length,
       snapshotsCount: getSnapshotsList().length
+    }));
+    return;
+  }
+
+  // 2.1 Detailed Installed Stack Inspector API
+  if (pathname === '/api/installed' && req.method === 'GET') {
+    const claudeJson = safeReadJson(CLAUDE_JSON, {});
+    const settings = safeReadJson(CLAUDE_SETTINGS, {});
+    const mcpServers = claudeJson.mcpServers || {};
+    const skills = getSkillsList();
+    const agents = getSubagentsList();
+    const hooks = getHooksList();
+    const commands = getCommandsList();
+    const snapshots = getSnapshotsList();
+
+    const mcpList = Object.keys(mcpServers).map(k => ({
+      name: k,
+      command: mcpServers[k].command,
+      args: mcpServers[k].args || []
+    }));
+
+    res.writeHead(200, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({
+      success: true,
+      timestamp: new Date().toISOString(),
+      counts: {
+        mcpServers: mcpList.length,
+        skills: skills.length,
+        agents: agents.length,
+        hooks: hooks.length,
+        commands: commands.length,
+        snapshots: snapshots.length
+      },
+      mcpServers: mcpList,
+      skills,
+      agents,
+      hooks,
+      commands,
+      settings: {
+        hasSettingsFile: fs.existsSync(CLAUDE_SETTINGS),
+        permissions: settings.permissions || {},
+        env: settings.env || {}
+      },
+      claudemd: {
+        exists: fs.existsSync(CLAUDE_MD),
+        size: fs.existsSync(CLAUDE_MD) ? fs.statSync(CLAUDE_MD).size : 0
+      }
     }));
     return;
   }

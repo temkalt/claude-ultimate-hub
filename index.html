@@ -553,7 +553,10 @@ body{
         <span id="txt-badge">Claude Code 2.1.234+ · 1,000+ Global Ecosystem Hub</span>
       </div>
 
-      <div style="display:flex;align-items:center;gap:.6rem">
+      <div style="display:flex;align-items:center;gap:.6rem;flex-wrap:wrap">
+        <button class="btn btn-secondary btn-sm" onclick="checkInstalledOnLocalMachine()" style="cursor:pointer">
+          📦 <span id="btn-inspect-pc">Что установлено на моем ПК</span>
+        </button>
         <button class="btn btn-primary btn-sm" onclick="openLaunchStudioModal()" style="box-shadow:none;cursor:pointer">
           ⚡ <span id="btn-open-ctrl">Запустить Control Center</span>
         </button>
@@ -1413,6 +1416,7 @@ function setLang(lang) {
     document.getElementById('tab-lbl-repos').textContent = 'Репозитории';
     document.getElementById('tab-lbl-security').textContent = 'Безопасность';
     document.getElementById('btn-open-ctrl').textContent = 'Центр Управления Web';
+    if (document.getElementById('btn-inspect-pc')) document.getElementById('btn-inspect-pc').textContent = 'Что установлено на моем ПК';
     document.getElementById('float-copy-btn').innerHTML = '📋 Скопировать команду';
     document.getElementById('pill-all').textContent = 'Все (1,000+)';
     document.getElementById('pill-plugin').textContent = 'Плагины (120+)';
@@ -1455,6 +1459,7 @@ function setLang(lang) {
     document.getElementById('lbl-stat-agent').textContent = 'Subagents';
     document.getElementById('lbl-stat-hook').textContent = 'Security Hooks';
     document.getElementById('tab-lbl-profiles').textContent = 'Profiles';
+    if (document.getElementById('btn-inspect-pc')) document.getElementById('btn-inspect-pc').textContent = 'Inspect My Local Stack';
     document.getElementById('tab-lbl-assembler').textContent = 'Custom Build';
     document.getElementById('tab-lbl-catalog').textContent = '1,000+ Catalog';
     document.getElementById('tab-lbl-agency').textContent = 'Agency Studio';
@@ -2260,6 +2265,106 @@ function openLaunchStudioModal() {
         statusText.innerText = '⚪ Локальный сервер пока не запущен. Выполните команду выше в терминале.';
         statusText.style.color = 'var(--text-muted)';
       }
+    });
+}
+
+function checkInstalledOnLocalMachine() {
+  const modalBody = document.getElementById('modal-body');
+  modalBody.innerHTML = `
+    <div style="text-align:center;padding:2rem">
+      <div style="font-size:2rem;margin-bottom:.8rem">⏳</div>
+      <h3 style="color:var(--text-pure)">Сканирование локального окружения Claude Code...</h3>
+      <p style="color:var(--text-muted);font-size:.85rem">Опрашиваем http://localhost:3456/api/installed...</p>
+    </div>
+  `;
+  document.getElementById('modal-overlay').style.display = 'flex';
+
+  fetch('http://localhost:3456/api/installed')
+    .then(res => res.json())
+    .then(data => {
+      const counts = data.counts || {};
+      const total = (counts.mcpServers || 0) + (counts.skills || 0) + (counts.agents || 0) + (counts.hooks || 0) + (counts.commands || 0);
+
+      modalBody.innerHTML = `
+        <div style="display:flex;align-items:center;gap:.8rem;margin-bottom:1.2rem">
+          <span style="font-size:2rem">📦</span>
+          <div>
+            <h3 style="font-size:1.3rem;font-weight:800;color:var(--text-pure)">Установленный Стек на вашем компьютере</h3>
+            <span class="chip" style="color:var(--accent-emerald)">✓ Локальный Bridge Активен · Всего компонентов: ${total}</span>
+          </div>
+        </div>
+
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:.6rem;margin-bottom:1.2rem">
+          <div style="background:var(--bg-main);padding:.7rem;border-radius:4px;border:1px solid var(--border-subtle);text-align:center">
+            <div style="font-size:.7rem;color:var(--text-muted)">🌐 MCP</div>
+            <div style="font-size:1.3rem;font-weight:700;color:var(--accent-gold)">${counts.mcpServers || 0}</div>
+          </div>
+          <div style="background:var(--bg-main);padding:.7rem;border-radius:4px;border:1px solid var(--border-subtle);text-align:center">
+            <div style="font-size:.7rem;color:var(--text-muted)">🎯 Скиллы</div>
+            <div style="font-size:1.3rem;font-weight:700;color:var(--accent-emerald)">${counts.skills || 0}</div>
+          </div>
+          <div style="background:var(--bg-main);padding:.7rem;border-radius:4px;border:1px solid var(--border-subtle);text-align:center">
+            <div style="font-size:.7rem;color:var(--text-muted)">🤖 Агенты</div>
+            <div style="font-size:1.3rem;font-weight:700;color:var(--accent-cyan)">${counts.agents || 0}</div>
+          </div>
+          <div style="background:var(--bg-main);padding:.7rem;border-radius:4px;border:1px solid var(--border-subtle);text-align:center">
+            <div style="font-size:.7rem;color:var(--text-muted)">🛡️ Хуки</div>
+            <div style="font-size:1.3rem;font-weight:700;color:var(--accent-rose)">${counts.hooks || 0}</div>
+          </div>
+          <div style="background:var(--bg-main);padding:.7rem;border-radius:4px;border:1px solid var(--border-subtle);text-align:center">
+            <div style="font-size:.7rem;color:var(--text-muted)">⚡ Команды</div>
+            <div style="font-size:1.3rem;font-weight:700;color:var(--text-pure)">${counts.commands || 0}</div>
+          </div>
+        </div>
+
+        <div style="max-height:260px;overflow-y:auto;margin-bottom:1.4rem;display:flex;flex-direction:column;gap:.4rem">
+          ${(data.mcpServers || []).map(m => `
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:.4rem .8rem;background:var(--bg-main);border-radius:4px;border:1px solid var(--border-subtle);font-size:.78rem">
+              <span style="font-weight:600;color:var(--text-pure)">🌐 ${m.name}</span>
+              <span style="color:var(--text-muted);font-family:'JetBrains Mono',monospace">${m.command} ${(m.args || []).slice(0,2).join(' ')}</span>
+            </div>
+          `).join('')}
+          ${(data.skills || []).map(s => `
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:.4rem .8rem;background:var(--bg-main);border-radius:4px;border:1px solid var(--border-subtle);font-size:.78rem">
+              <span style="font-weight:600;color:var(--text-pure)">🎯 ${s.name}</span>
+              <span style="color:var(--accent-emerald);font-size:.72rem">SKILL.md</span>
+            </div>
+          `).join('')}
+          ${(data.agents || []).map(a => `
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:.4rem .8rem;background:var(--bg-main);border-radius:4px;border:1px solid var(--border-subtle);font-size:.78rem">
+              <span style="font-weight:600;color:var(--text-pure)">🤖 ${a.name}</span>
+              <span style="color:var(--accent-cyan);font-size:.72rem">${a.model}</span>
+            </div>
+          `).join('')}
+        </div>
+
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <a href="http://localhost:3456" target="_blank" class="btn btn-emerald btn-sm">⚡ Открыть Web Control Center ↗</a>
+          <button class="btn btn-secondary btn-sm" onclick="closeModal()">Закрыть</button>
+        </div>
+      `;
+    })
+    .catch(() => {
+      modalBody.innerHTML = `
+        <div style="display:flex;align-items:center;gap:.8rem;margin-bottom:1rem">
+          <span style="font-size:2rem">💻</span>
+          <div>
+            <h3 style="font-size:1.3rem;font-weight:800;color:var(--text-pure)">Локальный Bridge еще не запущен</h3>
+            <span class="chip" style="color:var(--accent-amber)">Ожидание локального соединения</span>
+          </div>
+        </div>
+
+        <p style="color:var(--text-muted);font-size:.85rem;line-height:1.6;margin-bottom:1rem">
+          Чтобы веб-сайт в реальном времени отобразил ваши установленные MCP, скиллы и субагенты, запустите команду в терминале:
+        </p>
+
+        <pre class="terminal" style="margin-bottom:1.2rem;font-size:.82rem;white-space:pre-wrap;cursor:pointer" onclick="navigator.clipboard.writeText('irm https://raw.githubusercontent.com/temkalt/claude-ultimate-hub/main/install.ps1 | iex'); alert('Команда скопирована!');">irm https://raw.githubusercontent.com/temkalt/claude-ultimate-hub/main/install.ps1 | iex</pre>
+
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <button class="btn btn-primary btn-sm" onclick="navigator.clipboard.writeText('irm https://raw.githubusercontent.com/temkalt/claude-ultimate-hub/main/install.ps1 | iex'); alert('Команда скопирована!');">📋 Скопировать команду</button>
+          <button class="btn btn-secondary btn-sm" onclick="closeModal()">Закрыть</button>
+        </div>
+      `;
     });
 }
 
