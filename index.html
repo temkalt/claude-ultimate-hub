@@ -1428,39 +1428,89 @@ function showProfileArchitectureModal(pId) {
   const desc = currentLang === 'ru' ? p.desc_ru : p.desc_en;
   const scenario = currentLang === 'ru' ? p.scenario_ru : p.scenario_en;
 
-  const modal = document.getElementById('component-modal');
+  const modal = document.getElementById('modal-overlay');
   const body = document.getElementById('modal-body');
   if (!modal || !body) return;
 
+  const plugins = tools.filter(t => t.includes('plugin') || t === 'frontend-design' || t === 'superpowers' || t === 'context7' || t === 'agentmemory');
+  const mcps = tools.filter(t => t.startsWith('mcp-'));
+  const skills = tools.filter(t => t.startsWith('skill-') || t === 'agent-security');
+  const lsps = tools.filter(t => t.startsWith('lsp-'));
+  const agents = tools.filter(t => t.startsWith('agent-') && t !== 'agent-security');
+  const hooks = tools.filter(t => t.startsWith('hook-'));
+
+  const psCmd = `powershell -ExecutionPolicy Bypass -File setup-claude-code-ultimate.ps1 -Profile ${p.id}`;
+
   body.innerHTML = `
     <div style="display:flex;align-items:center;gap:.85rem;margin-bottom:1.2rem">
-      <span style="font-size:2.2rem">${p.icon}</span>
+      <span style="font-size:2.4rem">${p.icon}</span>
       <div>
         <h3 style="font-size:1.4rem;font-weight:800;color:var(--text-pure)">${name}</h3>
-        <span class="card__tag" style="background:rgba(229,192,123,.12);color:var(--accent-gold);border:1px solid rgba(229,192,123,.25);padding:.2rem .55rem;border-radius:9999px;font-size:.7rem;font-weight:700">${p.tag} · ${p.tokens}</span>
+        <span class="card__tag" style="background:rgba(229,192,123,.12);color:var(--accent-gold);border:1px solid rgba(229,192,123,.25);padding:.2rem .55rem;border-radius:9999px;font-size:.72rem;font-weight:700">${p.tag} · ${p.tokens}</span>
       </div>
     </div>
 
     <p style="font-size:.9rem;color:var(--text-main);line-height:1.65;margin-bottom:1.2rem">${desc}</p>
 
-    <div style="background:var(--bg-darkest);border:1px solid var(--border-subtle);border-radius:var(--radius-xs);padding:1.2rem;margin-bottom:1.4rem">
-      <strong style="color:var(--text-pure);font-size:.85rem;display:block;margin-bottom:.5rem">🎯 ${currentLang === 'ru' ? 'Назначение и сценарии использования:' : 'Mission & Real-World Use Cases:'}</strong>
+    <div style="background:var(--bg-main);border:1px solid var(--border-subtle);border-radius:var(--radius-xs);padding:1.2rem;margin-bottom:1.4rem">
+      <strong style="color:var(--text-pure);font-size:.85rem;display:block;margin-bottom:.5rem">🎯 ${currentLang === 'ru' ? 'Сценарий и назначение архитектуры:' : 'Mission & Architectural Purpose:'}</strong>
       <div style="font-size:.82rem;color:var(--text-muted);line-height:1.6">${scenario}</div>
     </div>
 
-    <strong style="color:var(--text-pure);font-size:.85rem;display:block;margin-bottom:.6rem">📦 ${currentLang === 'ru' ? 'Полный список подключенных инструментов' : 'Full Installed Tools Stack'} (${tools.length}):</strong>
-    <div style="display:flex;flex-wrap:wrap;gap:.4rem;margin-bottom:1.6rem">
-      ${tools.map(t => `<span class="chip" style="padding:.3rem .6rem;font-size:.75rem">${t}</span>`).join('')}
+    <strong style="color:var(--text-pure);font-size:.88rem;display:block;margin-bottom:.8rem">📦 ${currentLang === 'ru' ? 'Детальный разбор архитектурного стека' : 'Architectural Components Breakdown'} (${tools.length}):</strong>
+    
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:.8rem;margin-bottom:1.6rem">
+      ${plugins.length ? `
+        <div style="background:var(--bg-main);padding:.8rem;border-radius:6px;border:1px solid var(--border-subtle)">
+          <div style="font-size:.74rem;font-weight:700;color:var(--accent-cyan);margin-bottom:.4rem">🔌 Плагины (${plugins.length})</div>
+          <div style="display:flex;flex-wrap:wrap;gap:.25rem">${plugins.map(t => `<span class="chip" style="font-size:.68rem">${t}</span>`).join('')}</div>
+        </div>
+      ` : ''}
+
+      ${mcps.length ? `
+        <div style="background:var(--bg-main);padding:.8rem;border-radius:6px;border:1px solid var(--border-subtle)">
+          <div style="font-size:.74rem;font-weight:700;color:var(--accent-gold);margin-bottom:.4rem">🌐 MCP Серверы (${mcps.length})</div>
+          <div style="display:flex;flex-wrap:wrap;gap:.25rem">${mcps.map(t => `<span class="chip" style="font-size:.68rem">${t}</span>`).join('')}</div>
+        </div>
+      ` : ''}
+
+      ${skills.length ? `
+        <div style="background:var(--bg-main);padding:.8rem;border-radius:6px;border:1px solid var(--border-subtle)">
+          <div style="font-size:.74rem;font-weight:700;color:var(--accent-emerald);margin-bottom:.4rem">🎯 Скиллы (${skills.length})</div>
+          <div style="display:flex;flex-wrap:wrap;gap:.25rem">${skills.map(t => `<span class="chip" style="font-size:.68rem">${t}</span>`).join('')}</div>
+        </div>
+      ` : ''}
+
+      ${lsps.length ? `
+        <div style="background:var(--bg-main);padding:.8rem;border-radius:6px;border:1px solid var(--border-subtle)">
+          <div style="font-size:.74rem;font-weight:700;color:var(--accent-silver);margin-bottom:.4rem">⚡ AST LSPs (${lsps.length})</div>
+          <div style="display:flex;flex-wrap:wrap;gap:.25rem">${lsps.map(t => `<span class="chip" style="font-size:.68rem">${t}</span>`).join('')}</div>
+        </div>
+      ` : ''}
+
+      ${agents.length ? `
+        <div style="background:var(--bg-main);padding:.8rem;border-radius:6px;border:1px solid var(--border-subtle)">
+          <div style="font-size:.74rem;font-weight:700;color:var(--accent-amber);margin-bottom:.4rem">🤖 Субагенты (${agents.length})</div>
+          <div style="display:flex;flex-wrap:wrap;gap:.25rem">${agents.map(t => `<span class="chip" style="font-size:.68rem">${t}</span>`).join('')}</div>
+        </div>
+      ` : ''}
+
+      ${hooks.length ? `
+        <div style="background:var(--bg-main);padding:.8rem;border-radius:6px;border:1px solid var(--border-subtle)">
+          <div style="font-size:.74rem;font-weight:700;color:var(--accent-rose);margin-bottom:.4rem">🛡️ Хуки защиты (${hooks.length})</div>
+          <div style="display:flex;flex-wrap:wrap;gap:.25rem">${hooks.map(t => `<span class="chip" style="font-size:.68rem">${t}</span>`).join('')}</div>
+        </div>
+      ` : ''}
     </div>
 
     <div style="background:#050508;border:1px solid var(--border-subtle);border-radius:var(--radius-xs);padding:1rem;margin-bottom:1.4rem">
-      <div style="font-size:.75rem;color:var(--text-faint);margin-bottom:.4rem">${currentLang === 'ru' ? 'Команда установки профиля:' : 'Installation Command:'}</div>
-      <code style="font-family:'JetBrains Mono',monospace;font-size:.8rem;color:var(--text-pure)">powershell -ExecutionPolicy Bypass -File setup-claude-code-ultimate.ps1 -Profile ${p.id}</code>
+      <div style="font-size:.75rem;color:var(--text-faint);margin-bottom:.4rem">${currentLang === 'ru' ? 'Команда быстрой установки:' : 'Quick Installation Command:'}</div>
+      <code style="font-family:'JetBrains Mono',monospace;font-size:.8rem;color:var(--text-pure);word-break:break-all;display:block">${psCmd}</code>
     </div>
 
     <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem">
       <button class="btn btn-secondary" onclick="closeModal()">${currentLang === 'ru' ? 'Закрыть' : 'Close'}</button>
-      <button class="btn btn-primary" onclick="selectProfile('${p.id}');closeModal();copyCommand();">${currentLang === 'ru' ? '✓ Выбрать этот профиль и скопировать команду' : '✓ Select Profile & Copy Command'}</button>
+      <button class="btn btn-primary" onclick="selectProfile('${p.id}');closeModal();navigator.clipboard.writeText('${psCmd}');alert('Профиль ${p.id} выбран и команда скопирована!');">${currentLang === 'ru' ? '✓ Выбрать этот профиль' : '✓ Select This Profile'}</button>
     </div>
   `;
 
