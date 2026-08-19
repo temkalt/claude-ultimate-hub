@@ -597,34 +597,44 @@ html,body{height:100%;font-family:'Plus Jakarta Sans',system-ui,sans-serif;backg
         </div>
       </section>
 
-      <!-- View 3: Workspace & Project Scanner -->
+      <!-- View 3: Workspace & Project Intelligence Scanner -->
       <section class="view-panel" id="view-workspace">
         <div class="view-header">
           <div>
-            <h2>📁 Мульти-Воркспейс & Сканер Проектов</h2>
-            <p>Автоматический анализ стека любой локальной папки и генерация идеальной локальной среды `.claude/`.</p>
+            <h2>📁 Мульти-Воркспейс & Интеллектуальный Сканер Проектов</h2>
+            <p>Глубокий анализ топологии кодовой базы, библиотек, баз данных и автоматический подбор идеального стека Claude Code.</p>
           </div>
         </div>
 
         <div class="card" style="margin-bottom:1.4rem">
-          <h3 style="color:var(--text-pure);margin-bottom:.8rem">Сканировать директорию проекта:</h3>
-          <div style="display:flex;gap:.75rem">
-            <input type="text" class="form-input" id="ws-scan-path" value="." placeholder="Укажите путь к проекту (например, . или d:/projects/my-app)">
-            <button class="btn btn-primary" onclick="scanCurrentWorkspace()">🔍 Сканировать проект</button>
+          <h3 style="color:var(--text-pure);margin-bottom:.6rem;font-size:1.05rem">🧠 Интеллектуальный Анализ Проекта:</h3>
+          <p style="color:var(--text-muted);font-size:.82rem;margin-bottom:1rem">
+            Сканер анализирует файлы проекта, манифесты зависимостей, ORM схемы, API эндпоинты, тесты и безопасность, подбирая точный набор MCP, скиллов, плагинов и генерируя CLAUDE.md.
+          </p>
+
+          <div style="display:flex;gap:.75rem;margin-bottom:.8rem">
+            <input type="text" class="form-input" id="ws-scan-path" value="." placeholder="Укажите путь к проекту (например, . или d:/projects/my-saas-app)">
+            <button class="btn btn-primary" id="btn-run-ws-scan" onclick="scanCurrentWorkspace()">🧠 Запустить Анализ Проекта</button>
+          </div>
+
+          <div style="display:flex;gap:.5rem;flex-wrap:wrap;align-items:center">
+            <span style="font-size:.75rem;color:var(--text-muted)">Быстрый выбор:</span>
+            <button class="btn btn-sm btn-secondary" onclick="setWorkspaceScanPath('.')">📁 Текущая папка (.)</button>
+            <button class="btn btn-sm btn-secondary" onclick="simulateWorkspaceScan('next-saas')">🚀 Пример: Next.js + Stripe SaaS</button>
+            <button class="btn btn-sm btn-secondary" onclick="simulateWorkspaceScan('fastapi-rag')">⚡ Пример: FastAPI + Vector RAG</button>
+            <button class="btn btn-sm btn-secondary" onclick="simulateWorkspaceScan('telegram-bot')">🤖 Пример: Telegram Бот + ЮKassa</button>
           </div>
         </div>
 
-        <div class="grid-cards" id="ws-scan-report-container">
-          <div class="card">
-            <div class="card__header">
-              <span class="card__icon">💡</span>
-              <div class="card__title">Рекомендованный профиль</div>
-              <span class="card__tag" id="ws-rec-profile">Master</span>
-            </div>
-            <p class="card__desc" id="ws-rec-desc">Нажмите кнопку «Сканировать проект» для авто-определения стека.</p>
-            <div class="card__footer">
-              <button class="btn btn-emerald btn-sm" onclick="applyScannedWorkspaceProfile()">⚡ Применить рекомендуемый профиль</button>
-            </div>
+        <div id="ws-scan-results-container">
+          <!-- Dynamic Results Container -->
+          <div class="card" style="text-align:center;padding:3rem 1rem;color:var(--text-muted)">
+            <div style="font-size:3rem;margin-bottom:.8rem">🔍</div>
+            <h3 style="color:var(--text-pure);font-size:1.1rem;margin-bottom:.4rem">Готов к интеллектуальному анализу проекта</h3>
+            <p style="font-size:.82rem;max-width:500px;margin:0 auto 1.4rem">
+              Укажите путь к репозиторию и нажмите «Запустить Анализ Проекта». Система определит стек, базы данных, платежи, тестирование и сгенерирует персональный рецепт Claude Code.
+            </p>
+            <button class="btn btn-primary btn-sm" onclick="scanCurrentWorkspace()">🧠 Начать сканирование</button>
           </div>
         </div>
       </section>
@@ -2390,6 +2400,422 @@ function submitCustomMcp() {
       renderMcpCards();
     }
   });
+}
+
+// ─── Multi-Workspace & Project Intelligence Scanner ──────────
+let lastWorkspaceReport = null;
+
+function setWorkspaceScanPath(p) {
+  document.getElementById('ws-scan-path').value = p;
+  scanCurrentWorkspace();
+}
+
+function scanCurrentWorkspace() {
+  const targetPath = document.getElementById('ws-scan-path').value.trim() || '.';
+  const btn = document.getElementById('btn-run-ws-scan');
+  const container = document.getElementById('ws-scan-results-container');
+
+  btn.disabled = true;
+  btn.innerHTML = `<span class="spinner" style="display:inline-block;width:14px;height:14px;border:2px solid #fff;border-top-color:transparent;border-radius:50%;animation:spin .8s linear infinite;margin-right:6px"></span> Анализирую проект...`;
+
+  container.innerHTML = `
+    <div class="card" style="text-align:center;padding:2.5rem 1rem">
+      <div style="font-size:2.5rem;animation:pulse 1.5s infinite">🧠</div>
+      <h3 style="color:var(--text-pure);margin:.8rem 0 .4rem">Интеллектуальный аудит структуры проекта...</h3>
+      <p style="color:var(--text-muted);font-size:.82rem" id="ws-scan-phase-text">Сканирование зависимостей, ORM-моделей, API и фреймворков...</p>
+    </div>
+  `;
+
+  const phases = [
+    'Сканирование манифестов (package.json, pyproject, Cargo, go.mod)...',
+    'Определение языков программирования и архитектурного архетипа...',
+    'Анализ баз данных, ORM, Auth и платежных провайдеров...',
+    'Подбор специализированных MCP, скиллов и синтез CLAUDE.md...'
+  ];
+  let phaseIdx = 0;
+  const phaseTimer = setInterval(() => {
+    phaseIdx = (phaseIdx + 1) % phases.length;
+    const el = document.getElementById('ws-scan-phase-text');
+    if (el) el.innerText = phases[phaseIdx];
+  }, 350);
+
+  fetch('/api/workspace/scan', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ targetPath })
+  })
+  .then(res => res.json())
+  .then(data => {
+    clearInterval(phaseTimer);
+    btn.disabled = false;
+    btn.innerHTML = `🧠 Запустить Анализ Проекта`;
+
+    if (data.error) {
+      container.innerHTML = `
+        <div class="card" style="border-color:var(--accent-rose);background:rgba(244,63,94,0.05);padding:1.5rem">
+          <div style="display:flex;align-items:center;gap:.8rem;color:var(--accent-rose)">
+            <span style="font-size:1.6rem">⚠️</span>
+            <div>
+              <strong style="font-size:.95rem">Ошибка сканирования: ${data.error}</strong>
+              <div style="font-size:.78rem;color:var(--text-muted)">Путь: ${data.path || targetPath}</div>
+            </div>
+          </div>
+        </div>
+      `;
+      return;
+    }
+
+    lastWorkspaceReport = data;
+    renderWorkspaceReport(data);
+    appendTerminalLog(`[OK] Workspace analyzed: ${data.archetype} (${data.techMatrix.languages.join(', ')})\n`);
+  })
+  .catch(err => {
+    clearInterval(phaseTimer);
+    btn.disabled = false;
+    btn.innerHTML = `🧠 Запустить Анализ Проекта`;
+    container.innerHTML = `<div class="card" style="color:var(--accent-rose)">Ошибка запроса: ${err.message}</div>`;
+  });
+}
+
+function simulateWorkspaceScan(type) {
+  const container = document.getElementById('ws-scan-results-container');
+  let mockData;
+
+  if (type === 'next-saas') {
+    mockData = {
+      path: 'd:/projects/saas-platform-demo',
+      archetype: 'SaaS Web Platform (Next.js 15 + Stripe + Supabase)',
+      recommendedProfile: 'Web',
+      filesCount: 142,
+      techMatrix: {
+        languages: ['TypeScript', 'JavaScript', 'HTML/CSS', 'SQL'],
+        frontend: ['Next.js 15 (App Router)', 'React 19', 'Tailwind CSS v4', 'Radix UI / Shadcn', 'Lucide Icons'],
+        backend: ['Next.js Route Handlers', 'Server Actions', 'Node.js Serverless'],
+        database: ['Supabase Cloud', 'PostgreSQL', 'Prisma ORM'],
+        authPayments: ['Supabase Auth (SSO)', 'Stripe Subscriptions & Checkout'],
+        testing: ['Playwright E2E', 'Vitest'],
+        devops: ['Vercel Edge', 'GitHub Actions CI']
+      },
+      tailoredStack: {
+        profile: 'Web',
+        componentIds: ['mcp-postgres', 'mcp-supabase', 'mcp-stripe', 'mcp-playwright', 'skill-uiux', 'skill-seo', 'skill-bulletproof', 'skill-caveman', 'frontend-design', 'superpowers', 'context7', 'agentmemory', 'github-plugin', 'vercel-plugin', 'agent-architect', 'agent-codereview', 'agent-tester', 'agent-docs', 'agent-security', 'hook-secrets', 'hook-danger', 'hook-repomap', 'hook-selfheal'],
+        mcps: [
+          { id: 'mcp-postgres', name: 'PostgreSQL Read-Only', reason: 'Безопасная инспекция схемы таблиц и оптимизация SQL-запросов' },
+          { id: 'mcp-supabase', name: 'Supabase Backend Manager', reason: 'Управление облачной базой, Auth и миграциями RLS' },
+          { id: 'mcp-stripe', name: 'Stripe Payments Gateway', reason: 'Тестирование Checkout сессий, подписок и вебхуков' },
+          { id: 'mcp-playwright', name: 'Playwright Visual Tester', reason: 'Рендеринг в Chromium, проверка UI и E2E тесты' }
+        ],
+        skills: [
+          { id: 'skill-uiux', name: 'UI/UX Pro Max (67 Styles)', reason: 'Палитры, типографика и современные компоненты' },
+          { id: 'skill-seo', name: 'Claude SEO Pro', reason: 'Технический SEO-аудит и Web Vitals' },
+          { id: 'skill-bulletproof', name: 'Bulletproof (12-Step Quality)', reason: 'Строгая инженерная дисциплина и пошаговая верификация' },
+          { id: 'skill-caveman', name: 'Caveman (-65% Tokens)', reason: 'Семантическое сжатие контекста для экономии токенов' }
+        ],
+        plugins: [
+          { id: 'frontend-design', name: 'Frontend Design Pro', reason: 'Чистая верстка без шаблонного вида ИИ' },
+          { id: 'superpowers', name: 'Superpowers (TDD Planning)', reason: 'Тестирование и поэтапные инженерные спецификации' },
+          { id: 'context7', name: 'Context7 Live Docs', reason: 'Подтягивание актуальной документации библиотек' },
+          { id: 'agentmemory', name: 'AgentMemory Vault', reason: 'Постоянная память архитектурных решений проекта' }
+        ],
+        agents: [
+          { id: 'agent-architect', name: 'Lead Architect (Opus)', model: 'Claude Opus', reason: 'Глубокие архитектурные решения' },
+          { id: 'agent-codereview', name: 'Pragmatic Code Reviewer (Sonnet)', model: 'Claude 3.7 Sonnet', reason: 'Поиск скрытых багов' },
+          { id: 'agent-tester', name: 'Testing Specialist (Sonnet)', model: 'Claude 3.5 Sonnet', reason: 'Автоматическое покрытие E2E тестами' }
+        ],
+        hooks: [
+          { id: 'hook-secrets', name: 'Secret Scanner Hook', type: 'PreToolUse', reason: 'Блокировка утечек паролей и API-ключей' },
+          { id: 'hook-danger', name: 'Dangerous Command Blocker', type: 'PreToolUse', reason: 'Защита от опасных команд' }
+        ],
+        estimatedTokens: '~1.1k tokens (Budget 99.4% Free)'
+      },
+      tailoredClaudeMd: `# Project Guidelines for Claude Code\n\n## Project Overview\n- Archetype: SaaS Web Platform (Next.js 15 + Stripe + Supabase)\n- Stack: TypeScript, React 19, Tailwind CSS, PostgreSQL, Stripe, Playwright\n\n## Build & Test Commands\n- Build: \`npm run build\`\n- Test: \`npm test\`\n- Dev: \`npm run dev\`\n- Lint: \`npm run lint\`\n\n## Code Standards\n- Strict TypeScript typing, zero any.\n- TDD before code modifications.\n- Security: Never expose Stripe secret keys or database connection strings.`,
+      insights: [
+        '💳 Обнаружен Stripe: Stripe MCP готов к симуляции подписок и вебхуков.',
+        '🗄️ Обнаружен Supabase: активирован скилл Supabase RLS для безопасных политик доступа.',
+        '🎨 Обнаружен Tailwind: подключен Frontend Design Pro для премиального интерфейса.'
+      ]
+    };
+  } else if (type === 'fastapi-rag') {
+    mockData = {
+      path: 'd:/projects/fastapi-vector-rag',
+      archetype: 'AI Agentic & RAG Vector Pipeline (FastAPI + Qdrant + Redis)',
+      recommendedProfile: 'AI',
+      filesCount: 88,
+      techMatrix: {
+        languages: ['Python', 'SQL', 'Docker'],
+        frontend: ['FastAPI Swagger UI', 'Streamlit Dashboard'],
+        backend: ['FastAPI Async Engine', 'LangChain / LlamaIndex', 'Uvicorn ASGI'],
+        database: ['Qdrant Vector Database', 'PostgreSQL (asyncpg)', 'Redis Cache & Pub/Sub'],
+        authPayments: ['JWT OAuth2 Bearer Auth'],
+        testing: ['Pytest Asyncio', 'HTTPX TestClient'],
+        devops: ['Docker Multi-stage', 'Docker Compose', 'GitHub Actions CI']
+      },
+      tailoredStack: {
+        profile: 'AI',
+        componentIds: ['mcp-postgres', 'mcp-redis', 'mcp-docker', 'skill-bulletproof', 'skill-caveman', 'skill-creator', 'superpowers', 'context7', 'agentmemory', 'agent-architect', 'agent-codereview', 'agent-tester', 'agent-security', 'hook-secrets', 'hook-danger'],
+        mcps: [
+          { id: 'mcp-postgres', name: 'PostgreSQL Read-Only', reason: 'Инспекция таблиц метаданных и связей' },
+          { id: 'mcp-redis', name: 'Redis Cache & Stream', reason: 'Отладка кэшированных эмбеддингов и очередей' },
+          { id: 'mcp-docker', name: 'Docker Manager', reason: 'Управление контейнерами Qdrant и PostgreSQL' }
+        ],
+        skills: [
+          { id: 'skill-creator', name: 'Skill & Agent Creator', reason: 'Сборка кастомных цепочек рассуждений для RAG' },
+          { id: 'skill-bulletproof', name: 'Bulletproof (12 Steps)', reason: 'Тестирование эвристик и верификация RAG эмбеддингов' },
+          { id: 'skill-caveman', name: 'Caveman (-65% Tokens)', reason: 'Сжатие вывода для длинных контекстов' }
+        ],
+        plugins: [
+          { id: 'superpowers', name: 'Superpowers (TDD Planning)', reason: 'Строгая спецификация эндпоинтов' },
+          { id: 'context7', name: 'Context7 Live Docs', reason: 'Свежая документация LangChain, FastAPI и Qdrant' },
+          { id: 'agentmemory', name: 'AgentMemory Vault', reason: 'Память архитектуры эмбеддингов' }
+        ],
+        agents: [
+          { id: 'agent-architect', name: 'Lead Architect (Opus)', model: 'Claude Opus', reason: 'Архитектура векторного поиска и шардирования' },
+          { id: 'agent-tester', name: 'Testing Specialist (Sonnet)', model: 'Claude 3.5 Sonnet', reason: 'Asyncio pytest покрытие' }
+        ],
+        hooks: [
+          { id: 'hook-secrets', name: 'Secret Scanner Hook', type: 'PreToolUse', reason: 'Защита OpenAI и Cohere API ключей' }
+        ],
+        estimatedTokens: '~980 tokens (Budget 99.5% Free)'
+      },
+      tailoredClaudeMd: `# Project Guidelines for Claude Code\n\n## Project Overview\n- Archetype: AI Agentic & RAG Vector Pipeline\n- Stack: Python 3.12, FastAPI, Qdrant, Redis, Pytest\n\n## Build & Test Commands\n- Dev: \`uvicorn main:app --reload\`\n- Test: \`pytest -v\`\n\n## Standards\n- Pydantic v2 strict type schemas.\n- Async/await for all I/O calls.`,
+      insights: [
+        '🧠 Обнаружен векторный стек: оптимизирован контекстный бюджет для длинных документов.',
+        '⚡ Подключен Redis MCP для живого мониторинга очередей задач.'
+      ]
+    };
+  } else {
+    mockData = {
+      path: 'd:/projects/tg-yookassa-bot',
+      archetype: 'Telegram Bot & CIS Fintech Platform (Telegraf + ЮKassa + MongoDB)',
+      recommendedProfile: 'Russia',
+      filesCount: 65,
+      techMatrix: {
+        languages: ['JavaScript', 'TypeScript', 'Node.js'],
+        frontend: ['Telegram WebApp (TWA)', 'HTML5 / CSS3'],
+        backend: ['Telegraf.js Bot Engine', 'Express Webhook Server'],
+        database: ['MongoDB Mongoose', 'Redis Session Store'],
+        authPayments: ['Telegram Auth Hash Validation', 'ЮKassa 54-ФЗ Fiscal Receipts 🇷🇺'],
+        testing: ['Jest Mock Suite'],
+        devops: ['Docker Compose', 'Yandex Cloud VM 🇷🇺']
+      },
+      tailoredStack: {
+        profile: 'Russia',
+        componentIds: ['mcp-telegram', 'mcp-yookassa', 'mcp-docker', 'skill-uiux', 'skill-caveman', 'skill-bulletproof', 'frontend-design', 'superpowers', 'context7', 'agentmemory', 'agent-architect', 'agent-codereview', 'agent-security', 'hook-secrets', 'hook-danger'],
+        mcps: [
+          { id: 'mcp-telegram', name: 'Telegram Bot 🇷🇺', reason: 'Управление ботами, отправка уведомлений и вебхуков' },
+          { id: 'mcp-yookassa', name: 'ЮKassa Pay 🇷🇺', reason: 'Прием платежей в рублях с фискальными чеками 54-ФЗ' },
+          { id: 'mcp-docker', name: 'Docker Manager', reason: 'Управление контейнерами сервиса' }
+        ],
+        skills: [
+          { id: 'skill-uiux', name: 'UI/UX Pro Max', reason: 'Дизайн Telegram WebApps в стилистике iOS и Material' },
+          { id: 'skill-caveman', name: 'Caveman (-65% Tokens)', reason: 'Сжатие контекста при разработке' }
+        ],
+        plugins: [
+          { id: 'frontend-design', name: 'Frontend Design Pro', reason: 'Адаптивный TWA интерфейс' },
+          { id: 'context7', name: 'Context7 Live Docs', reason: 'Документация Telegraf и ЮKassa SDK' }
+        ],
+        agents: [
+          { id: 'agent-security', name: 'Security Auditor (Opus)', model: 'Claude Opus', reason: 'Проверка подлинности HMAC Telegram initData' }
+        ],
+        hooks: [
+          { id: 'hook-secrets', name: 'Secret Scanner Hook', type: 'PreToolUse', reason: 'Защита Bot Token и Secret Key ЮKassa' }
+        ],
+        estimatedTokens: '~890 tokens (Budget 99.6% Free)'
+      },
+      tailoredClaudeMd: `# Project Guidelines for Claude Code\n\n## Project Overview\n- Archetype: Telegram Bot & CIS Fintech Platform\n- Stack: Node.js, Telegraf, ЮKassa, MongoDB\n\n## Standards\n- Strict initData hash verification for WebApps.\n- Safe error envelopes on payment webhooks.`,
+      insights: [
+        '🇷🇺 Обнаружена ЮKassa: активирован сертифицированный MCP с поддержкой 54-ФЗ.',
+        '🤖 Обнаружен Telegram: настроен Security Auditor для проверки HMAC вебхуков.'
+      ]
+    };
+  }
+
+  document.getElementById('ws-scan-path').value = mockData.path;
+  lastWorkspaceReport = mockData;
+  renderWorkspaceReport(mockData);
+}
+
+function renderWorkspaceReport(data) {
+  const container = document.getElementById('ws-scan-results-container');
+  const t = data.techMatrix || {};
+  const s = data.tailoredStack || {};
+
+  container.innerHTML = `
+    <!-- Hero Summary Card -->
+    <div class="card" style="margin-bottom:1.2rem;border-color:var(--accent-emerald);background:linear-gradient(135deg,rgba(16,185,129,0.06),transparent)">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:.8rem;margin-bottom:1rem">
+        <div>
+          <span class="chip" style="color:var(--accent-emerald);margin-bottom:.4rem;display:inline-block">✓ Аудит завершен · ${data.filesCount || 0} файлов</span>
+          <h2 style="color:var(--text-pure);font-size:1.35rem;font-weight:800;margin-bottom:.3rem">${data.archetype || 'Проект'}</h2>
+          <div style="font-size:.78rem;color:var(--text-muted);font-family:'JetBrains Mono',monospace">Директория: ${data.path}</div>
+        </div>
+        <div style="text-align:right">
+          <div style="font-size:.7rem;color:var(--text-muted)">Рекомендованный профиль:</div>
+          <span class="chip" style="color:var(--accent-gold);font-size:.9rem;font-weight:700">${data.recommendedProfile}</span>
+        </div>
+      </div>
+
+      <div style="display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:1.2rem">
+        ${(t.languages || []).map(l => `<span class="chip" style="color:var(--accent-cyan)">💻 ${l}</span>`).join('')}
+        <span class="chip" style="color:var(--accent-emerald)">⚡ Нагрузка контекста: ${s.estimatedTokens || '~1.2k tokens'}</span>
+        <span class="chip" style="color:var(--text-pure)">🛡️ 7-Layer Defense: Active</span>
+      </div>
+
+      <div style="display:flex;gap:.8rem;flex-wrap:wrap">
+        <button class="btn btn-emerald" onclick="applyWorkspaceTailoredStack()">⚡ Развернуть этот стек в Claude Code (1-клик)</button>
+        <button class="btn btn-primary" onclick="writeWorkspaceClaudeMd()">📝 Записать CLAUDE.md в проект</button>
+        <button class="btn btn-secondary" onclick="saveWorkspaceAsProfile()">💾 Сохранить как Профиль Проекта</button>
+      </div>
+    </div>
+
+    <!-- Tech Stack Matrix Grid -->
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:.8rem;margin-bottom:1.4rem">
+      <div class="card">
+        <div style="font-size:.75rem;font-weight:700;color:var(--accent-cyan);margin-bottom:.4rem">🎨 Frontend & UI</div>
+        <div style="font-size:.82rem;color:var(--text-pure)">${(t.frontend && t.frontend.length) ? t.frontend.join(' · ') : 'Не обнаружено / API-only'}</div>
+      </div>
+      <div class="card">
+        <div style="font-size:.75rem;font-weight:700;color:var(--accent-gold);margin-bottom:.4rem">⚙️ Backend & API</div>
+        <div style="font-size:.82rem;color:var(--text-pure)">${(t.backend && t.backend.length) ? t.backend.join(' · ') : 'Статический / Клиентский'}</div>
+      </div>
+      <div class="card">
+        <div style="font-size:.75rem;font-weight:700;color:var(--accent-emerald);margin-bottom:.4rem">🗄️ Базы данных & ORM</div>
+        <div style="font-size:.82rem;color:var(--text-pure)">${(t.database && t.database.length) ? t.database.join(' · ') : 'Без постоянного хранилища'}</div>
+      </div>
+      <div class="card">
+        <div style="font-size:.75rem;font-weight:700;color:var(--accent-rose);margin-bottom:.4rem">🔐 Auth & Платежи</div>
+        <div style="font-size:.82rem;color:var(--text-pure)">${(t.authPayments && t.authPayments.length) ? t.authPayments.join(' · ') : 'Без авторизации/платежей'}</div>
+      </div>
+      <div class="card">
+        <div style="font-size:.75rem;font-weight:700;color:var(--text-pure);margin-bottom:.4rem">🧪 Тестирование & QA</div>
+        <div style="font-size:.82rem;color:var(--text-pure)">${(t.testing && t.testing.length) ? t.testing.join(' · ') : 'Тесты не настроены'}</div>
+      </div>
+      <div class="card">
+        <div style="font-size:.75rem;font-weight:700;color:var(--accent-purple);margin-bottom:.4rem">🚀 DevOps & CI/CD</div>
+        <div style="font-size:.82rem;color:var(--text-pure)">${(t.devops && t.devops.length) ? t.devops.join(' · ') : 'Локальный запуск'}</div>
+      </div>
+    </div>
+
+    <!-- Tailored Components Breakdown -->
+    <div class="card" style="margin-bottom:1.4rem">
+      <h3 style="color:var(--text-pure);font-size:1.1rem;margin-bottom:.8rem">🧩 Персонально подобранный стек Claude Code (${(s.componentIds || []).length} инструментов):</h3>
+      
+      <div style="display:flex;flex-direction:column;gap:.6rem">
+        ${(s.mcps || []).map(m => `
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:.5rem .8rem;background:var(--bg-main);border-radius:4px;border:1px solid var(--border-subtle);font-size:.8rem">
+            <span style="font-weight:600;color:var(--accent-gold)">🌐 ${m.name}</span>
+            <span style="color:var(--text-muted);font-size:.75rem">${m.reason}</span>
+          </div>
+        `).join('')}
+
+        ${(s.skills || []).map(sk => `
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:.5rem .8rem;background:var(--bg-main);border-radius:4px;border:1px solid var(--border-subtle);font-size:.8rem">
+            <span style="font-weight:600;color:var(--accent-emerald)">🎯 ${sk.name}</span>
+            <span style="color:var(--text-muted);font-size:.75rem">${sk.reason}</span>
+          </div>
+        `).join('')}
+
+        ${(s.plugins || []).map(p => `
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:.5rem .8rem;background:var(--bg-main);border-radius:4px;border:1px solid var(--border-subtle);font-size:.8rem">
+            <span style="font-weight:600;color:var(--accent-cyan)">🔌 ${p.name}</span>
+            <span style="color:var(--text-muted);font-size:.75rem">${p.reason}</span>
+          </div>
+        `).join('')}
+
+        ${(s.agents || []).map(a => `
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:.5rem .8rem;background:var(--bg-main);border-radius:4px;border:1px solid var(--border-subtle);font-size:.8rem">
+            <span style="font-weight:600;color:var(--text-pure)">🤖 ${a.name} <span class="chip" style="font-size:.65rem;color:var(--accent-gold)">${a.model}</span></span>
+            <span style="color:var(--text-muted);font-size:.75rem">${a.reason}</span>
+          </div>
+        `).join('')}
+      </div>
+    </div>
+
+    <!-- Smart Insights -->
+    ${(data.insights && data.insights.length) ? `
+      <div class="card" style="margin-bottom:1.4rem;background:rgba(59,130,246,0.05);border-color:rgba(59,130,246,0.2)">
+        <h4 style="color:var(--accent-cyan);margin-bottom:.6rem;font-size:.9rem">💡 Архитектурные Инсайты и Рекомендации:</h4>
+        <ul style="padding-left:1.2rem;font-size:.82rem;color:var(--text-pure);display:flex;flex-direction:column;gap:.3rem">
+          ${data.insights.map(ins => `<li>${ins}</li>`).join('')}
+        </ul>
+      </div>
+    ` : ''}
+
+    <!-- Generated CLAUDE.md Preview -->
+    <div class="card">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.6rem">
+        <h3 style="color:var(--text-pure);font-size:1rem">📝 Сгенерированный CLAUDE.md для проекта:</h3>
+        <button class="btn btn-sm btn-primary" onclick="writeWorkspaceClaudeMd()">💾 Записать в ${data.path}/CLAUDE.md</button>
+      </div>
+      <textarea class="form-textarea" id="ws-claudemd-preview" style="min-height:180px;font-family:'JetBrains Mono',monospace;font-size:.78rem">${data.tailoredClaudeMd || ''}</textarea>
+    </div>
+  `;
+}
+
+function applyWorkspaceTailoredStack() {
+  if (!lastWorkspaceReport || !lastWorkspaceReport.tailoredStack) return alert('Сначала выполните сканирование проекта');
+  const comps = (lastWorkspaceReport.tailoredStack.componentIds || []).join(',');
+  const prof = lastWorkspaceReport.recommendedProfile || 'Custom';
+
+  fetch('/api/workspace/apply-tailored', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      profile: prof,
+      components: comps,
+      targetPath: lastWorkspaceReport.path
+    })
+  })
+  .then(res => res.json())
+  .then(data => {
+    alert(`⚡ Стек для '${lastWorkspaceReport.archetype}' успешно отправлен на развертывание в терминал!`);
+    switchView('view-terminal');
+  })
+  .catch(err => {
+    runAction('apply-components', { profile: prof, components: comps });
+  });
+}
+
+function writeWorkspaceClaudeMd() {
+  if (!lastWorkspaceReport) return alert('Сначала выполните сканирование проекта');
+  const content = document.getElementById('ws-claudemd-preview') ? document.getElementById('ws-claudemd-preview').value : lastWorkspaceReport.tailoredClaudeMd;
+
+  fetch('/api/workspace/write-claudemd', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      targetPath: lastWorkspaceReport.path,
+      content: content
+    })
+  })
+  .then(res => res.json())
+  .then(data => {
+    if (data.success) {
+      alert(`✓ Файл CLAUDE.md успешно записан в:\n${data.path}`);
+      appendTerminalLog(`[OK] CLAUDE.md created at ${data.path}\n`);
+    } else {
+      alert(`Ошибка записи: ${data.error}`);
+    }
+  })
+  .catch(err => alert(`Ошибка: ${err.message}`));
+}
+
+function saveWorkspaceAsProfile() {
+  if (!lastWorkspaceReport) return alert('Сначала выполните сканирование проекта');
+  const s = lastWorkspaceReport.tailoredStack || {};
+  const profId = (lastWorkspaceReport.archetype || 'Custom-Stack').replace(/[^a-zA-Z0-9]/g, '-').slice(0, 20);
+
+  openCustomProfileBuilderModal();
+  setTimeout(() => {
+    if (document.getElementById('builder-profile-id')) document.getElementById('builder-profile-id').value = profId;
+    if (document.getElementById('builder-profile-name')) document.getElementById('builder-profile-name').value = lastWorkspaceReport.archetype || 'Стек проекта';
+    if (document.getElementById('builder-profile-desc')) document.getElementById('builder-profile-desc').value = `Автоматически сгенерированный стек для ${lastWorkspaceReport.path}`;
+    
+    // Select the tailored components
+    builderSelectedComps.clear();
+    (s.componentIds || []).forEach(c => builderSelectedComps.add(c));
+    renderBuilderComponentsGrid();
+  }, 100);
 }
 
 // ─── Skills Store & Creator View ──────────────────────────────

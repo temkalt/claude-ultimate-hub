@@ -294,71 +294,360 @@ function getCommandsList() {
   return commands;
 }
 
-// ─── Workspace Scanner & Auto-Detection Engine ────────────────────────────────
+// ─── Deep Multi-Workspace Project Intelligence & Scanner Engine ──────────────
 function scanWorkspace(targetPath = ROOT_DIR) {
   const fullPath = path.resolve(targetPath);
   if (!fs.existsSync(fullPath)) {
     return { error: 'Target path does not exist', path: fullPath };
   }
 
-  const stack = {
-    path: fullPath,
-    isNode: fs.existsSync(path.join(fullPath, 'package.json')),
-    isPython: fs.existsSync(path.join(fullPath, 'requirements.txt')) || fs.existsSync(path.join(fullPath, 'pyproject.toml')),
-    isRust: fs.existsSync(path.join(fullPath, 'Cargo.toml')),
-    isGo: fs.existsSync(path.join(fullPath, 'go.mod')),
-    isDocker: fs.existsSync(path.join(fullPath, 'Dockerfile')) || fs.existsSync(path.join(fullPath, 'docker-compose.yml')),
-    isNextJs: false,
-    isReact: false,
-    isFastAPI: false,
-    isSupabase: fs.existsSync(path.join(fullPath, 'supabase')),
-    isPrisma: fs.existsSync(path.join(fullPath, 'prisma')),
-    hasGit: fs.existsSync(path.join(fullPath, '.git')),
-    hasClaudeLocal: fs.existsSync(path.join(fullPath, '.claude')),
-    frameworks: [],
-    recommendedProfile: 'Master',
-    recommendedMcps: ['postgres', 'sqlite', 'playwright', 'github'],
-    recommendedSkills: ['ui-ux-pro-max', 'bulletproof', 'caveman', 'agent-security']
+  // Scan directory tree (2 levels deep, ignoring heavy directories)
+  const ignoredDirs = new Set(['node_modules', '.git', 'dist', 'build', '.next', '.nuxt', '.output', 'venv', '.venv', '__pycache__', 'target', 'vendor', '.idea', '.vscode', 'coverage']);
+  const filesFound = [];
+  const extensions = new Set();
+
+  function walkDir(dir, depth = 0) {
+    if (depth > 2) return;
+    try {
+      const entries = fs.readdirSync(dir, { withFileTypes: true });
+      for (const e of entries) {
+        if (e.isDirectory()) {
+          if (!ignoredDirs.has(e.name)) {
+            walkDir(path.join(dir, e.name), depth + 1);
+          }
+        } else if (e.isFile()) {
+          const relPath = path.relative(fullPath, path.join(dir, e.name)).replace(/\\/g, '/');
+          filesFound.push(relPath);
+          const ext = path.extname(e.name).toLowerCase();
+          if (ext) extensions.add(ext);
+        }
+      }
+    } catch (err) {}
+  }
+
+  walkDir(fullPath, 0);
+
+  // 1. Language Detection
+  const languages = [];
+  if (extensions.has('.ts') || extensions.has('.tsx')) languages.push('TypeScript');
+  if (extensions.has('.js') || extensions.has('.jsx') || extensions.has('.mjs') || extensions.has('.cjs')) languages.push('JavaScript');
+  if (extensions.has('.py')) languages.push('Python');
+  if (extensions.has('.rs')) languages.push('Rust');
+  if (extensions.has('.go')) languages.push('Go');
+  if (extensions.has('.java')) languages.push('Java');
+  if (extensions.has('.kt')) languages.push('Kotlin');
+  if (extensions.has('.php')) languages.push('PHP');
+  if (extensions.has('.rb')) languages.push('Ruby');
+  if (extensions.has('.cs')) languages.push('C# (.NET)');
+  if (extensions.has('.cpp') || extensions.has('.c') || extensions.has('.h') || extensions.has('.hpp')) languages.push('C/C++');
+  if (extensions.has('.swift')) languages.push('Swift');
+  if (extensions.has('.dart')) languages.push('Dart / Flutter');
+  if (extensions.has('.sql')) languages.push('SQL');
+  if (extensions.has('.html') || extensions.has('.css') || extensions.has('.scss')) languages.push('HTML/CSS');
+
+  // Tech Matrix
+  const techMatrix = {
+    languages: languages.length ? languages : ['Generic Codebase'],
+    frontend: [],
+    backend: [],
+    database: [],
+    authPayments: [],
+    testing: [],
+    devops: []
   };
 
-  if (stack.isNode) {
-    const pkg = safeReadJson(path.join(fullPath, 'package.json'), {});
-    const deps = { ...(pkg.dependencies || {}), ...(pkg.devDependencies || {}) };
-    if (deps.next) { stack.isNextJs = true; stack.frameworks.push('Next.js 15'); }
-    if (deps.react) { stack.isReact = true; stack.frameworks.push('React 19'); }
-    if (deps.express || deps.fastify || deps.koa || deps.hono) { stack.frameworks.push('Node.js Server'); }
-    if (deps['@supabase/supabase-js']) { stack.isSupabase = true; stack.frameworks.push('Supabase'); }
-    if (deps.prisma) { stack.isPrisma = true; stack.frameworks.push('Prisma ORM'); }
-    if (deps.tailwindcss) { stack.frameworks.push('Tailwind CSS'); }
-    if (deps.playwright || deps['@playwright/test']) { stack.frameworks.push('Playwright E2E'); }
+  const detectedTags = [];
+  const buildCommands = { build: '', test: '', dev: '', lint: '' };
+
+  // Parse package.json
+  const pkgPath = path.join(fullPath, 'package.json');
+  let pkg = {};
+  if (fs.existsSync(pkgPath)) {
+    pkg = safeReadJson(pkgPath, {});
+    const allDeps = { ...(pkg.dependencies || {}), ...(pkg.devDependencies || {}) };
+    const scripts = pkg.scripts || {};
+
+    if (scripts.build) buildCommands.build = 'npm run build';
+    if (scripts.test) buildCommands.test = 'npm test';
+    if (scripts.dev) buildCommands.dev = 'npm run dev';
+    if (scripts.lint) buildCommands.lint = 'npm run lint';
+
+    // Frontend
+    if (allDeps.next) { techMatrix.frontend.push(`Next.js (v${(allDeps.next || '').replace(/[\^~]/g, '') || '15'})`); detectedTags.push('Next.js'); }
+    if (allDeps.react) { techMatrix.frontend.push(`React (v${(allDeps.react || '').replace(/[\^~]/g, '') || '19'})`); detectedTags.push('React'); }
+    if (allDeps.vue) { techMatrix.frontend.push('Vue.js 3'); detectedTags.push('Vue'); }
+    if (allDeps.nuxt) { techMatrix.frontend.push('Nuxt 3'); detectedTags.push('Nuxt'); }
+    if (allDeps.svelte || allDeps['@sveltejs/kit']) { techMatrix.frontend.push('Svelte / SvelteKit'); detectedTags.push('Svelte'); }
+    if (allDeps.astro) { techMatrix.frontend.push('Astro'); detectedTags.push('Astro'); }
+    if (allDeps.tailwindcss || allDeps['@tailwindcss/postcss']) { techMatrix.frontend.push('Tailwind CSS'); detectedTags.push('Tailwind'); }
+    if (allDeps['@radix-ui/react-primitive'] || allDeps['shadcn-ui'] || allDeps['@shadcn/ui']) { techMatrix.frontend.push('Radix UI / Shadcn'); detectedTags.push('Shadcn'); }
+    if (allDeps['framer-motion']) { techMatrix.frontend.push('Framer Motion'); detectedTags.push('Framer'); }
+    if (allDeps.three) { techMatrix.frontend.push('Three.js (3D)'); detectedTags.push('ThreeJS'); }
+    if (allDeps['lucide-react'] || allDeps['@tabler/icons-react']) { techMatrix.frontend.push('Lucide Icons'); }
+    if (allDeps['react-native'] || allDeps.expo) { techMatrix.frontend.push('React Native / Expo'); detectedTags.push('Mobile'); }
+
+    // Backend & API
+    if (allDeps.express) { techMatrix.backend.push('Express.js'); detectedTags.push('Express'); }
+    if (allDeps.fastify) { techMatrix.backend.push('Fastify'); detectedTags.push('Fastify'); }
+    if (allDeps.hono) { techMatrix.backend.push('Hono Edge API'); detectedTags.push('Hono'); }
+    if (allDeps['@nestjs/core']) { techMatrix.backend.push('NestJS Enterprise'); detectedTags.push('NestJS'); }
+    if (allDeps['@trpc/server']) { techMatrix.backend.push('tRPC End-to-End'); detectedTags.push('tRPC'); }
+    if (allDeps.graphql || allDeps['@apollo/server']) { techMatrix.backend.push('GraphQL Gateway'); detectedTags.push('GraphQL'); }
+    if (allDeps['socket.io'] || allDeps.ws) { techMatrix.backend.push('WebSockets Realtime'); }
+
+    // Database & ORMs
+    if (allDeps['@supabase/supabase-js']) { techMatrix.database.push('Supabase Cloud'); detectedTags.push('Supabase'); }
+    if (allDeps.pg || allDeps.postgres) { techMatrix.database.push('PostgreSQL'); detectedTags.push('Postgres'); }
+    if (allDeps.mysql2 || allDeps.mysql) { techMatrix.database.push('MySQL'); detectedTags.push('MySQL'); }
+    if (allDeps['better-sqlite3'] || allDeps.sqlite3 || allDeps.sqlite) { techMatrix.database.push('SQLite'); detectedTags.push('SQLite'); }
+    if (allDeps.redis || allDeps.ioredis) { techMatrix.database.push('Redis Cache'); detectedTags.push('Redis'); }
+    if (allDeps.prisma || allDeps['@prisma/client']) { techMatrix.database.push('Prisma ORM'); detectedTags.push('Prisma'); }
+    if (allDeps['drizzle-orm']) { techMatrix.database.push('Drizzle ORM'); detectedTags.push('Drizzle'); }
+    if (allDeps.mongoose || allDeps.mongodb) { techMatrix.database.push('MongoDB'); detectedTags.push('MongoDB'); }
+    if (allDeps['@qdrant/js-client-rest'] || allDeps.chromadb) { techMatrix.database.push('Vector Database (RAG)'); detectedTags.push('VectorDB'); }
+
+    // Auth & Payments
+    if (allDeps.stripe || allDeps['@stripe/stripe-js']) { techMatrix.authPayments.push('Stripe Payments'); detectedTags.push('Stripe'); }
+    if (allDeps['next-auth'] || allDeps['@auth/core']) { techMatrix.authPayments.push('NextAuth.js'); detectedTags.push('NextAuth'); }
+    if (allDeps['@clerk/nextjs'] || allDeps['@clerk/clerk-react']) { techMatrix.authPayments.push('Clerk Auth'); detectedTags.push('Clerk'); }
+    if (allDeps.telegraf || allDeps['node-telegram-bot-api']) { techMatrix.authPayments.push('Telegram Bot API 🇷🇺'); detectedTags.push('Telegram'); }
+    if (allDeps.yookassa) { techMatrix.authPayments.push('ЮKassa Pay 🇷🇺'); detectedTags.push('YooKassa'); }
+
+    // Testing
+    if (allDeps.playwright || allDeps['@playwright/test']) { techMatrix.testing.push('Playwright E2E'); detectedTags.push('Playwright'); }
+    if (allDeps.cypress) { techMatrix.testing.push('Cypress'); detectedTags.push('Cypress'); }
+    if (allDeps.vitest) { techMatrix.testing.push('Vitest'); detectedTags.push('Vitest'); }
+    if (allDeps.jest) { techMatrix.testing.push('Jest'); detectedTags.push('Jest'); }
   }
 
-  if (stack.isPython) {
-    stack.frameworks.push('Python');
-    let reqs = '';
-    try { reqs = fs.readFileSync(path.join(fullPath, 'requirements.txt'), 'utf8'); } catch (e) {}
-    if (reqs.includes('fastapi')) { stack.isFastAPI = true; stack.frameworks.push('FastAPI'); }
-    if (reqs.includes('django')) { stack.frameworks.push('Django'); }
-    if (reqs.includes('flask')) { stack.frameworks.push('Flask'); }
-    if (reqs.includes('qdrant') || reqs.includes('chromadb')) { stack.frameworks.push('Vector DB (RAG)'); }
+  // Parse Python (requirements.txt / pyproject.toml)
+  let pyContent = '';
+  try {
+    if (fs.existsSync(path.join(fullPath, 'requirements.txt'))) pyContent += fs.readFileSync(path.join(fullPath, 'requirements.txt'), 'utf8') + '\n';
+    if (fs.existsSync(path.join(fullPath, 'pyproject.toml'))) pyContent += fs.readFileSync(path.join(fullPath, 'pyproject.toml'), 'utf8') + '\n';
+  } catch (e) {}
+
+  if (pyContent) {
+    const lowPy = pyContent.toLowerCase();
+    if (lowPy.includes('fastapi')) { techMatrix.backend.push('FastAPI Async'); detectedTags.push('FastAPI'); buildCommands.dev = buildCommands.dev || 'uvicorn main:app --reload'; }
+    if (lowPy.includes('django')) { techMatrix.backend.push('Django'); detectedTags.push('Django'); buildCommands.dev = buildCommands.dev || 'python manage.py runserver'; }
+    if (lowPy.includes('flask')) { techMatrix.backend.push('Flask'); detectedTags.push('Flask'); }
+    if (lowPy.includes('sqlalchemy')) { techMatrix.database.push('SQLAlchemy 2.0'); detectedTags.push('SQLAlchemy'); }
+    if (lowPy.includes('psycopg') || lowPy.includes('asyncpg')) { techMatrix.database.push('PostgreSQL (Python)'); detectedTags.push('Postgres'); }
+    if (lowPy.includes('redis')) { techMatrix.database.push('Redis'); detectedTags.push('Redis'); }
+    if (lowPy.includes('qdrant') || lowPy.includes('chromadb') || lowPy.includes('pinecone')) { techMatrix.database.push('Vector Store (RAG)'); detectedTags.push('VectorDB'); }
+    if (lowPy.includes('langchain') || lowPy.includes('llama-index')) { techMatrix.backend.push('LangChain / LlamaIndex'); detectedTags.push('AI'); }
+    if (lowPy.includes('pytest')) { techMatrix.testing.push('Pytest'); detectedTags.push('Pytest'); buildCommands.test = buildCommands.test || 'pytest'; }
+    if (lowPy.includes('aiogram') || lowPy.includes('telebot')) { techMatrix.authPayments.push('Telegram Bot Python 🇷🇺'); detectedTags.push('Telegram'); }
   }
 
-  if (stack.isRust) stack.frameworks.push('Rust');
-  if (stack.isGo) stack.frameworks.push('Go');
-  if (stack.isDocker) stack.frameworks.push('Docker Sandbox');
-
-  // Calibrate recommendation
-  if (stack.isNextJs || stack.isReact) {
-    stack.recommendedProfile = 'Web';
-    stack.recommendedMcps = ['playwright', 'supabase', 'postgres', 'stripe'];
-  } else if (stack.isFastAPI || stack.isPython || stack.isRust || stack.isGo) {
-    stack.recommendedProfile = 'Backend';
-    stack.recommendedMcps = ['postgres', 'sqlite', 'redis', 'docker'];
-  } else {
-    stack.recommendedProfile = 'Master';
+  // Parse Rust (Cargo.toml)
+  if (fs.existsSync(path.join(fullPath, 'Cargo.toml'))) {
+    try {
+      const cargo = fs.readFileSync(path.join(fullPath, 'Cargo.toml'), 'utf8').toLowerCase();
+      if (cargo.includes('axum')) { techMatrix.backend.push('Rust Axum Tokio'); detectedTags.push('Axum'); }
+      if (cargo.includes('actix')) { techMatrix.backend.push('Rust Actix Web'); detectedTags.push('Actix'); }
+      if (cargo.includes('sqlx')) { techMatrix.database.push('SQLx Async Database'); detectedTags.push('Postgres'); }
+      buildCommands.build = buildCommands.build || 'cargo build';
+      buildCommands.test = buildCommands.test || 'cargo test';
+    } catch (e) {}
   }
 
-  return stack;
+  // Parse Go (go.mod)
+  if (fs.existsSync(path.join(fullPath, 'go.mod'))) {
+    try {
+      const gomod = fs.readFileSync(path.join(fullPath, 'go.mod'), 'utf8').toLowerCase();
+      if (gomod.includes('gin')) { techMatrix.backend.push('Go Gin'); detectedTags.push('Gin'); }
+      if (gomod.includes('fiber')) { techMatrix.backend.push('Go Fiber'); detectedTags.push('Fiber'); }
+      if (gomod.includes('gorm')) { techMatrix.database.push('GORM Database'); }
+      buildCommands.build = buildCommands.build || 'go build .';
+      buildCommands.test = buildCommands.test || 'go test ./...';
+    } catch (e) {}
+  }
+
+  // DevOps & Cloud
+  if (fs.existsSync(path.join(fullPath, 'Dockerfile'))) { techMatrix.devops.push('Docker Container'); detectedTags.push('Docker'); }
+  if (fs.existsSync(path.join(fullPath, 'docker-compose.yml')) || fs.existsSync(path.join(fullPath, 'docker-compose.yaml'))) { techMatrix.devops.push('Docker Compose Stack'); detectedTags.push('DockerCompose'); }
+  if (filesFound.some(f => f.startsWith('.github/workflows/'))) { techMatrix.devops.push('GitHub Actions CI/CD'); detectedTags.push('GitHubActions'); }
+  if (fs.existsSync(path.join(fullPath, 'vercel.json')) || filesFound.some(f => f.includes('next.config'))) { techMatrix.devops.push('Vercel Edge Platform'); detectedTags.push('Vercel'); }
+
+  // Fallback defaults
+  if (!techMatrix.frontend.length && (languages.includes('HTML/CSS') || languages.includes('JavaScript'))) techMatrix.frontend.push('Vanilla Web Frontend');
+  if (!techMatrix.backend.length && (languages.includes('JavaScript') || languages.includes('TypeScript'))) techMatrix.backend.push('Node.js Backend');
+
+  // 2. Archetype Determination
+  let archetype = 'General Full-Stack Project';
+  let recommendedProfile = 'Master';
+
+  const isNext = detectedTags.includes('Next.js') || detectedTags.includes('React');
+  const isPythonBackend = detectedTags.includes('FastAPI') || detectedTags.includes('Django') || (languages.includes('Python') && !isNext);
+  const isRustOrGo = languages.includes('Rust') || languages.includes('Go');
+  const isTelegram = detectedTags.includes('Telegram') || detectedTags.includes('YooKassa');
+  const isAI = detectedTags.includes('VectorDB') || detectedTags.includes('AI');
+  const isMobile = detectedTags.includes('Mobile') || languages.includes('Dart / Flutter');
+
+  if (isTelegram) {
+    archetype = 'Telegram Bot & CIS Fintech Platform';
+    recommendedProfile = 'Russia';
+  } else if (isAI) {
+    archetype = 'AI Agentic & RAG Vector Pipeline';
+    recommendedProfile = 'AI';
+  } else if (isMobile) {
+    archetype = 'Cross-Platform Mobile Application';
+    recommendedProfile = 'Mobile';
+  } else if (isNext) {
+    archetype = detectedTags.includes('Stripe') ? 'SaaS Web Platform (Next.js + Stripe)' : 'Modern Web Application (Next.js/React)';
+    recommendedProfile = 'Web';
+  } else if (isPythonBackend || isRustOrGo) {
+    archetype = 'High-Throughput Async Backend & API';
+    recommendedProfile = 'Backend';
+  } else if (detectedTags.includes('DockerCompose') || detectedTags.includes('GitHubActions')) {
+    archetype = 'Cloud Native & DevOps Service';
+    recommendedProfile = 'DevOps';
+  }
+
+  // 3. Synthesize Tailored Components
+  const tailoredMcps = [];
+  const tailoredSkills = [];
+  const tailoredPlugins = [];
+  const tailoredAgents = [];
+  const tailoredHooks = [];
+  const insights = [];
+
+  // MCP synthesis
+  if (detectedTags.includes('Postgres') || detectedTags.includes('Prisma') || detectedTags.includes('Supabase')) {
+    tailoredMcps.push({ id:'mcp-postgres', name:'PostgreSQL Read-Only', reason:'Безопасная инспекция схемы таблиц и оптимизация SQL-запросов' });
+  }
+  if (detectedTags.includes('SQLite')) {
+    tailoredMcps.push({ id:'mcp-sqlite', name:'SQLite Local Database', reason:'Прямой доступ к локальной базе данных без задержки' });
+  }
+  if (detectedTags.includes('Supabase')) {
+    tailoredMcps.push({ id:'mcp-supabase', name:'Supabase Backend Manager', reason:'Управление облачной базой, Auth и миграциями RLS' });
+  }
+  if (detectedTags.includes('Stripe')) {
+    tailoredMcps.push({ id:'mcp-stripe', name:'Stripe Payments Gateway', reason:'Тестирование Checkout сессий, подписок и вебхуков' });
+  }
+  if (detectedTags.includes('Telegram')) {
+    tailoredMcps.push({ id:'mcp-telegram', name:'Telegram Bot 🇷🇺', reason:'Управление ботами, отправка уведомлений и вебхуков' });
+  }
+  if (detectedTags.includes('YooKassa')) {
+    tailoredMcps.push({ id:'mcp-yookassa', name:'ЮKassa Pay 🇷🇺', reason:'Прием платежей в рублях с фискальными чеками 54-ФЗ' });
+  }
+  if (detectedTags.includes('Docker') || detectedTags.includes('DockerCompose')) {
+    tailoredMcps.push({ id:'mcp-docker', name:'Docker Manager', reason:'Инспекция контейнеров, чтение логов и отладка сборки' });
+  }
+  if (detectedTags.includes('Playwright') || isNext) {
+    tailoredMcps.push({ id:'mcp-playwright', name:'Playwright Visual Tester', reason:'Рендеринг в Chromium, проверка UI и E2E тесты' });
+  }
+  if (!tailoredMcps.length) {
+    tailoredMcps.push({ id:'mcp-sqlite', name:'SQLite Local DB', reason:'Базовое локальное хранилище данных' });
+  }
+
+  // Skills synthesis
+  tailoredSkills.push({ id:'skill-bulletproof', name:'Bulletproof (12-Step Quality)', reason:'Строгая инженерная дисциплина и пошаговая верификация' });
+  tailoredSkills.push({ id:'skill-caveman', name:'Caveman (-65% Tokens)', reason:'Семантическое сжатие контекста для экономии токенов' });
+  tailoredSkills.push({ id:'skill-commits', name:'Conventional Commits & PRs', reason:'Чистая история Git и оформление Pull Requests' });
+
+  if (isNext || detectedTags.includes('Tailwind') || detectedTags.includes('Shadcn')) {
+    tailoredSkills.push({ id:'skill-uiux', name:'UI/UX Pro Max (67 Styles)', reason:'Палитры, типографика и современные компоненты' });
+    tailoredSkills.push({ id:'skill-seo', name:'Claude SEO Pro', reason:'Технический SEO-аудит и Web Vitals' });
+  }
+  if (detectedTags.includes('Supabase') || detectedTags.includes('Postgres')) {
+    tailoredSkills.push({ id:'skill-supabase', name:'Supabase & Postgres RLS', reason:'Политики безопасности Row Level Security и оптимизация индексов' });
+  }
+  if (detectedTags.includes('VectorDB') || isAI) {
+    tailoredSkills.push({ id:'skill-creator', name:'Skill & Agent Creator', reason:'Разработка кастомных промпт-пайплайнов и инструментов' });
+  }
+
+  // Plugins synthesis
+  if (isNext || languages.includes('HTML/CSS')) tailoredPlugins.push({ id:'frontend-design', name:'Frontend Design Pro', reason:'Чистая верстка без шаблонного вида ИИ' });
+  tailoredPlugins.push({ id:'superpowers', name:'Superpowers (TDD Planning)', reason:'Тестирование и поэтапные инженерные спецификации' });
+  tailoredPlugins.push({ id:'context7', name:'Context7 Live Docs', reason:'Подтягивание актуальной документации библиотек' });
+  tailoredPlugins.push({ id:'agentmemory', name:'AgentMemory Vault', reason:'Постоянная память архитектурных решений проекта' });
+  if (detectedTags.includes('GitHubActions') || filesFound.some(f => f.startsWith('.git'))) tailoredPlugins.push({ id:'github-plugin', name:'GitHub Official', reason:'Интеграция с ветками, PR и Issues' });
+  if (detectedTags.includes('Vercel')) tailoredPlugins.push({ id:'vercel-plugin', name:'Vercel Deployments', reason:'Инспекция логов и деплоев Next.js' });
+
+  // Subagents synthesis
+  tailoredAgents.push({ id:'agent-architect', name:'Lead Architect (Opus)', model:'Claude Opus', reason:'Глубокие архитектурные решения и масштабируемость' });
+  tailoredAgents.push({ id:'agent-codereview', name:'Pragmatic Code Reviewer (Sonnet)', model:'Claude 3.7 Sonnet', reason:'Поиск скрытых багов и code smell' });
+  tailoredAgents.push({ id:'agent-tester', name:'Testing Specialist (Sonnet)', model:'Claude 3.5 Sonnet', reason:'Автоматическое покрытие unit и E2E тестами' });
+  tailoredAgents.push({ id:'agent-docs', name:'Docs Writer (Haiku)', model:'Claude 3.5 Haiku', reason:'Быстрая генерация README и JSDoc' });
+  tailoredAgents.push({ id:'agent-security', name:'Security Auditor (Opus)', model:'Claude Opus', reason:'OWASP аудит уязвимостей и инъекций' });
+
+  // Hooks synthesis
+  tailoredHooks.push({ id:'hook-secrets', name:'Secret Scanner Hook', type:'PreToolUse', reason:'Блокировка утечек паролей и API-ключей' });
+  tailoredHooks.push({ id:'hook-danger', name:'Dangerous Command Blocker', type:'PreToolUse', reason:'Защита от rm -rf / и форматирования дисков' });
+  tailoredHooks.push({ id:'hook-repomap', name:'RepoMap Topology Hook', type:'SessionStart', reason:'Кэширование топологии проекта при старте' });
+  tailoredHooks.push({ id:'hook-selfheal', name:'Self-Healing Guide Hook', type:'StopFailure', reason:'Автодиагностика и чеклист при сбоях' });
+
+  // 4. Synthesize Tailored CLAUDE.md
+  const tailoredClaudeMd = `# Project Guidelines for Claude Code
+
+## Project Overview
+- Archetype: ${archetype}
+- Tech Stack: ${techMatrix.languages.join(', ')} | ${[...techMatrix.frontend, ...techMatrix.backend, ...techMatrix.database].join(', ')}
+
+## Build & Test Commands
+- Build: \`${buildCommands.build || 'npm run build'}\`
+- Test: \`${buildCommands.test || 'npm test'}\`
+- Dev: \`${buildCommands.dev || 'npm run dev'}\`
+- Lint: \`${buildCommands.lint || 'npm run lint'}\`
+
+## Code Standards
+- Architecture: Strict typing, clean separation of concerns, zero redundant abstractions.
+- TDD Discipline: Formulate test cases before modifying production code.
+- Token Efficiency: Concise technical answers (Caveman compression active).
+- Security: Deny-first. Never expose \`.env*\`, private keys (*.pem, *.key), or sensitive auth tokens.
+
+## Active Claude Code Setup
+- Recommended Profile: ${recommendedProfile}
+- Active MCPs: ${tailoredMcps.map(m => m.id).join(', ')}
+- Active Skills: ${tailoredSkills.map(s => s.id).join(', ')}
+- Security Hooks: Active (7-layer defense)
+`;
+
+  // 5. Generate Smart Insights
+  if (detectedTags.includes('Supabase') && !detectedTags.includes('Playwright')) {
+    insights.push('💡 Обнаружен Supabase. Рекомендуем подключить Playwright для автоматической проверки пользовательских путей авторизации.');
+  }
+  if (detectedTags.includes('Stripe')) {
+    insights.push('💳 В проекте есть платежи Stripe. Рекомендуем использовать Stripe MCP для валидации вебхуков.');
+  }
+  if (languages.includes('Python') && !detectedTags.includes('Pytest')) {
+    insights.push('🧪 В проекте не обнаружен pytest. Добавьте юнит-тесты в директорию tests/.');
+  }
+  if (!filesFound.includes('CLAUDE.md')) {
+    insights.push('📝 В проекте еще нет файла CLAUDE.md. Нажмите кнопку ниже для его автоматической записи.');
+  }
+
+  const allSelectedCompIds = [
+    ...tailoredPlugins.map(p => p.id),
+    ...tailoredMcps.map(m => m.id),
+    ...tailoredSkills.map(s => s.id),
+    ...tailoredAgents.map(a => a.id),
+    ...tailoredHooks.map(h => h.id)
+  ];
+
+  return {
+    path: fullPath,
+    archetype,
+    recommendedProfile,
+    filesCount: filesFound.length,
+    techMatrix,
+    tailoredStack: {
+      profile: recommendedProfile,
+      componentIds: allSelectedCompIds,
+      mcps: tailoredMcps,
+      skills: tailoredSkills,
+      plugins: tailoredPlugins,
+      agents: tailoredAgents,
+      hooks: tailoredHooks,
+      estimatedTokens: `~${allSelectedCompIds.length * 40 + 200} tokens`
+    },
+    tailoredClaudeMd,
+    insights,
+    timestamp: new Date().toISOString()
+  };
 }
 
 // ─── CLAUDE.md NLP Compressor & Optimizer ─────────────────────────────────────
@@ -832,6 +1121,56 @@ const server = http.createServer((req, res) => {
         const report = scanWorkspace(targetPath || ROOT_DIR);
         res.writeHead(200, { 'Content-Type': 'application/json' });
         res.end(JSON.stringify(report));
+      } catch (err) {
+        res.writeHead(400, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ error: err.message }));
+      }
+    });
+    return;
+  }
+
+  // 4.1 Write Tailored CLAUDE.md to Workspace API
+  if (pathname === '/api/workspace/write-claudemd' && req.method === 'POST') {
+    let body = '';
+    req.on('data', chunk => body += chunk);
+    req.on('end', () => {
+      try {
+        const { targetPath, content } = JSON.parse(body || '{}');
+        if (!content) throw new Error('Content is required');
+        const projDir = path.resolve(targetPath || ROOT_DIR);
+        if (!fs.existsSync(projDir)) fs.mkdirSync(projDir, { recursive: true });
+
+        const targetFile = path.join(projDir, 'CLAUDE.md');
+        fs.writeFileSync(targetFile, content, 'utf8');
+
+        sendSSE('log', { type: 'success', text: `[OK] Generated CLAUDE.md written to ${targetFile}\n` });
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ success: true, path: targetFile }));
+      } catch (err) {
+        res.writeHead(400, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ error: err.message }));
+      }
+    });
+    return;
+  }
+
+  // 4.2 Apply Tailored Stack to Workspace
+  if (pathname === '/api/workspace/apply-tailored' && req.method === 'POST') {
+    let body = '';
+    req.on('data', chunk => body += chunk);
+    req.on('end', () => {
+      try {
+        const { profile, components, targetPath } = JSON.parse(body || '{}');
+        const compList = Array.isArray(components) ? components.join(',') : (components || '');
+        const projDir = path.resolve(targetPath || ROOT_DIR);
+
+        const started = runPowerShellScript([
+          '-Profile', profile || 'Custom',
+          '-Components', compList
+        ], `Apply Tailored Stack (${profile || 'Custom'}) to Workspace`);
+
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ success: started, profile, components: compList, workspace: projDir }));
       } catch (err) {
         res.writeHead(400, { 'Content-Type': 'application/json' });
         res.end(JSON.stringify({ error: err.message }));
