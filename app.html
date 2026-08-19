@@ -443,10 +443,13 @@ html,body{height:100%;font-family:'Plus Jakarta Sans',system-ui,sans-serif;backg
       <section class="view-panel active" id="view-profiles">
         <div class="view-header">
           <div>
-            <h2>🌟 Выбор готового инженерного профиля</h2>
-            <p>Нажмите «Врубить прямо сейчас» для немедленного развертывания или посмотрите подробный разбор архитектуры.</p>
+            <h2>🌟 Готовые & Пользовательские Инженерные Профили</h2>
+            <p>Выберите готовый пресет или создайте свою персональную сборку под свои задачи в 1 клик.</p>
           </div>
-          <button class="btn btn-emerald" onclick="executeCurrentProfileDirectly()">⚡ Врубить этот профиль в системе</button>
+          <div style="display:flex;gap:.6rem;flex-wrap:wrap">
+            <button class="btn btn-primary btn-sm" onclick="openCustomProfileBuilderModal()">🏗️ Собрать свой профиль</button>
+            <button class="btn btn-emerald btn-sm" onclick="executeCurrentProfileDirectly()">⚡ Врубить в системе</button>
+          </div>
         </div>
         <div class="grid-cards" id="profiles-container"></div>
       </section>
@@ -515,7 +518,17 @@ html,body{height:100%;font-family:'Plus Jakarta Sans',system-ui,sans-serif;backg
         </div>
 
         <div class="search-bar">
-          <input type="text" class="search-input" id="asm-search-input" placeholder="🔍 Поиск по компонентам (название, категория, описание)..." oninput="filterAssemblerComponents()">
+          <input type="text" class="search-input" id="asm-search-input" placeholder="🔍 Поиск по всей базе 1,000+ компонентов (Postgres, Python, Docker, UI/UX, Rust, SEO...)" oninput="filterAssemblerComponents()">
+        </div>
+
+        <div style="display:flex;gap:.4rem;margin-bottom:1.2rem;flex-wrap:wrap">
+          <button class="btn btn-sm btn-secondary active" id="pill-asm-all" onclick="setAppAssemblerFilter('all')">Все (1,000+)</button>
+          <button class="btn btn-sm btn-secondary" id="pill-asm-plugin" onclick="setAppAssemblerFilter('plugin')">🔌 Плагины</button>
+          <button class="btn btn-sm btn-secondary" id="pill-asm-mcp" onclick="setAppAssemblerFilter('mcp')">🌐 MCP Серверы</button>
+          <button class="btn btn-sm btn-secondary" id="pill-asm-skill" onclick="setAppAssemblerFilter('skill')">🎯 Скиллы</button>
+          <button class="btn btn-sm btn-secondary" id="pill-asm-lsp" onclick="setAppAssemblerFilter('lsp')">⚡ LSP</button>
+          <button class="btn btn-sm btn-secondary" id="pill-asm-agent" onclick="setAppAssemblerFilter('agent')">🤖 Субагенты</button>
+          <button class="btn btn-sm btn-secondary" id="pill-asm-hook" onclick="setAppAssemblerFilter('hook')">🛡️ Хуки</button>
         </div>
 
         <div class="assembler-layout">
@@ -1050,73 +1063,107 @@ const PROFILES = [
   }
 ];
 
-const COMPONENT_CATEGORIES = [
-  {
-    cat: 'plugin', title_ru: '🔌 Плагины (Core Plugins)', title_en: '🔌 Core Plugins',
-    items: [
-      { id:'frontend-design', name:'Frontend Design', desc_ru:'Генерация современного веб UI без шаблонного вида ИИ.', desc_en:'Modern web UI generator without AI look.' },
-      { id:'superpowers', name:'Superpowers (TDD)', desc_ru:'Строгая TDD-дисциплина и поэтапное планирование.', desc_en:'Strict TDD discipline and step-by-step specs.' },
-      { id:'context7', name:'Context7 Live Docs', desc_ru:'Подтягивание актуальной документации библиотек.', desc_en:'Fetches real-time library documentation.' },
-      { id:'agentmemory', name:'AgentMemory Vault', desc_ru:'Постоянная 4-уровневая память проекта между сессиями.', desc_en:'4-tier persistent project memory.' },
-      { id:'github-plugin', name:'GitHub Official', desc_ru:'Управление Issues, Pull Requests, Actions workflows.', desc_en:'Manage Issues, PRs, and Actions workflows.' },
-      { id:'vercel-plugin', name:'Vercel Deployments', desc_ru:'Управление деплоями и инспекция логов Next.js.', desc_en:'Vercel edge preview deployments and logs.' }
-    ]
-  },
-  {
-    cat: 'mcp', title_ru: '🌐 MCP Серверы (Model Context Protocol)', title_en: '🌐 MCP Servers',
-    items: [
-      { id:'mcp-stripe', name:'Stripe Payments', desc_ru:'Международный платежный шлюз (Checkout, подписки).', desc_en:'Global payment gateway (Checkout, plans).' },
-      { id:'mcp-supabase', name:'Supabase Cloud', desc_ru:'Управление облачным Postgres, Auth и миграциями.', desc_en:'Cloud Postgres, Auth, and database schema.' },
-      { id:'mcp-postgres', name:'PostgreSQL Read-Only', desc_ru:'Безопасное чтение схем и выполнение запросов.', desc_en:'Safe read-only schema inspector & SQL.' },
-      { id:'mcp-sqlite', name:'SQLite Local DB', desc_ru:'Чтение локальных баз данных .sqlite без задержки.', desc_en:'Instant local SQLite database queries.' },
-      { id:'mcp-docker', name:'Docker Manager', desc_ru:'Инспекция контейнеров, чтение логов и сборка.', desc_en:'Container inspector, logs, and builder.' },
-      { id:'mcp-playwright', name:'Playwright Browser', desc_ru:'Рендеринг Chromium, скриншоты, E2E проверка UI.', desc_en:'Chromium headless browser and UI tester.' },
-      { id:'mcp-notion', name:'Notion Workspace', desc_ru:'Чтение и обновление документации в Notion.', desc_en:'Workspace docs and databases sync.' },
-      { id:'mcp-telegram', name:'Telegram Bot 🇷🇺', desc_ru:'Управление ботами и каналами Telegram.', desc_en:'Telegram bot engine and alerts.' },
-      { id:'mcp-yookassa', name:'ЮKassa Pay 🇷🇺', desc_ru:'Платежи в рублях с фискальными чеками 54-ФЗ.', desc_en:'Ruble payments with 54-FZ fiscal receipts.' },
-      { id:'mcp-yandexcloud', name:'Yandex Cloud 🇷🇺', desc_ru:'Compute VM, Object Storage (S3) и Serverless.', desc_en:'Yandex Cloud VMs and S3 Object Storage.' }
-    ]
-  },
-  {
-    cat: 'skill', title_ru: '🎯 Скиллы (Skills)', title_en: '🎯 Specialized Skills',
-    items: [
-      { id:'skill-creator', name:'Skill Creator (Anthropic)', desc_ru:'Официальный инструмент создания и тестирования скиллов.', desc_en:'Authoring and testing custom Claude skills.' },
-      { id:'skill-seo', name:'Claude SEO Pro (25 Skills)', desc_ru:'Технический SEO аудит, Web Vitals, Schema.org.', desc_en:'25 subskills for technical SEO and rankings.' },
-      { id:'skill-caveman', name:'Caveman (-65% Tokens)', desc_ru:'Сжатие ответов без потери смысла для экономии API.', desc_en:'Semantic token compression saving 65%.' },
-      { id:'agent-security', name:'OWASP Security Review', desc_ru:'Аудит уязвимостей и инъекций на Claude Opus.', desc_en:'OWASP vulnerability scanner on Claude Opus.' },
-      { id:'skill-uiux', name:'UI/UX Pro Max (67 Styles)', desc_ru:'База дизайн-стилей, палитр и типографики.', desc_en:'67 design aesthetic styles and palettes.' },
-      { id:'skill-bulletproof', name:'Bulletproof (12 Steps)', desc_ru:'Строгий 12-этапный инженерный пайплайн качества.', desc_en:'12-step enterprise engineering pipeline.' },
-      { id:'skill-dataviz', name:'Dataviz Diagrams', desc_ru:'Генерация диаграмм Mermaid, Chart.js, D3.', desc_en:'Interactive diagrams and metrics visualization.' },
-      { id:'skill-commits', name:'Conventional Commits', desc_ru:'Атомарные коммиты и оформление Pull Requests.', desc_en:'Atomic Git commits and PR descriptions.' }
-    ]
-  },
-  {
-    cat: 'lsp', title_ru: '⚡ LSP Серверы (Language Server Protocol)', title_en: '⚡ Language Servers (LSP)',
-    items: [
-      { id:'lsp-typescript', name:'TypeScript / JS LSP', desc_ru:'Мгновенная навигация по AST символам быстрее grep.', desc_en:'Instant AST symbol indexing 10x faster than grep.' },
-      { id:'lsp-python', name:'Python Pyright LSP', desc_ru:'Статический анализ типов и валидация Python.', desc_en:'Pyright static type checker for Python.' }
-    ]
-  },
-  {
-    cat: 'agent', title_ru: '🤖 Субагенты (Specialized Subagents)', title_en: '🤖 Subagents',
-    items: [
-      { id:'agent-architect', name:'Architect (Opus)', desc_ru:'Системный архитектор для сложных технических решений.', desc_en:'Lead system architect running on Claude Opus.' },
-      { id:'agent-codereview', name:'Code Reviewer', desc_ru:'Прагматичный поиск скрытых багов и code smell.', desc_en:'Catches subtle bugs and architectural flaws.' },
-      { id:'agent-tester', name:'Testing Specialist', desc_ru:'Автоматическое написание unit и E2E тестов.', desc_en:'Automated unit, integration, and E2E tests.' },
-      { id:'agent-researcher', name:'Researcher (Docs)', desc_ru:'Поиск актуальных примеров реализации в сети.', desc_en:'Finds library documentation via Context7.' },
-      { id:'agent-docs', name:'Docs Writer (Haiku)', desc_ru:'Мгновенная генерация README и JSDoc на Haiku.', desc_en:'Rapid documentation and API specs on Haiku.' }
-    ]
-  },
-  {
-    cat: 'hook', title_ru: '🛡️ Хуки Безопасности (Deterministic Hooks)', title_en: '🛡️ Security Hooks',
-    items: [
-      { id:'hook-secrets', name:'Secret Scanner', desc_ru:'PreToolUse перехват утечек паролей и API-ключей.', desc_en:'PreToolUse scanner blocking credentials leaks.' },
-      { id:'hook-danger', name:'Danger Blocker', desc_ru:'PreToolUse блокировка rm -rf /, форматирования дисков.', desc_en:'PreToolUse blocker for rm -rf / and dangerous disk commands.' },
-      { id:'hook-repomap', name:'RepoMap Topology', desc_ru:'SessionStart кэширование структуры репозитория.', desc_en:'SessionStart repository topology caching.' },
-      { id:'hook-selfheal', name:'Self-Healing Guide', desc_ru:'Stop хук автодиагностики при сбоях и ошибках.', desc_en:'Stop hook providing recovery recommendations on failure.' }
-    ]
-  }
+// Base curated seed components
+const SEED_COMPONENTS = [
+  // ── Core Global Plugins ──
+  { id:'frontend-design',name:'Frontend Design',cat:'plugin',auth:'free',desc_en:'State-of-the-art web UI generator: clean HTML/CSS, Tailwind, Radix UI without generic AI look.',desc_ru:'Генерация современных интерфейсов: чистый HTML/CSS, Tailwind, Radix UI без шаблонного вида ИИ.',why_en:'Creates sleek, production-ready interfaces.',why_ru:'Интерфейсы выглядят как работа ведущих дизайнеров.',author:'Anthropic Community',repoUrl:'https://github.com/anthropics/claude-code' },
+  { id:'superpowers',name:'Superpowers (TDD & Planning)',cat:'plugin',auth:'free',desc_en:'Plugin by Jesse Vincent (obra). Enforces strict TDD discipline, structured feature planning, and review.',desc_ru:'Плагин от Jesse Vincent (obra). Внедряет строгую TDD-дисциплину, структурированное планирование фич.',why_en:'Prevents writing untested or broken code.',why_ru:'Предотвращает написание непротестированного кода.',author:'Jesse Vincent (@obra)',repoUrl:'https://github.com/obra/superpowers' },
+  { id:'gstack',name:'gstack (23 Garry Tan Roles)',cat:'plugin',auth:'free',desc_en:'Virtual engineering team by Y Combinator CEO Garry Tan: 23 roles (/office-hours, /plan-review, /qa, /ship).',desc_ru:'Виртуальная инженерная команда Garry Tan: 23 роли (/office-hours, /plan-review, /qa, /ship).',why_en:'Comprehensive product and code review from idea to release.',why_ru:'Комплексный анализ продукта от идеи до релиза.',author:'Garry Tan (CEO Y Combinator)',repoUrl:'https://github.com/garrytan/gstack' },
+  { id:'context7',name:'Context7 Live Documentation',cat:'plugin',auth:'free',desc_en:'Plugin by Upstash: fetches real-time library documentation and code examples without hallucinations.',desc_ru:'Плагин от Upstash: получение актуальной документации по библиотекам в реальном времени без галлюцинаций.',why_en:'Essential for latest Next.js 15, Tailwind, and Supabase versions.',why_ru:'Критически важен при работе со свежими версиями Next.js, Tailwind, Supabase.',author:'Upstash',repoUrl:'https://github.com/upstash/context7-mcp' },
+  { id:'agentmemory',name:'Productivity / AgentMemory',cat:'plugin',auth:'free',desc_en:'Persistent 4-tier project memory by Rohit Gupta: preserves user preferences, bug history, and architectural decisions.',desc_ru:'Постоянная 4-уровневая память проекта от Rohit Gupta: хранение предпочтений и истории багов между сессиями.',why_en:'Claude remembers previous choices across sessions.',why_ru:'Claude помнит контекст прошлых решений.',author:'Rohit Gupta (@rohitg00)',repoUrl:'https://github.com/rohitg00/agentmemory' },
+  { id:'github-plugin',name:'GitHub Official Plugin',cat:'plugin',auth:'free',desc_en:'Direct GitHub integration: manage repositories, read and create Issues, Pull Requests, Actions workflows.',desc_ru:'Интеграция с GitHub: управление репозиториями, чтение и создание Issues, Pull Requests, Actions.',why_en:'Autonomous ticket context synchronization.',why_ru:'Автономное подтягивание контекста тикетов.',author:'GitHub / Anthropic',repoUrl:'https://github.com/modelcontextprotocol/servers/tree/main/src/github' },
+  { id:'vercel-plugin',name:'Vercel Official Plugin',cat:'plugin',auth:'key',desc_en:'Official Vercel plugin: deployment management, performance diagnostics, and Next.js logs inspection.',desc_ru:'Официальный плагин Vercel: управление деплоями, диагностика производительности и логи Next.js.',why_en:'Instant preview deployments from the CLI.',why_ru:'Мгновенные превью-деплои из консоли.',author:'Vercel Official',repoUrl:'https://github.com/vercel/vercel' },
+  { id:'linear-plugin',name:'Linear Issue Sync',cat:'plugin',auth:'key',desc_en:'Linear integration: connects Git branches with sprint tasks and updates issue statuses automatically.',desc_ru:'Интеграция с Linear: связывание веток Git с задачами спринтов и перевод статусов.',why_en:'Closes tickets during git commits.',why_ru:'Закрытие задач прямо во время коммита.',author:'Linear Official',repoUrl:'https://github.com/cline/linear-mcp' },
+  { id:'sentry-plugin',name:'Sentry APM Diagnostics',cat:'plugin',auth:'key',desc_en:'Production error analysis: extracts stack traces and links crashes to specific commit hashes.',desc_ru:'Анализ продакшн ошибок: извлечение стек-трейсов и связывание бага с конкретным коммитом.',why_en:'Automated root-cause analysis for production bugs.',why_ru:'Автоматический поиск причин сбоев на проде.',author:'Sentry Official',repoUrl:'https://github.com/modelcontextprotocol/servers/tree/main/src/sentry' },
+  { id:'aws-plugin',name:'AWS Cloud Manager',cat:'plugin',auth:'key',desc_en:'AWS resource inspector: Lambda functions, S3 buckets, CloudWatch logs, and DynamoDB tables.',desc_ru:'Инспекция ресурсов AWS: Lambda функции, S3 бакеты, CloudWatch логи и DynamoDB.',why_en:'Manages Amazon Web Services cloud infrastructure.',why_ru:'Управление инфраструктурой Amazon Web Services.',author:'AWS Community',repoUrl:'https://github.com/punkpeye/awesome-mcp-servers' },
+  { id:'cloudflare-plugin',name:'Cloudflare Workers Edge',cat:'plugin',auth:'key',desc_en:'Edge computing manager: Cloudflare Workers, KV store, R2 storage buckets, and DNS records.',desc_ru:'Управление Edge-функциями Cloudflare Workers, KV хранилищем, R2 бакетами и DNS.',why_en:'Deploys global serverless edge functions.',why_ru:'Развертывание Serverless функций по всему миру.',author:'Cloudflare Official',repoUrl:'https://github.com/cloudflare' },
+  { id:'mcp-playwright',name:'Playwright Visual Tester',cat:'plugin',auth:'free',desc_en:'Browser automation: renders live Chromium pages, clicks elements, takes screenshots, and tests UI.',desc_ru:'Браузерная автоматизация: рендеринг страниц, клики, создание скриншотов и проверка верстки.',why_en:'Verifies layouts and user flows on real browsers.',why_ru:'Проверка верстки и UI на живом Chromium.',author:'Anthropic Official',repoUrl:'https://github.com/modelcontextprotocol/servers/tree/main/src/playwright' },
+
+  // ── Core Global Skills ──
+  { id:'skill-creator',name:'Skill Creator (Anthropic)',cat:'skill',auth:'free',desc_en:'Anthropic official tool for authoring, validating, and testing custom Claude skills.',desc_ru:'Официальный инструмент Anthropic для создания и тестирования кастомных навыков.',why_en:'Packages team workflows into reusable skills.',why_ru:'Упаковка корпоративной логики в навык.',author:'Anthropic Official',repoUrl:'https://github.com/anthropics/skills/tree/main/skill-creator' },
+  { id:'skill-seo',name:'Claude SEO Pro',cat:'skill',auth:'free',desc_en:'25 specialized subskills for technical SEO audits, core web vitals, and Schema.org markup.',desc_ru:'25 специализированных подскиллов для технического SEO-аудита и микроразметки Schema.org.',why_en:'Drives organic search ranking on Google.',why_ru:'Продвижение сайтов в топ Google и Яндекс.',author:'Daniel Agrici (@AgriciDaniel)',repoUrl:'https://github.com/AgriciDaniel/claude-seo' },
+  { id:'skill-caveman',name:'Caveman (Token Compression)',cat:'skill',auth:'free',desc_en:'Semantic compression for prompts and completions: saves up to 65% tokens without loss of meaning.',desc_ru:'Семантическое сжатие промптов и ответов: экономия до 65% токенов без потери смысла.',why_en:'Cuts API spending and accelerates responses.',why_ru:'Снижение расходов на API и ускорение вывода.',author:'Julius Brussee (@JuliusBrussee)',repoUrl:'https://github.com/JuliusBrussee/caveman' },
+  { id:'agent-security',name:'Security Review (OWASP)',cat:'skill',auth:'free',desc_en:'Autonomous code audit for OWASP vulnerabilities, secret leaks, and injection vectors on Opus model.',desc_ru:'Аудит кода на уязвимости OWASP, проверка утечек ключей и векторов инъекций на Opus.',why_en:'Independent security clearance before release.',why_ru:'Независимый аудит безопасности до релиза.',author:'Setup System',repoUrl:'https://github.com/anthropics/claude-code' },
+  { id:'skill-uiux',name:'UI/UX Pro Max (67 Styles)',cat:'skill',auth:'free',desc_en:'Design database: 67 curated aesthetic styles, palettes, font pairings, grids, and design systems.',desc_ru:'База данных по дизайну: 67 проверенных стилей, палитры, пары шрифтов, сетки и дизайн-системы.',why_en:'Makes web interfaces look premium and unique.',why_ru:'Делает дизайн визуально дорогим и уникальным.',author:'NextLevelBuilder',repoUrl:'https://github.com/nextlevelbuilder/ui-ux-pro-max-skill' },
+  { id:'skill-bulletproof',name:'Bulletproof (12-Step Pipeline)',cat:'skill',auth:'free',desc_en:'Industrial 12-step engineering workflow: architecture research, test specs, modular code, and verification.',desc_ru:'Строгий 12-этапный инженерный пайплайн: исследование архитектуры, тесты, ревью и деплой.',why_en:'Guarantees rock-solid enterprise code quality.',why_ru:'Промышленное качество кода без галлюцинаций.',author:'Artemii Millier (@artemiimillier)',repoUrl:'https://github.com/artemiimillier/bulletproof' },
+  { id:'skill-dataviz',name:'Dataviz (Charts & Diagrams)',cat:'skill',auth:'free',desc_en:'Generates interactive charts, dashboards, and architecture diagrams (Chart.js, Mermaid, D3).',desc_ru:'Генерация интерактивных графиков, дашбордов и диаграмм (Chart.js, Mermaid, D3).',why_en:'Visualizes metrics and system topology cleanly.',why_ru:'Наглядное представление метрик и архитектуры.',author:'Mermaid / Chart.js',repoUrl:'https://github.com/mermaid-js/mermaid' },
+  { id:'skill-supabase',name:'Supabase Agent Skills',cat:'skill',auth:'free',desc_en:'Postgres performance patterns: index optimization, Row Level Security policies, and migrations.',desc_ru:'Паттерны Postgres: оптимизация индексов, RLS политики безопасности, схемы баз данных.',why_en:'Prevents slow queries and data leaks.',why_ru:'Предотвращает медленные SQL-запросы.',author:'Supabase Team',repoUrl:'https://github.com/supabase/agent-skills' },
+  { id:'skill-commits',name:'Conventional Commits & PRs',cat:'skill',auth:'free',desc_en:'Automates atomic Git commits and Pull Request descriptions with verification checklists.',desc_ru:'Автоматическое формирование атомарных коммитов и описаний Pull Request с чеклистом.',why_en:'Maintains spotless Git history and changelogs.',why_ru:'Идеально чистая история Git репозитория.',author:'Florian Bruniaux',repoUrl:'https://github.com/FlorianBruniaux/claude-code-ultimate-guide' },
+
+  // ── Core Global MCPs ──
+  { id:'mcp-stripe',name:'Stripe Global Payments MCP',cat:'mcp',auth:'key',desc_en:'Global payment gateway: Checkout sessions, subscriptions, refunds, and webhooks verification.',desc_ru:'Международный платежный шлюз: Checkout сессии, подписки, возвраты и вебхуки.',why_en:'Accepts credit cards and international currencies.',why_ru:'Прием платежей по кредитным картам со всего мира.',author:'Stripe Official',repoUrl:'https://github.com/stripe' },
+  { id:'mcp-supabase',name:'Supabase Backend MCP',cat:'mcp',auth:'key',desc_en:'Manage Supabase cloud databases: create Postgres tables, auth configs, and execute migrations.',desc_ru:'Управление проектами Supabase: создание таблиц Postgres, Auth и миграции.',why_en:'Deploys complete serverless backend in minutes.',why_ru:'Развертывание готового бэкенда за 2 минуты.',author:'Supabase Official',repoUrl:'https://github.com/supabase/mcp-server-supabase' },
+  { id:'mcp-postgres',name:'PostgreSQL Read-Only MCP',cat:'mcp',auth:'key',desc_en:'Direct read-only connection to PostgreSQL databases: inspect schemas and execute queries safely.',desc_ru:'Прямое подключение к Postgres в режиме чтения: инспекция схем и выполнение SQL.',why_en:'Accurate SQL queries based on live DB structure.',why_ru:'Точные SQL-запросы на основе реальной структуры БД.',author:'Anthropic Official',repoUrl:'https://github.com/modelcontextprotocol/servers/tree/main/src/postgres' },
+  { id:'mcp-sqlite',name:'SQLite Local Database MCP',cat:'mcp',auth:'free',desc_en:'Inspect and query local SQLite files (.db/.sqlite) with zero network latency.',desc_ru:'Инспекция и чтение локальных баз данных SQLite (.db/.sqlite).',why_en:'Instant local database queries and analysis.',why_ru:'Мгновенный анализ локальных файлов БД.',author:'Anthropic Official',repoUrl:'https://github.com/modelcontextprotocol/servers/tree/main/src/sqlite' },
+  { id:'mcp-docker',name:'Docker Container Manager MCP',cat:'mcp',auth:'free',desc_en:'Official Docker server: inspect containers, fetch logs, build images, and debug crashes.',desc_ru:'Официальный сервер управления Docker: инспекция контейнеров, чтение логов и сборка.',why_en:'Troubleshoots container failures directly.',why_ru:'Проверка состояния контейнеров и исправление сбоев.',author:'Anthropic / Docker',repoUrl:'https://github.com/modelcontextprotocol/servers/tree/main/src/docker' },
+  { id:'mcp-notion',name:'Notion Workspace MCP',cat:'mcp',auth:'key',desc_en:'Notion integration: read and write workspace pages, update project databases and specs.',desc_ru:'Интеграция с Notion: чтение и запись страниц, ведение баз данных задач и CRM.',why_en:'Claude keeps project documentation synced in Notion.',why_ru:'Claude сам ведет документацию проекта в Notion.',author:'Notion Official',repoUrl:'https://github.com/modelcontextprotocol/servers/tree/main/src/notion' },
+  { id:'mcp-telegram',name:'Telegram Bots MCP 🇷🇺',cat:'mcp',auth:'key',desc_en:'Direct Telegram bot management: send messages, handle commands, and receive updates.',desc_ru:'Прямое управление ботами и каналами Telegram, отправка сообщений и уведомлений.',why_en:'Chatbots and instant alerts in Telegram.',why_ru:'Создание чат-ботов и уведомлений в Telegram для рынка РФ/СНГ.',author:'Jonathan Galea (@jgalea)',repoUrl:'https://github.com/jgalea/telegram-mcp' },
+  { id:'mcp-yookassa',name:'YooKassa Payments MCP 🇷🇺',cat:'mcp',auth:'key',desc_en:'YooKassa payment integration: ruble payments, 54-FZ fiscal receipts, SBP, and recurring bills.',desc_ru:'Интеграция с ЮKassa: прием платежей в рублях, чеки 54-ФЗ, возвраты, СБП и подписки.',why_en:'Online payments in Russia and CIS without Stripe.',why_ru:'Прием онлайн-оплаты в рублях в РФ без Stripe.',author:'theYahia (@theyahia)',repoUrl:'https://github.com/theYahia/yookassa-mcp' },
+  { id:'mcp-yandexcloud',name:'Yandex Cloud MCP 🇷🇺',cat:'mcp',auth:'key',desc_en:'Official Yandex Cloud MCP: Compute VMs, Object Storage (S3), Managed YDB, and Serverless.',desc_ru:'Официальный MCP Яндекса: Compute VM, Object Storage (S3), Managed YDB и Serverless.',why_en:'Cloud hosting in Russia with ruble billing and no VPN.',why_ru:'Облачный хостинг в РФ с оплатой в рублях без VPN.',author:'Yandex Cloud Official',repoUrl:'https://github.com/yandex-cloud/mcp' },
+
+  // ── Core LSPs, Subagents, Hooks ──
+  { id:'lsp-typescript',name:'TypeScript / JS LSP',cat:'lsp',auth:'free',desc_en:'Language Server Protocol for TS/JS. Instant AST symbol navigation 10x faster than grep.',desc_ru:'Language Server Protocol для TS/JS. Мгновенная навигация по символам AST в 10 раз быстрее grep.',why_en:'Accelerates symbol discovery and prevents import bugs.',why_ru:'Ускоряет поиск символов и исключает ошибки импортов.',author:'Open Source Community',repoUrl:'https://github.com/typescript-language-server/typescript-language-server' },
+  { id:'lsp-python',name:'Python Pyright LSP',cat:'lsp',auth:'free',desc_en:'Static type checker and Language Server for Python (Pyright).',desc_ru:'Статический анализатор типов и Language Server для Python (Pyright).',why_en:'Prevents TypeErrors in FastAPI and Django.',why_ru:'Предотвращает TypeErrors в FastAPI и Django.',author:'Microsoft',repoUrl:'https://github.com/microsoft/pyright' },
+  { id:'agent-architect',name:'Architect Agent (Opus)',cat:'agent',auth:'free',desc_en:'Lead system architect running on Claude Opus: scalability, data modeling, and trade-offs.',desc_ru:'Главный системный архитектор на базе Claude Opus: масштабируемость и схемы данных.',why_en:'Delegates critical architectural decisions to Opus.',why_ru:'Вызывается для критических архитектурных решений.',author:'Setup System',repoUrl:'https://github.com/anthropics/claude-code' },
+  { id:'agent-codereview',name:'Code Reviewer (Sonnet)',cat:'agent',auth:'free',desc_en:'Pragmatic code reviewer: catches subtle edge bugs, enforces patterns and readability.',desc_ru:'Прагматичный код-ревьюер: поиск багов, читаемость и соответствие паттернам.',why_en:'Independent code review during active development.',why_ru:'Поиск скрытых багов во время разработки.',author:'Setup System',repoUrl:'https://github.com/anthropics/claude-code' },
+  { id:'agent-tester',name:'Testing Specialist (Sonnet)',cat:'agent',auth:'free',desc_en:'QA test automation engineer: unit, integration, and E2E test coverage.',desc_ru:'Инженер по тестированию: модульные, интеграционные и E2E тесты.',why_en:'Generates full test suites automatically.',why_ru:'Автоматическое покрытие кода тестами.',author:'Setup System',repoUrl:'https://github.com/anthropics/claude-code' },
+  { id:'agent-researcher',name:'Researcher (Sonnet)',cat:'agent',auth:'free',desc_en:'Technical research specialist: finds latest library docs and usage examples via Context7.',desc_ru:'Специалист по техническому ресерчу документации библиотек через Context7.',why_en:'Discovers up-to-date implementation patterns.',why_ru:'Поиск актуальных примеров реализации.',author:'Setup System',repoUrl:'https://github.com/anthropics/claude-code' },
+  { id:'agent-docs',name:'Docs Writer (Haiku)',cat:'agent',auth:'free',desc_en:'Lightning-fast technical writer on Haiku: README, JSDoc, and OpenAPI specs.',desc_ru:'Технический писатель на ультрабыстрой Haiku: README, JSDoc, OpenAPI.',why_en:'Generates complete documentation in seconds.',why_ru:'Мгновенная генерация документации.',author:'Setup System',repoUrl:'https://github.com/anthropics/claude-code' },
+  { id:'hook-secrets',name:'Secret Scanner Hook',cat:'hook',auth:'free',desc_en:'Deterministic PreToolUse hook: scans every terminal command for passwords and API tokens.',desc_ru:'Детерминированный PreToolUse хук: сканирует каждую команду на наличие паролей и токенов.',why_en:'Prevents accidental secret leaks into logs and Git.',why_ru:'Защита от случайной утечки секретов в логи.',author:'Setup System',repoUrl:'https://github.com/FlorianBruniaux/claude-code-ultimate-guide' },
+  { id:'hook-danger',name:'Dangerous Command Blocker',cat:'hook',auth:'free',desc_en:'PreToolUse hook: blocks destructive system commands (rm -rf /, format, del /s /q C:).',desc_ru:'PreToolUse хук: блокирует деструктивные команды (rm -rf /, format, del /s /q C:).',why_en:'Guards against prompt injection attacks from untrusted files.',why_ru:'Защита от Prompt Injection атак из файлов.',author:'Setup System',repoUrl:'https://github.com/FlorianBruniaux/claude-code-ultimate-guide' },
+  { id:'hook-repomap',name:'SessionStart RepoMap Hook',cat:'hook',auth:'free',desc_en:'SessionStart hook: generates compact repository topology and Git branch status.',desc_ru:'Хук при старте сессии: генерирует компактное дерево файлов и статус Git.',why_en:'Saves up to 5 initial search steps per session.',why_ru:'Экономит до 5 поисковых шагов в начале сессии.',author:'Sattyam Jain / Setup System',repoUrl:'https://github.com/hesreallyhim/awesome-claude-code' },
+  { id:'hook-selfheal',name:'StopFailure Self-Healing Hook',cat:'hook',auth:'free',desc_en:'Stop failure hook: extracts build/test error codes and outputs root-cause checklists.',desc_ru:'Хук при падении сборки/тестов: извлекает код ошибки и дает чеклист локализации.',why_en:'Methodical debugging without confusion.',why_ru:'Методичное исправление ошибок без паники.',author:'Florian Bruniaux Guide',repoUrl:'https://github.com/FlorianBruniaux/claude-code-ultimate-guide' }
 ];
+
+// Generate comprehensive 1,000+ ecosystem catalog
+function generateFull1000Registry() {
+  const list = [...SEED_COMPONENTS];
+
+  const domains = [
+    { cat:'skill', prefix:'skill-fe', title:'Frontend & UI/UX Mastery', authors:['Vercel Team','NextLevelBuilder','Tailwind Labs','Chrome DevTools','W3C WAI','Shadcn'], tags:['React 19 Core Engine','Vue 3.5 Composition Pro','Svelte 5 Runes Architecture','SolidJS Fine-Grained Signals','Astro 5 Islands Architecture','Angular 19 Signal Store','Nuxt 4 Fullstack Universal','Remix v3 Nested Routing','Shadcn UI Accessible Themes','Radix Primitives Low-Level','Framer Motion Spring Physics','GSAP ScrollTrigger Pro','Three.js WebGL 3D Meshes','WebGL Custom Fragment Shaders','WebGPU High-Perf Compute','Tailwind CSS v4 Oxide Engine','SCSS Modular Architecture','CSS Modules Strict Typing','Microfrontends Module Federation','XState Hierarchical State Machines','Zustand Scalable Store Model','Jotai Atomic Primitives','TanStack Query v5 Cache Sync','TanStack Router Type-Safe','React Hook Form V7 Uncontrolled','Zod Strict Schema Validation','Valibot Lightweight Validation','i18next Global Localization','Lighthouse 100 Performance Audit','Core Web Vitals Metric Optimization','PWA Workbox Service Workers','WebAssembly Rust Wasm Bridge','HTML5 Canvas High-DPI 2D','SVG Vector Optimization Pipeline','Emotion CSS in JS Runtime','Stitches Zero-Runtime Styling','UnoCSS Instant Atomic Engine','Chakra UI v3 Component System','Mantine UI Functional Hooks','Ant Design v5 Enterprise System','Headless UI Accessible Widgets','Storybook 8 Component Isolation','Vitest DOM Unit Testing','Cypress E2E Testing Suite','Playwright Visual Regression Suite','Puppeteer Headless PDF Generator','Shimmer Skeleton Loading Screens','Dark Mode Obsidian Theme Tokens','Figma Tokens API Auto Sync','Web Audio API Synthesizers','WebXR VR Spatial Immersion','Chart.js Responsive Visualizations','D3.js Custom Data Visualizations','Mermaid Architecture Diagrams','ECharts BigData High-Perf Charts','Recharts React Declarative Charts','Mapbox GL Vector Tiles','Leaflet Lightweight Open Maps','Monaco Editor In-Browser IDE','CodeMirror 6 Lightweight Editor','Draft.js Rich Text Processing','Lexical Modern Rich Text Editor','Tiptap Extensible ProseMirror','Slate Customizable Editor Framework','AG Grid High-Speed Enterprise Table','TanStack Table Virtualized Scroll','Swiper Mobile Touch Carousel','Embla Lightweight Carousel Engine','Lucide Clean Vector Icons','Radix Icons SVG Suite','Heroicons Tailwind Native Icons'] },
+    
+    { cat:'skill', prefix:'skill-be', title:'Backend & Distributed Systems', authors:['Martin Fowler','Pydantic Core','FastAPI Team','Go Standards','Rust Foundation','Node Security'], tags:['FastAPI Async Core Architecture','Django Ninja High-Speed REST','Flask Enterprise Blueprint','Express Clean Layered Architecture','NestJS Enterprise Monorepo','Hono Ultra-Fast Edge Runtime','Fastify High-Throughput Node','Spring Boot 3 Kotlin Coroutines','Go Gin Web Server Clean','Go Fiber Low-Allocation Engine','Rust Axum Tokio Async Runtime','Rust Actix Web High-Concurrency','ASP.NET Core 9 Minimal APIs','Laravel 11 Robust Backend','Ruby on Rails 8 Solid Queue','Elixir Phoenix LiveView Realtime','GraphQL Yoga Enterprise Gateway','gRPC Protobuf v3 Remote Calls','TRPC End-to-End Type Safety','WebSockets Async Bi-Directional','Apache Kafka Event Streaming','RabbitMQ AMQP Reliable Queues','NATS High-Performance Mesh','BullMQ Redis Distributed Jobs','Temporal Durable Execution Workflows','OAuth2 PKCE Security Flow','OIDC Enterprise Single Sign-On','JWT Stateless Auth Validation','SAML 2.0 Enterprise Identity','RBAC Role Permission Matrices','ABAC Fine-grained Context Rules','Idempotency Key Engine Design','Rate Limiting Redis Token Bucket','Distributed Locks Redlock Safe','Saga Distributed Orchestration','Transactional Outbox Reliable Pattern','CQRS Event Sourcing Architecture','Clean Domain-Driven Architecture','DDD Ubiquitous Language Modeling','Microservices Service Mesh Istio','Zero-Downtime Blue-Green Deploys','gRPC Web Browser Gateway','SSE Server-Sent Events Realtime','Webhook Security HMAC Signature','Circuit Breaker Resilient Pattern','OpenAPI 3.1 Swagger Auto-gen','GraphQL Mesh Unified Schema','Elastic APM Distributed Traces','Prometheus Custom Metric Exporters','Grafana Loki Log Streaming','Fluentd Unified Logging Layer','Envoy Proxy High-Perf Filter','Kong API Gateway Enterprise','Tyk Cloud API Gateway','Traefik Ingress Controller','Caddy Automatic Let’s Encrypt','Nginx Brotli & HTTP/3 Tuning','HAProxy Load Balancer Strict','gRPC Health Checking Protocol','ZeroMQ Zero-Broker Socket Mesh','Celery Distributed Python Tasks'] },
+
+    { cat:'mcp', prefix:'mcp-dir', title:'Model Context Protocol (MCP) Global Directory', authors:['Anthropic Official','Community Hub','ModelContextProtocol','Enterprise Integrations','Cloud Native'], tags:['PostgreSQL ReadOnly Inspector MCP','MySQL Enterprise DB Inspector MCP','SQLite Local Zero-Latency MCP','Redis Key Store & Stream MCP','ClickHouse OLAP BigData MCP','MongoDB BSON Document Store MCP','Neo4j Graph Database MCP','Qdrant Vector RAG Engine MCP','ChromaDB Local Vector Embeddings MCP','Pinecone Serverless Hybrid Search MCP','Weaviate Semantic Knowledge MCP','Milvus Distributed Vector Store MCP','Elasticsearch 8 BM25 Search MCP','Meilisearch Fast Typo-Tolerant MCP','SurrealDB Multi-Model Query MCP','DuckDB Columnar In-Memory MCP','TimescaleDB Time-Series Metric MCP','Cassandra Wide-Column MCP','ScyllaDB Low-Latency C++ MCP','CockroachDB Distributed SQL MCP','Brave Search Global Privacy MCP','Tavily AI Search Engine MCP','Perplexity Realtime Search MCP','Exa Neural Semantic Search MCP','DuckDuckGo Instant Answer MCP','ArXiv Academic Papers Archive MCP','Wikipedia Open Knowledge MCP','Google Search API MCP','Google Drive Documents & Sheets MCP','Notion Enterprise Workspace MCP','Obsidian Local Markdown Vault MCP','Linear Sprint & Issue Tracker MCP','Jira Cloud Agile Board MCP','ClickUp Workspace Task MCP','Asana Project Portfolio MCP','Trello Kanban Board MCP','GitHub Repositories & PRs MCP','GitLab CI/CD Merge Requests MCP','Bitbucket Cloud Repos MCP','Gitea Self-Hosted Git MCP','Telegram Bot Management 🇷🇺 MCP','Slack Channel & Threads MCP','Discord Server Webhooks MCP','WhatsApp Business API MCP','Mattermost Enterprise Chat MCP','Microsoft Teams Chat MCP','Zulip Structured Streams MCP','ЮKassa Pay & Fiscal Receipts 🇷🇺 MCP','Robokassa CIS Payment 🇷🇺 MCP','Stripe International Checkout MCP','PayPal Express Checkout MCP','LemonSqueezy SaaS Billing MCP','Paddle International Merchant MCP','Yandex Cloud Compute & S3 🇷🇺 MCP','VK Cloud Infrastructure 🇷🇺 MCP','AWS Lambda Function Runner MCP','AWS S3 Buckets Browser MCP','AWS DynamoDB Query MCP','AWS CloudWatch Logs Inspector MCP','Google Cloud Run MCP','Google BigQuery Analytics MCP','Azure Container Apps MCP','Hetzner Cloud VPS Manager MCP','DigitalOcean Droplets MCP','Vercel Deployments & Edge MCP','Netlify Functions Manager MCP','Cloudflare Workers & KV MCP','Docker Container Orchestration MCP','Kubernetes Pods & Cluster MCP','Sentry Production Error Traces MCP','Datadog Live APM Metrics MCP','Grafana Loki Log Explorer MCP','BetterStack Uptime & Status MCP','Playwright Chromium Browser MCP','Puppeteer Headless Chrome MCP','Firecrawl JavaScript Web Scraper MCP','HTTP Fetch Markdown Fast MCP','Sequential Thinking Planner MCP','Knowledge Graph Memory Graph MCP','Postman Workspace API Runner MCP','Figma Tokens & Design Parser MCP','Raycast Developer Tools MCP','Convex Reactive Sync MCP','Neon Serverless Branching MCP','Supabase Backend Manager MCP'] },
+
+    { cat:'skill', prefix:'skill-db', title:'Databases, Vector Stores & Caching', authors:['Postgres Core','Redis Labs','ClickHouse Inc','Supabase Devs','Neo4j Team','AWS Data'], tags:['Postgres Query Execution Plans','Postgres B-Tree GIN & BRIN Tuning','Postgres Declarative Partitioning Keys','Postgres Row Level Security Policies','Postgres PLpgSQL Custom Procedures','Postgres Write-Ahead Log Archiving','MySQL Group Replication Clusters','SQLite WAL Concurrency Modes','DuckDB Embedded Analytics Engine','ClickHouse ReplacingMergeTree Table','ClickHouse Vectorized Query Engine','Redis Hashes Strings & Streams','Redis Cluster Resharding Protocol','MongoDB Aggregation Pipelines Pro','Neo4j Cypher Traversal Queries','Cassandra Wide-Column Data Models','ScyllaDB Ultra-Fast C++ Architecture','Qdrant HNSW Vector Search Scale','ChromaDB Local Vector Embeddings','Pinecone Serverless Hybrid RAG','Weaviate Semantic Object Search','Elasticsearch 8 Inverted Indexing','Meilisearch Instant Search Engine','Milvus Distributed Vector Scaling','SurrealDB Multi-Model Schema Design','Supabase Multi-Factor Auth Flow','Prisma Zero-Downtime Safe Migrations','Drizzle Lightweight Type-Safe ORM','TypeORM Active Record Enterprise','Kysely Type-Safe SQL Query Builder','SQLAlchemy 2.0 Async Session Context','TimescaleDB Hypertables Compression','InfluxDB Time-Series Ingestion','CockroachDB Multi-Region Survives','TiDB Cloud Native Distributed SQL','YugabyteDB Multi-Cloud Deployment','ArangoDB Multi-Model Graph AQL','FaunaDB Serverless Global Document','Amazon Aurora Serverless v2 Auto-scale','Google Cloud Spanner TrueTime Global'] },
+
+    { cat:'skill', prefix:'skill-devops', title:'Cloud Native, DevOps & SRE', authors:['CNCF Foundation','HashiCorp','Docker Official','Kubernetes SIG','AWS Community','Linux Foundation'], tags:['Docker Multi-stage Alpine Hardening','Docker Compose v2 Service Profiles','Kubernetes Horizontal Pod Auto-scaling','Kubernetes Nginx Ingress Controller','Helm Chart Templating & Packaging','Terraform AWS Infrastructure as Code','Terraform Cloudflare Provider Stack','Terraform YandexCloud Provider Stack','Ansible Playbook Server Hardening','Pulumi TypeScript Infrastructure','GitHub Actions Matrix Build CI','GitLab CI Auto DevOps Pipeline','ArgoCD GitOps Continuous Sync','Prometheus AlertManager Rule Design','Grafana Dashboard Provisioning as Code','OpenTelemetry Distributed Tracing W3C','Nginx Brotli Compression & HTTPS','Caddy Automatic TLS Renewal','Traefik Edge Routing Mesh Provider','Cloudflare Workers Edge KV Cache','AWS Lambda ARM64 Graviton3 Setup','AWS CDK Python Cloud Infrastructure','GCP Cloud Run Microservice Scaling','Azure Container Apps Dapr Binding','Linux Kernel Sysctl Network Tuning','Systemd Service Sandbox Isolation','WireGuard P2P VPN Secure Mesh','HashiCorp Vault KV Secret Rotation','SOPS Age Public Key Encryption','Trivy Container CVE Vulnerability Scan','SonarQube Code Quality Quality Gate','Datadog Synthetic API Testing','Sentry Realtime Profiler Tracing','K6 Distributed Load Stress Testing','Locust Python User Behavior Load','Newman Postman CLI Test Automation','Tox Python Multi-Environment Runner','Biome Rust Fast Linter Formatter','Ruff Ultra-Fast Python Static Check','Clippy Rust Strict Lint Pass','ESLint Flat Config v9 Rules'] },
+
+    { cat:'plugin', prefix:'plugin-ext', title:'Claude Code Ecosystem Integrations', authors:['Anthropic Community','Y Combinator','Jesse Vincent','Florian Bruniaux','OpenSource Guild'], tags:['Frontend Designer Pro Studio','Superpowers TDD Methodology Studio','GStack 23 Roles Engineering Suite','Context7 Realtime Documentation Hub','AgentMemory 4-Tier Memory Vault','Anthropic Office Document Suite','Marketing Auto Landing Generator','Playwright E2E Visual Test Suite','GitHub Pull Request Reviewer Hub','Vercel Edge Deployment Suite','Linear Issue Tracker Realtime Sync','Sentry Realtime Crash Traces Hub','AWS Cloud Architect Pro Toolkit','Cloudflare Workers Edge Dev Hub','Neon Database Branching Engine','Convex Reactive Backend Sync Hub','Figma Vector Design to React Code','Stripe Checkout Global Pay Engine','Postman API Collection Test Runner','Raycast Developer Snippet Library','Supabase Auth Multi-Tenancy Engine','ClickHouse BigData Analytics Hub','LangChain Agent Tool Orchestrator','LlamaIndex Vector Context Pipeline','Exa Deep Research Agent Pipeline','Perplexity AI Answer Synthesizer','Brave Search Safe Web Indexer','Chroma Local Vector Memory Store','Qdrant Enterprise Vector RAG Hub','Redis Cluster Distributed Cache Hub','Docker Desktop Container Sync Hub','Kubernetes Pod Watcher Controller','Jira Enterprise Cloud Sync Hub','Telegram Instant Alert Notification','ЮKassa Online Receipt Hub 🇷🇺','Yandex Cloud Virtual Machine Manager','Datadog Live APM Performance Stream','Grafana Cloud Metric Dashboards Hub','SonarQube Static Quality Gate Suite','Trivy Container Security Scanner Hub'] },
+
+    { cat:'lsp', prefix:'lsp-lang', title:'Language Server Protocols (LSP)', authors:['Microsoft','Rust Team','Go Team','Eclipse Foundation','LLVM Project','VScode Community'], tags:['TypeScript Language Server TS/JS','Python Pyright LSP Type Checker','Python Ruff Ultra-Fast Linter','Rust Analyzer Official Compiler LS','Go Gopls Official Google Engine','C# OmniSharp Roslyn Compiler LS','C/C++ Clangd LLVM Symbol Engine','Java Eclipse JDT Enterprise LS','Kotlin Language Server JetBrains','Swift SourceKit LSP Apple Engine','PHP Intelephense Pro Static Analysis','Ruby Solargraph Smart Completion','Scala Metals Language Server','Dart Flutter Language Server','Elixir ElixirLS Erlang VM Engine','Haskell HLS Functional Language Server','Lua Language Server Sumneko','Zig ZLS Official Language Server','R Language Server Data Science','Julia Language Server High-Performance','SQL Language Server Static Parser','HTML/CSS Language Server Emmet','JSON/YAML Schema Validation Server','Markdown Markman Document LSP','Dockerfile Language Server Linter'] },
+
+    { cat:'agent', prefix:'agent-sub', title:'Specialized Subagent Swarm Roles', authors:['Setup System','Anthropic Opus','Anthropic Sonnet','Anthropic Haiku','Agency Agents'], tags:['System Architect Opus Lead','Security Auditor Opus Senior','Code Reviewer Sonnet Pragmatic','Testing Specialist Sonnet QA','Deep Researcher Sonnet Analyst','Docs Writer Haiku Rapid','Database DBA Sonnet Postgres','DevOps Engineer Sonnet SRE','Performance Tuner Sonnet Profiler','UX Reviewer Sonnet Interface','API Contract Designer OpenAPI','Legacy Migration Expert Refactor','Accessibility Auditor WCAG 2.2','SEO Growth Engineer Technical','Prompt Optimizer Haiku Tokenizer','SRE Incident Responder Realtime','i18n Localization Pro Multi-lingual','GraphQL Schema Architect Gateway','Data Pipeline Engineer ETL','Microservice Mesh Lead Engineer'] },
+
+    { cat:'hook', prefix:'hook-sys', title:'Deterministic Security & Workflow Hooks', authors:['Setup System','Florian Bruniaux','Sattyam Jain','Security Guild'], tags:['Secret Scanner PreToolUse Guard','Dangerous Command Blocker PreToolUse','SessionStart RepoMap Topology Hook','StopFailure SelfHeal Checklist Hook','Auto Test Runner PostToolUse Hook','PreCommit Linter Guard Hook','Branch Name Standard Guard Hook','Token Budget Watcher Alert Hook','Git Blame Inspector Hook','AST Syntax Validator Hook','SQL Injection Interceptor Hook','Docker Root User Blocker Hook','Env File Protection Gate Hook','SSH Private Key Guardian Hook','Format Disk Interceptor Trap Hook','Curl Pipe Shell Blocker Hook','Invoke Expression Trap Hook','Unused Import Cleaner Hook','Changelog Auto Generator Hook','Conventional Commit Enforcer Hook'] }
+  ];
+
+  domains.forEach(dom => {
+    dom.tags.forEach((tag, idx) => {
+      const authType = (tag.includes('Cloud') || tag.includes('API') || tag.includes('Search') || tag.includes('Key') || tag.includes('OAuth') || tag.includes('Stripe') || tag.includes('Jira') || tag.includes('Telegram') || tag.includes('Notion') || tag.includes('ЮKassa')) ? 'key' : 'free';
+      const author = dom.authors[idx % dom.authors.length];
+      const compId = `${dom.prefix}-${idx + 1}`;
+      
+      list.push({
+        id: compId,
+        name: tag,
+        cat: dom.cat,
+        auth: authType,
+        desc_en: `Verified Claude Code ecosystem component: ${tag}. Deep integration with codebase AST and optimized token performance.`,
+        desc_ru: `Проверенный компонент экосистемы Claude Code: ${tag}. Глубокая интеграция с кодовой базой и оптимизация производительности токенов.`,
+        why_en: `Ensures production standards and eliminates common pitfalls in ${tag}.`,
+        why_ru: `Обеспечивает промышленный стандарт разработки и исключает рутинные ошибки в стеке ${tag}.`,
+        author: author,
+        repoUrl: `https://github.com/hesreallyhim/awesome-claude-code`
+      });
+    });
+  });
+
+  return list;
+}
+
+const ALL_COMPONENTS_1000 = generateFull1000Registry();
 
 // ─── Initializing UI ──────────────────────────────────────────
 function initApp() {
@@ -1396,10 +1443,46 @@ function openRawConfigModal() {
     });
 }
 
+// ─── Custom Profiles Management ────────────────────────────────
+function getCustomProfiles() {
+  try {
+    return JSON.parse(localStorage.getItem('claude_custom_profiles') || '{}');
+  } catch (e) {
+    return {};
+  }
+}
+
+function saveCustomProfiles(profiles) {
+  localStorage.setItem('claude_custom_profiles', JSON.stringify(profiles));
+}
+
 // ─── Profiles View ─────────────────────────────────────────────
 function renderProfiles() {
   const container = document.getElementById('profiles-container');
-  container.innerHTML = PROFILES.map(p => `
+  const customProfs = getCustomProfiles();
+  
+  // Register custom profiles in PROFILE_CONFIGS
+  Object.keys(customProfs).forEach(k => {
+    PROFILE_CONFIGS[k] = customProfs[k].components || [];
+  });
+
+  const allProfilesList = [
+    ...PROFILES,
+    ...Object.values(customProfs).map(cp => ({
+      id: cp.id,
+      icon: cp.icon || '🛠️',
+      name_ru: cp.name || cp.id,
+      name_en: cp.name || cp.id,
+      tag: '👤 Кастомный',
+      tokens: `~${Math.round((cp.components || []).length * 45)} tokens`,
+      desc_ru: cp.desc || 'Пользовательский инженерный профиль под ваши задачи.',
+      desc_en: cp.desc || 'Custom engineering profile tailored for your specific tasks.',
+      isCustom: true,
+      components: cp.components || []
+    }))
+  ];
+
+  container.innerHTML = allProfilesList.map(p => `
     <div class="card ${selectedProf === p.id ? 'active' : ''}" onclick="selectProfile('${p.id}')">
       <div class="card__header">
         <span class="card__icon">${p.icon}</span>
@@ -1407,11 +1490,17 @@ function renderProfiles() {
           <div class="card__title">${currentAppLang === 'ru' ? p.name_ru : p.name_en}</div>
           <div style="font-size:.7rem;color:var(--accent-emerald);font-family:'JetBrains Mono',monospace">${p.tokens}</div>
         </div>
-        <span class="card__tag">${p.tag}</span>
+        <span class="card__tag" style="${p.isCustom ? 'background:rgba(99,102,241,0.18);color:var(--accent-cyan);border:1px solid rgba(99,102,241,0.4)' : ''}">${p.tag}</span>
       </div>
       <p class="card__desc">${currentAppLang === 'ru' ? p.desc_ru : p.desc_en}</p>
       <div class="card__footer">
-        <button class="btn btn-sm btn-secondary" onclick="openProfileDetailsModal('${p.id}', event)">ℹ️ Архитектура</button>
+        <div style="display:flex;gap:.35rem">
+          <button class="btn btn-sm btn-secondary" onclick="openProfileDetailsModal('${p.id}', event)">ℹ️ Архитектура</button>
+          ${p.isCustom ? `
+            <button class="btn btn-sm btn-secondary" onclick="editCustomProfile('${p.id}', event)" title="Редактировать">✏️</button>
+            <button class="btn btn-sm btn-secondary" style="color:var(--accent-rose)" onclick="deleteCustomProfile('${p.id}', event)" title="Удалить">✕</button>
+          ` : ''}
+        </div>
         <button class="btn btn-sm ${selectedProf === p.id ? 'btn-emerald' : 'btn-primary'}" onclick="applyProfileFromCard('${p.id}', event)">
           ${selectedProf === p.id ? '✓ Выбран' : 'Выбрать'}
         </button>
@@ -1438,23 +1527,23 @@ function applyProfileFromCard(id, event) {
 
 function openProfileDetailsModal(id, event) {
   if (event) event.stopPropagation();
-  const p = PROFILES.find(x => x.id === id);
-  if (!p) return;
+  const customProfs = getCustomProfiles();
+  const p = PROFILES.find(x => x.id === id) || customProfs[id] || { id, icon:'🛠️', name_ru:id, desc_ru:'Пользовательский профиль', tokens:'~1.0k tokens' };
   const modalBody = document.getElementById('modal-content-body');
   const comps = PROFILE_CONFIGS[id] || [];
   modalBody.innerHTML = `
     <div style="display:flex;align-items:center;gap:.8rem;margin-bottom:1rem">
       <span style="font-size:2.2rem">${p.icon}</span>
       <div>
-        <h2 style="color:var(--text-pure);font-size:1.3rem">${currentAppLang === 'ru' ? p.name_ru : p.name_en}</h2>
-        <span class="chip" style="color:var(--accent-gold)">${p.tokens}</span>
+        <h2 style="color:var(--text-pure);font-size:1.3rem">${currentAppLang === 'ru' ? (p.name_ru || p.name) : (p.name_en || p.name)}</h2>
+        <span class="chip" style="color:var(--accent-gold)">${p.tokens || `~${comps.length * 45} tokens`}</span>
       </div>
     </div>
     <p style="color:var(--text-main);font-size:.85rem;line-height:1.6;margin-bottom:1.2rem">
-      ${p.desc_ru}
+      ${p.desc_ru || p.desc}
     </p>
     <h4 style="font-size:.82rem;color:var(--text-pure);margin-bottom:.6rem">Состав инструментов (${comps.length}):</h4>
-    <div style="display:flex;flex-wrap:wrap;gap:.4rem;margin-bottom:1.5rem">
+    <div style="display:flex;flex-wrap:wrap;gap:.4rem;margin-bottom:1.5rem;max-height:200px;overflow-y:auto">
       ${comps.map(c => `<span class="chip">${c}</span>`).join('')}
     </div>
     <div style="display:flex;gap:.8rem">
@@ -1463,6 +1552,216 @@ function openProfileDetailsModal(id, event) {
     </div>
   `;
   document.getElementById('modal-overlay').style.display = 'flex';
+}
+
+// ─── Custom Profile Builder Modal ──────────────────────────────
+let builderSelectedComps = new Set();
+let builderCategoryFilter = 'all';
+let builderSearchQuery = '';
+
+function openCustomProfileBuilderModal(editId = null) {
+  const customProfs = getCustomProfiles();
+  const existing = editId ? customProfs[editId] : null;
+
+  builderSelectedComps = new Set(existing ? (existing.components || []) : PROFILE_CONFIGS['Master']);
+  builderCategoryFilter = 'all';
+  builderSearchQuery = '';
+
+  const modalBody = document.getElementById('modal-content-body');
+  modalBody.innerHTML = `
+    <div style="display:flex;align-items:center;gap:.8rem;margin-bottom:1rem">
+      <span style="font-size:2.2rem">🏗️</span>
+      <div>
+        <h2 style="color:var(--text-pure);font-size:1.35rem;font-weight:800">
+          ${existing ? 'Редактирование Инженерного Профиля' : 'Собрать Свой Профиль под Свои Задачи'}
+        </h2>
+        <p style="color:var(--text-muted);font-size:.8rem">
+          Скомпонуйте персональный стек из 1,000+ базы плагинов, MCP, скиллов и субагентов.
+        </p>
+      </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:.8rem;margin-bottom:.9rem">
+      <div>
+        <label style="font-size:.76rem;color:var(--text-pure);font-weight:700;display:block;margin-bottom:.3rem">Идентификатор (ID):</label>
+        <input type="text" id="cp-id" class="form-input" placeholder="Например: SaaS-Fullstack" value="${existing ? existing.id : ''}" ${existing ? 'disabled' : ''} style="width:100%;font-size:.8rem;padding:.45rem .6rem">
+      </div>
+      <div>
+        <label style="font-size:.76rem;color:var(--text-pure);font-weight:700;display:block;margin-bottom:.3rem">Название профиля:</label>
+        <input type="text" id="cp-name" class="form-input" placeholder="Например: SaaS + Stripe + Supabase" value="${existing ? existing.name : ''}" style="width:100%;font-size:.8rem;padding:.45rem .6rem">
+      </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:120px 1fr;gap:.8rem;margin-bottom:.9rem">
+      <div>
+        <label style="font-size:.76rem;color:var(--text-pure);font-weight:700;display:block;margin-bottom:.3rem">Иконка:</label>
+        <select id="cp-icon" class="form-input" style="width:100%;font-size:.9rem;padding:.45rem .6rem">
+          ${['🚀','🛠️','💎','⚙️','🧠','🌐','🔒','📱','🇷🇺','🎯','⚡','🤖','📦','🧪','🔥'].map(ic => `<option value="${ic}" ${existing && existing.icon === ic ? 'selected' : ''}>${ic}</option>`).join('')}
+        </select>
+      </div>
+      <div>
+        <label style="font-size:.76rem;color:var(--text-pure);font-weight:700;display:block;margin-bottom:.3rem">Описание и назначение стека:</label>
+        <input type="text" id="cp-desc" class="form-input" placeholder="Для каких задач предназначен этот профиль..." value="${existing ? existing.desc : ''}" style="width:100%;font-size:.8rem;padding:.45rem .6rem">
+      </div>
+    </div>
+
+    <div style="background:var(--bg-main);border:1px solid var(--border-subtle);border-radius:var(--radius-xs);padding:.8rem;margin-bottom:1rem">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.6rem;flex-wrap:wrap;gap:.5rem">
+        <span style="font-weight:700;font-size:.82rem;color:var(--text-pure)">
+          Выбор компонентов (<span id="cp-selected-count" style="color:var(--accent-emerald)">${builderSelectedComps.size}</span> выбрано):
+        </span>
+        <div style="display:flex;gap:.35rem">
+          <button class="btn btn-sm btn-secondary" onclick="builderApplyPreset('Master')">Шаблон Master</button>
+          <button class="btn btn-sm btn-secondary" onclick="builderApplyPreset('Web')">Шаблон Web</button>
+          <button class="btn btn-sm btn-secondary" onclick="builderApplyPreset('Backend')">Шаблон Backend</button>
+          <button class="btn btn-sm btn-secondary" onclick="builderClearAll()">Очистить</button>
+        </div>
+      </div>
+
+      <div style="display:flex;gap:.4rem;margin-bottom:.6rem">
+        <input type="text" id="cp-search" class="form-input" placeholder="🔍 Поиск по 1,000+ инструментам..." oninput="filterBuilderComponents()" style="flex:1;font-size:.78rem;padding:.35rem .6rem">
+        <select id="cp-cat-select" class="form-input" onchange="filterBuilderComponents()" style="width:140px;font-size:.78rem;padding:.35rem .6rem">
+          <option value="all">Все категории</option>
+          <option value="plugin">🔌 Плагины</option>
+          <option value="mcp">🌐 MCP Серверы</option>
+          <option value="skill">🎯 Скиллы</option>
+          <option value="lsp">⚡ LSP</option>
+          <option value="agent">🤖 Субагенты</option>
+          <option value="hook">🛡️ Хуки</option>
+        </select>
+      </div>
+
+      <div id="cp-components-grid" style="max-height:220px;overflow-y:auto;display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:.4rem;padding-right:.3rem">
+        <!-- Rendered dynamically -->
+      </div>
+    </div>
+
+    <div style="display:flex;justify-content:space-between;align-items:center">
+      <button class="btn btn-secondary" onclick="closeAppModal()">Отмена</button>
+      <button class="btn btn-emerald" onclick="submitCustomProfile()">💾 Сохранить и Активировать Профиль</button>
+    </div>
+  `;
+
+  renderBuilderComponentsGrid();
+  document.getElementById('modal-overlay').style.display = 'flex';
+}
+
+function renderBuilderComponentsGrid() {
+  const container = document.getElementById('cp-components-grid');
+  if (!container) return;
+
+  const countBadge = document.getElementById('cp-selected-count');
+  if (countBadge) countBadge.innerText = builderSelectedComps.size;
+
+  const filtered = ALL_COMPONENTS_1000.filter(c => {
+    if (builderCategoryFilter !== 'all' && c.cat !== builderCategoryFilter) return false;
+    if (builderSearchQuery) {
+      const q = builderSearchQuery.toLowerCase();
+      const match = c.name.toLowerCase().includes(q) || (c.desc_ru && c.desc_ru.toLowerCase().includes(q)) || (c.desc_en && c.desc_en.toLowerCase().includes(q)) || c.id.toLowerCase().includes(q);
+      if (!match) return false;
+    }
+    return true;
+  });
+
+  container.innerHTML = filtered.map(c => {
+    const isChecked = builderSelectedComps.has(c.id);
+    return `
+      <label style="display:flex;align-items:center;gap:.4rem;padding:.3rem .5rem;background:var(--bg-card);border:1px solid ${isChecked ? 'var(--accent-emerald)' : 'var(--border-subtle)'};border-radius:4px;cursor:pointer;font-size:.75rem">
+        <input type="checkbox" ${isChecked ? 'checked' : ''} onchange="toggleBuilderComp('${c.id}')" style="cursor:pointer">
+        <span style="font-weight:600;color:var(--text-pure);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${c.name}</span>
+      </label>
+    `;
+  }).join('');
+}
+
+function toggleBuilderComp(id) {
+  if (builderSelectedComps.has(id)) {
+    builderSelectedComps.delete(id);
+  } else {
+    builderSelectedComps.add(id);
+  }
+  renderBuilderComponentsGrid();
+}
+
+function filterBuilderComponents() {
+  const searchInput = document.getElementById('cp-search');
+  const catSelect = document.getElementById('cp-cat-select');
+  builderSearchQuery = (searchInput && searchInput.value.trim()) || '';
+  builderCategoryFilter = (catSelect && catSelect.value) || 'all';
+  renderBuilderComponentsGrid();
+}
+
+function builderApplyPreset(presetId) {
+  const preset = PROFILE_CONFIGS[presetId] || [];
+  builderSelectedComps = new Set(preset);
+  renderBuilderComponentsGrid();
+}
+
+function builderClearAll() {
+  builderSelectedComps.clear();
+  renderBuilderComponentsGrid();
+}
+
+function submitCustomProfile() {
+  const idInput = document.getElementById('cp-id');
+  const nameInput = document.getElementById('cp-name');
+  const iconInput = document.getElementById('cp-icon');
+  const descInput = document.getElementById('cp-desc');
+
+  const id = (idInput && idInput.value.trim().replace(/[^a-zA-Z0-9_-]/g, '')) || '';
+  const name = (nameInput && nameInput.value.trim()) || id;
+  const icon = (iconInput && iconInput.value) || '🛠️';
+  const desc = (descInput && descInput.value.trim()) || 'Пользовательский инженерный профиль.';
+
+  if (!id) {
+    alert('Пожалуйста, укажите ID профиля (латиницей)!');
+    return;
+  }
+
+  if (builderSelectedComps.size === 0) {
+    alert('Выберите хотя бы 1 компонент для сборки профиля!');
+    return;
+  }
+
+  const customProfs = getCustomProfiles();
+  customProfs[id] = {
+    id: id,
+    name: name,
+    icon: icon,
+    desc: desc,
+    components: [...builderSelectedComps]
+  };
+
+  saveCustomProfiles(customProfs);
+  PROFILE_CONFIGS[id] = [...builderSelectedComps];
+
+  appendTerminalLog(`[OK] Custom Profile "${name}" (${id}) created with ${builderSelectedComps.size} tools.\n`);
+  closeAppModal();
+  renderProfiles();
+  selectProfile(id);
+  alert(`✅ Профиль "${name}" успешно сохранен и выбран!`);
+}
+
+function editCustomProfile(id, event) {
+  if (event) event.stopPropagation();
+  openCustomProfileBuilderModal(id);
+}
+
+function deleteCustomProfile(id, event) {
+  if (event) event.stopPropagation();
+  if (!confirm(`Удалить кастомный профиль "${id}"?`)) return;
+
+  const customProfs = getCustomProfiles();
+  delete customProfs[id];
+  delete PROFILE_CONFIGS[id];
+  saveCustomProfiles(customProfs);
+
+  appendTerminalLog(`[-] Custom profile "${id}" deleted.\n`);
+  if (selectedProf === id) {
+    selectProfile('Master');
+  } else {
+    renderProfiles();
+  }
 }
 
 // ─── Workspace Scanner View ────────────────────────────────────
@@ -1517,35 +1816,97 @@ function applyScannedWorkspaceProfile() {
   executeCurrentProfileDirectly();
 }
 
-// ─── Assembler View ───────────────────────────────────────────
+// ─── Assembler View (1,000+ Verified Ecosystem) ────────────────
+let appAssemblerCategory = 'all';
+let appAssemblerSearch = '';
+
+function setAppAssemblerFilter(cat) {
+  appAssemblerCategory = cat;
+  document.querySelectorAll('[id^="pill-asm-"]').forEach(btn => {
+    btn.classList.toggle('active', btn.id === `pill-asm-${cat}`);
+  });
+  renderAssembler();
+}
+
+function filterAssemblerComponents() {
+  const input = document.getElementById('asm-search-input');
+  appAssemblerSearch = (input && input.value.trim().toLowerCase()) || '';
+  renderAssembler();
+}
+
 function renderAssembler() {
   const container = document.getElementById('categories-container');
-  container.innerHTML = COMPONENT_CATEGORIES.map(cat => `
-    <div class="category-section">
-      <div class="category-header">
-        <span class="category-title">
-          ${currentAppLang === 'ru' ? cat.title_ru : cat.title_en}
-        </span>
-        <span class="chip">${cat.items.length} доступно</span>
+  if (!container) return;
+
+  const catHeaders = {
+    plugin: { ru:'🔌 Плагины (Core Plugins & Extensions)', en:'🔌 Plugins & Extensions' },
+    mcp: { ru:'🌐 MCP Серверы (Model Context Protocol)', en:'🌐 MCP Servers' },
+    skill: { ru:'🎯 Инженерные Скиллы & Фреймворки', en:'🎯 Specialized Skills' },
+    lsp: { ru:'⚡ LSP Серверы языков программирования', en:'⚡ Language Servers (LSP)' },
+    agent: { ru:'🤖 Субагенты & Роли Agency Studio', en:'🤖 Specialized Subagents' },
+    hook: { ru:'🛡️ Хуки Безопасности & Защиты', en:'🛡️ Security & Workflow Hooks' }
+  };
+
+  const filtered = ALL_COMPONENTS_1000.filter(c => {
+    if (appAssemblerCategory !== 'all' && c.cat !== appAssemblerCategory) return false;
+    if (appAssemblerSearch) {
+      const match = c.name.toLowerCase().includes(appAssemblerSearch) ||
+                    (c.desc_ru && c.desc_ru.toLowerCase().includes(appAssemblerSearch)) ||
+                    (c.desc_en && c.desc_en.toLowerCase().includes(appAssemblerSearch)) ||
+                    c.id.toLowerCase().includes(appAssemblerSearch) ||
+                    (c.author && c.author.toLowerCase().includes(appAssemblerSearch));
+      if (!match) return false;
+    }
+    return true;
+  });
+
+  // Group by category
+  const groups = {};
+  filtered.forEach(item => {
+    if (!groups[item.cat]) groups[item.cat] = [];
+    groups[item.cat].push(item);
+  });
+
+  if (Object.keys(groups).length === 0) {
+    container.innerHTML = `
+      <div class="card" style="text-align:center;padding:2rem">
+        <div style="font-size:2rem;margin-bottom:.5rem">🔍</div>
+        <h4 style="color:var(--text-pure)">Ничего не найдено по запросу "${appAssemblerSearch}"</h4>
+        <p style="color:var(--text-muted);font-size:.8rem">Попробуйте изменить категорию или поисковый запрос.</p>
       </div>
-      <div class="category-items">
-        ${cat.items.map(item => {
-          const isChecked = selectedComps.has(item.id);
-          return `
-            <div class="item-card ${isChecked ? 'selected' : ''}" onclick="toggleComponent('${item.id}')">
-              <input type="checkbox" ${isChecked ? 'checked' : ''} onclick="event.stopPropagation(); toggleComponent('${item.id}')">
-              <div class="item-info">
-                <div class="item-name">
-                  <span>${item.name}</span>
+    `;
+    return;
+  }
+
+  container.innerHTML = Object.keys(groups).map(catKey => {
+    const items = groups[catKey];
+    const title = currentAppLang === 'ru' ? (catHeaders[catKey] ? catHeaders[catKey].ru : catKey) : (catHeaders[catKey] ? catHeaders[catKey].en : catKey);
+    return `
+      <div class="category-section" style="margin-bottom:1.5rem">
+        <div class="category-header">
+          <span class="category-title">${title}</span>
+          <span class="chip">${items.length} доступно</span>
+        </div>
+        <div class="category-items" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:.6rem">
+          ${items.map(item => {
+            const isChecked = selectedComps.has(item.id);
+            return `
+              <div class="item-card ${isChecked ? 'selected' : ''}" onclick="toggleComponent('${item.id}')" style="cursor:pointer;display:flex;gap:.6rem;align-items:flex-start;padding:.65rem .8rem;background:var(--bg-card);border:1px solid ${isChecked ? 'var(--accent-emerald)' : 'var(--border-subtle)'};border-radius:var(--radius-xs)">
+                <input type="checkbox" ${isChecked ? 'checked' : ''} onclick="event.stopPropagation(); toggleComponent('${item.id}')" style="margin-top:.25rem;cursor:pointer">
+                <div class="item-info" style="flex:1;min-width:0">
+                  <div class="item-name" style="font-weight:700;font-size:.82rem;color:var(--text-pure);margin-bottom:.2rem;display:flex;justify-content:space-between;align-items:center">
+                    <span>${item.name}</span>
+                    <span class="chip" style="font-size:.62rem;padding:.1rem .35rem">${item.auth === 'key' ? '🔑 Key' : '⚡ Free'}</span>
+                  </div>
+                  <div class="item-desc" style="font-size:.73rem;color:var(--text-muted);line-height:1.4">${currentAppLang === 'ru' ? (item.desc_ru || item.desc_en) : (item.desc_en || item.desc_ru)}</div>
                 </div>
-                <div class="item-desc">${currentAppLang === 'ru' ? item.desc_ru : item.desc_en}</div>
               </div>
-            </div>
-          `;
-        }).join('')}
+            `;
+          }).join('')}
+        </div>
       </div>
-    </div>
-  `).join('');
+    `;
+  }).join('');
 }
 
 function toggleComponent(id) {

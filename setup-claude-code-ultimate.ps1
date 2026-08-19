@@ -36,7 +36,7 @@
 
 [CmdletBinding()]
 param(
-    [ValidateSet('Master','Core','Russia','Web','Frontend','Backend','Security','Data','DevOps','Research','Marketing','AI','Mobile','Agency','Full')]
+    [ValidateSet('Master','Core','Russia','Web','Frontend','Backend','Security','Data','DevOps','Research','Marketing','AI','Mobile','Agency','Full','Custom')]
     [string]$Profile = 'Master',
     [string]$Components = '',
     [switch]$DryRun,
