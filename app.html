@@ -1730,22 +1730,96 @@ function submitCustomMcp() {
 }
 
 // ─── Skills Store & Creator View ──────────────────────────────
+const SKILLS_DATABASE = {
+  'ui-ux-pro-max': {
+    name: 'UI/UX Pro Max (67 Styles)',
+    desc: 'Design intelligence: 67 aesthetic profiles, color palettes, fonts, and micro-interactions.',
+    author: 'NextLevelBuilder',
+    body: `# UI/UX Pro Max Engineering Guidelines
+- Never use default plain browser styles or generic bootstrap layouts.
+- Use curated HSL/OKLCH color palettes with obsidian dark modes.
+- Implement subtle micro-interactions, smooth hover transitions, and glassmorphism.
+- Typography: Inter, Outfit, JetBrains Mono with proportional line-heights.
+- Always verify high mobile responsiveness and accessible contrast ratios (WCAG AAA).`
+  },
+  'bulletproof': {
+    name: 'Bulletproof (12 Steps)',
+    desc: 'Enterprise-grade 12-step coding discipline: research, TDD, design docs, regression checks.',
+    author: 'Artemii Millier (@artemiimillier)',
+    body: `# Bulletproof 12-Step Development Workflow
+1. Research codebase architecture and verify assumptions.
+2. Formulate explicit hypothesis and design specifications.
+3. Write isolated unit test fixtures before implementation (TDD).
+4. Implement minimal required functional code without over-engineering.
+5. Verify test pass and check edge cases.
+6. Run linting, static typing, and automated regression suite.`
+  },
+  'caveman': {
+    name: 'Caveman (-65% Tokens)',
+    desc: 'Ultra-compressed technical communication mode saving up to 65% token budget.',
+    author: 'Julius Brussee (@JuliusBrussee)',
+    body: `# Caveman Token Compression Guidelines
+- Strip conversational filler, polite intros, and generic pleasantries.
+- Provide direct, ultra-concise code diffs and precise technical rationale.
+- Maintain 100% technical accuracy and exact parameter syntax.
+- Saves up to 65% input/output tokens per session.`
+  },
+  'agent-security': {
+    name: 'OWASP Security Guard',
+    desc: 'Vulnerability analysis, injection vector scanning, and credential leak audits on Claude Opus.',
+    author: 'Claude Code Security Team',
+    body: `# OWASP Top 10 Security Audit Guidelines
+- Audit all SQL queries for parameterization and injection vectors.
+- Verify CSRF, XSS, and SSRF mitigations on all external endpoints.
+- Check authentication token handling, expiration, and constant-time comparison.
+- Ensure strict zero-trust credential hygiene: never output API keys or .env values.`
+  },
+  'skill-seo': {
+    name: 'Claude SEO Pro (25 Skills)',
+    desc: 'Technical SEO audits, Core Web Vitals optimization, Schema.org structured data generation.',
+    author: 'Daniel Agrici (@AgriciDaniel)',
+    body: `# Claude SEO Technical Guidelines
+- Ensure single <h1> hierarchy per document with semantic HTML5 tags.
+- Inject valid Schema.org JSON-LD structured data for rich snippets.
+- Optimize Core Web Vitals: LCP < 2.5s, CLS < 0.1, INP < 200ms.
+- Verify canonical URLs, OpenGraph tags, and XML sitemaps.`
+  },
+  'skill-dataviz': {
+    name: 'Dataviz Diagramming',
+    desc: 'Rich visual diagrams generator supporting Mermaid, Chart.js, D3, and SVG architectures.',
+    author: 'Mermaid / Chart.js Team',
+    body: `# Dataviz Architecture Guidelines
+- Generate clean, responsive Mermaid.js flowcharts and sequence diagrams.
+- Quote node labels containing special characters to prevent syntax errors.
+- Use accessible color-coded nodes for system boundaries.`
+  },
+  'skill-commits': {
+    name: 'Conventional Commits',
+    desc: 'Clean atomic Git commits and automated pull request changelog generators.',
+    author: 'Florian Bruniaux',
+    body: `# Conventional Commits Specification
+- Format: <type>(<scope>): <short imperative description>
+- Types: feat, fix, refactor, test, docs, chore, perf.
+- Keep subject line under 50 characters, lowercase, no trailing period.
+- Include structured summary and verification test results in PR body.`
+  },
+  'skill-creator': {
+    name: 'Skill Creator (Anthropic)',
+    desc: 'Official Anthropic toolkit for authoring, testing, and packaging new skills.',
+    author: 'Anthropic Official',
+    body: `# Skill Creator Standards
+- Must contain SKILL.md with valid YAML frontmatter (name, description).
+- Instructions must be concise, deterministic, and modular.
+- Include examples/ and scripts/ directories for reusable utilities.`
+  }
+};
+
 function renderSkillsCards() {
   const container = document.getElementById('skills-cards-container');
   const search = (document.getElementById('skills-search-input')?.value || '').toLowerCase();
 
-  const skillsList = [
-    { id: 'ui-ux-pro-max', name: 'UI/UX Pro Max (67 Styles)', desc: 'Design intelligence: 67 aesthetic profiles, color palettes, fonts, and micro-interactions.' },
-    { id: 'bulletproof', name: 'Bulletproof (12 Steps)', desc: 'Enterprise-grade 12-step coding discipline: research, TDD, design docs, regression checks.' },
-    { id: 'caveman', name: 'Caveman (-65% Tokens)', desc: 'Ultra-compressed technical communication mode saving up to 65% token budget.' },
-    { id: 'agent-security', name: 'OWASP Security Guard', desc: 'Vulnerability analysis, injection vector scanning, and credential leak audits on Claude Opus.' },
-    { id: 'skill-seo', name: 'Claude SEO Pro (25 Skills)', desc: 'Technical SEO audits, Core Web Vitals optimization, Schema.org structured data generation.' },
-    { id: 'skill-dataviz', name: 'Dataviz Diagramming', desc: 'Rich visual diagrams generator supporting Mermaid, Chart.js, D3, and SVG architectures.' },
-    { id: 'skill-commits', name: 'Conventional Commits', desc: 'Clean atomic Git commits and automated pull request changelog generators.' },
-    { id: 'skill-creator', name: 'Skill Creator (Anthropic)', desc: 'Official Anthropic toolkit for authoring, testing, and packaging new skills.' }
-  ];
-
-  const filtered = skillsList.filter(s => s.name.toLowerCase().includes(search) || s.desc.toLowerCase().includes(search));
+  const list = Object.keys(SKILLS_DATABASE).map(id => ({ id, ...SKILLS_DATABASE[id] }));
+  const filtered = list.filter(s => s.name.toLowerCase().includes(search) || s.desc.toLowerCase().includes(search));
 
   container.innerHTML = filtered.map(s => `
     <div class="card">
@@ -1753,17 +1827,77 @@ function renderSkillsCards() {
         <span class="card__icon">🎯</span>
         <div>
           <div class="card__title">${s.name}</div>
-          <span style="font-size:.68rem;color:var(--text-muted)">Agent Skill</span>
+          <span style="font-size:.68rem;color:var(--text-muted)">By ${s.author}</span>
         </div>
         <span class="card__tag">SKILL</span>
       </div>
       <p class="card__desc">${s.desc}</p>
       <div class="card__footer">
-        <button class="btn btn-sm btn-secondary" onclick="viewSkillDetails('${s.id}')">📖 Инструкции</button>
+        <button class="btn btn-sm btn-secondary" onclick="viewSkillDetails('${s.id}')">📖 Инструкция</button>
         <button class="btn btn-sm btn-emerald" onclick="installSkillDirectly('${s.id}')">+ Установить</button>
       </div>
     </div>
   `).join('');
+}
+
+function viewSkillDetails(id) {
+  const s = SKILLS_DATABASE[id];
+  if (!s) return alert('Скилл не найден');
+
+  const modalBody = document.getElementById('modal-content-body');
+  const fullMd = `---
+name: ${id}
+description: ${s.desc}
+---
+
+${s.body}
+`;
+
+  modalBody.innerHTML = `
+    <div style="display:flex;align-items:center;gap:.8rem;margin-bottom:1rem">
+      <span style="font-size:2.2rem">🎯</span>
+      <div>
+        <h2 style="color:var(--text-pure);font-size:1.3rem">${s.name}</h2>
+        <span class="chip" style="color:var(--accent-gold)">Автор: ${s.author}</span>
+      </div>
+    </div>
+
+    <p style="color:var(--text-muted);font-size:.85rem;line-height:1.6;margin-bottom:1rem">${s.desc}</p>
+
+    <div style="font-size:.8rem;font-weight:700;color:var(--text-pure);margin-bottom:.4rem">Содержимое SKILL.md:</div>
+    <pre class="terminal" style="max-height:260px;overflow-y:auto;margin-bottom:1.2rem;white-space:pre-wrap;font-size:.78rem">${fullMd}</pre>
+
+    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.8rem">
+      <button class="btn btn-secondary" onclick="closeAppModal()">Закрыть</button>
+      <div style="display:flex;gap:.6rem">
+        <button class="btn btn-secondary" onclick="copyText('${fullMd.replace(/'/g, "\\'").replace(/\n/g, '\\n')}'); alert('SKILL.md скопирован в буфер!');">📋 Скопировать</button>
+        <button class="btn btn-emerald" onclick="installSkillDirectly('${id}'); closeAppModal();">⚡ Установить в ~/.claude/skills/</button>
+      </div>
+    </div>
+  `;
+
+  document.getElementById('modal-overlay').style.display = 'flex';
+}
+
+function installSkillDirectly(id) {
+  const s = SKILLS_DATABASE[id];
+  if (!s) return;
+
+  fetch('/api/skills/create', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ id, name: s.name, description: s.desc, content: s.body })
+  })
+  .then(res => res.json())
+  .then(data => {
+    if (data.success) {
+      appendTerminalLog(`[OK] Skill '${s.name}' installed into ~/.claude/skills/${id}/SKILL.md\n`);
+      alert(`Скилл '${s.name}' успешно установлен!`);
+    } else {
+      alert(`Ошибка установки: ${data.error || 'Неизвестная ошибка'}`);
+    }
+  })
+  .catch(err => alert(`Ошибка сети: ${err.message}`));
 }
 
 function openCreateSkillModal() {
@@ -1820,22 +1954,79 @@ function submitCustomSkill() {
 }
 
 // ─── Subagents Studio View ────────────────────────────────────
+const AGENTS_DATABASE = {
+  'agent-architect': {
+    name: 'Lead Architect',
+    model: 'claude-3-opus-latest',
+    modelLabel: 'Claude 3 Opus (Глубокие рассуждения)',
+    desc: 'System architecture, trade-off evaluations, distributed systems, ADR generation on Claude Opus.',
+    instructions: `# Role: Lead System Architect
+You are a principal software architect. You evaluate architectural trade-offs, design distributed systems, define data models, and produce comprehensive Architectural Decision Records (ADRs).`
+  },
+  'agent-security': {
+    name: 'Security Reviewer',
+    model: 'claude-3-opus-latest',
+    modelLabel: 'Claude 3 Opus (Безопасность)',
+    desc: 'OWASP vulnerability scans, injection detection, access control boundaries verification.',
+    instructions: `# Role: Security Reviewer
+You are a senior security researcher and penetration tester. You analyze code for OWASP Top 10 vulnerabilities, verify cryptographic hygiene, and ensure zero-trust access control.`
+  },
+  'agent-codereview': {
+    name: 'Pragmatic Code Reviewer',
+    model: 'claude-3-7-sonnet-latest',
+    modelLabel: 'Claude 3.7 Sonnet (Оптимальный баланс)',
+    desc: 'Catches hidden race conditions, code smells, and ensures architectural hygiene on Sonnet.',
+    instructions: `# Role: Pragmatic Code Reviewer
+You conduct thorough code reviews. You check for edge cases, error handling completeness, race conditions, memory leaks, and adherence to clean code principles.`
+  },
+  'agent-tester': {
+    name: 'Testing Specialist',
+    model: 'claude-3-5-sonnet-latest',
+    modelLabel: 'Claude 3.5 Sonnet (Инженерия тестов)',
+    desc: 'Unit, integration, and Playwright E2E test suites authoring with AAA structure.',
+    instructions: `# Role: QA Automation Engineer
+You write robust, deterministic unit and end-to-end tests using the Arrange-Act-Assert (AAA) pattern. You aim for high coverage on critical business logic.`
+  },
+  'agent-researcher': {
+    name: 'Documentation Researcher',
+    model: 'claude-3-5-sonnet-latest',
+    modelLabel: 'Claude 3.5 Sonnet (Поиск документации)',
+    desc: 'Live Context7 documentation discovery, version compatibility verification.',
+    instructions: `# Role: Technical Researcher
+You discover up-to-date documentation, API schemas, and official library guides via Context7 and search tools to eliminate hallucinations.`
+  },
+  'agent-docs': {
+    name: 'Docs Writer',
+    model: 'claude-3-5-haiku-latest',
+    modelLabel: 'Claude 3.5 Haiku (Сверхбыстрый)',
+    desc: 'High-speed technical documentation, changelog maintenance, and JSDoc specs on Haiku.',
+    instructions: `# Role: Technical Writer
+You write crystal-clear Markdown documentation, JSDoc/OpenAPI specifications, and user-facing changelogs at maximum speed.`
+  },
+  'agent-chaos': {
+    name: 'Chaos Monkey & Edge Hunter',
+    model: 'claude-3-opus-latest',
+    modelLabel: 'Claude 3 Opus (Стресс-тестирование)',
+    desc: 'Stress testing, race condition hunting, and breaking corner-case simulation.',
+    instructions: `# Role: Chaos Engineering Specialist
+You proactively identify unhandled failure states, network timeouts, concurrent mutation conflicts, and extreme input values.`
+  },
+  'agent-copywriter': {
+    name: 'Growth Hacker & Copywriter',
+    model: 'claude-3-5-sonnet-latest',
+    modelLabel: 'Claude 3.5 Sonnet (Копирайтинг & Рост)',
+    desc: 'Viral growth loops, conversion copy, landing page messaging formulas.',
+    instructions: `# Role: Growth Marketer & Conversion Copywriter
+You craft high-converting landing page headlines, technical product value propositions, and onboarding emails using proven copywriting frameworks (AIDA, PAS).`
+  }
+};
+
 function renderAgentsCards() {
   const container = document.getElementById('agents-cards-container');
   const search = (document.getElementById('agents-search-input')?.value || '').toLowerCase();
 
-  const agentsList = [
-    { id: 'agent-architect', name: 'Lead Architect', model: 'claude-opus-5', desc: 'System architecture, trade-off evaluations, distributed systems, ADR generation on Claude Opus.' },
-    { id: 'agent-security', name: 'Security Reviewer', model: 'claude-opus-5', desc: 'OWASP vulnerability scans, injection detection, access control boundaries verification.' },
-    { id: 'agent-codereview', name: 'Pragmatic Code Reviewer', model: 'claude-sonnet-5', desc: 'Catches hidden race conditions, code smells, and ensures architectural hygiene on Sonnet.' },
-    { id: 'agent-tester', name: 'Testing Specialist', model: 'claude-sonnet-5', desc: 'Unit, integration, and Playwright E2E test suites authoring with AAA structure.' },
-    { id: 'agent-researcher', name: 'Documentation Researcher', model: 'claude-sonnet-5', desc: 'Live Context7 documentation discovery, version compatibility verification.' },
-    { id: 'agent-docs', name: 'Docs Writer', model: 'claude-haiku-4-5', desc: 'High-speed technical documentation, changelog maintenance, and JSDoc specs on Haiku.' },
-    { id: 'agent-chaos', name: 'Chaos Monkey & Edge Hunter', model: 'claude-opus-5', desc: 'Stress testing, race condition hunting, and breaking corner-case simulation.' },
-    { id: 'agent-copywriter', name: 'Growth Hacker & Copywriter', model: 'claude-sonnet-5', desc: 'Viral growth loops, conversion copy, landing page messaging formulas.' }
-  ];
-
-  const filtered = agentsList.filter(a => a.name.toLowerCase().includes(search) || a.desc.toLowerCase().includes(search));
+  const list = Object.keys(AGENTS_DATABASE).map(id => ({ id, ...AGENTS_DATABASE[id] }));
+  const filtered = list.filter(a => a.name.toLowerCase().includes(search) || a.desc.toLowerCase().includes(search));
 
   container.innerHTML = filtered.map(a => `
     <div class="card">
@@ -1850,10 +2041,58 @@ function renderAgentsCards() {
       <p class="card__desc">${a.desc}</p>
       <div class="card__footer">
         <button class="btn btn-sm btn-secondary" onclick="editAgentModal('${a.id}')">✏️ Настроить</button>
-        <button class="btn btn-sm btn-emerald" onclick="saveAgentDirectly('${a.id}', '${a.name}', '${a.model}', '${a.desc}')">⚡ Активировать</button>
+        <button class="btn btn-sm btn-emerald" onclick="saveAgentDirectly('${a.id}', '${a.name}', '${a.model}', '${a.desc.replace(/'/g, "\\'")}')">⚡ Активировать</button>
       </div>
     </div>
   `).join('');
+}
+
+function editAgentModal(id) {
+  const a = AGENTS_DATABASE[id] || {
+    name: id,
+    model: 'claude-3-5-sonnet-latest',
+    desc: 'Custom subagent persona',
+    instructions: `# Role: ${id}\n\nYou are a specialized assistant.`
+  };
+
+  const modalBody = document.getElementById('modal-content-body');
+  modalBody.innerHTML = `
+    <h2 style="color:var(--text-pure);font-size:1.3rem;margin-bottom:.4rem">✏️ Настройка Субагента: ${a.name}</h2>
+    <p style="color:var(--text-muted);font-size:.8rem;margin-bottom:1.2rem">Сконфигурируйте системные инструкции и модель Claude.</p>
+    
+    <div class="form-group">
+      <label class="form-label">ID субагента:</label>
+      <input type="text" class="form-input" id="modal-agent-id" value="${id}" readonly style="opacity:0.7">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Имя субагента:</label>
+      <input type="text" class="form-input" id="modal-agent-name" value="${a.name}">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Модель Claude:</label>
+      <select class="form-select" id="modal-agent-model">
+        <option value="claude-3-7-sonnet-latest" ${a.model === 'claude-3-7-sonnet-latest' ? 'selected' : ''}>Claude 3.7 Sonnet (Hybrid Reasoning & Coding — $3/$15 per 1M)</option>
+        <option value="claude-3-5-sonnet-latest" ${a.model === 'claude-3-5-sonnet-latest' ? 'selected' : ''}>Claude 3.5 Sonnet (Flagship Balance — $3/$15 per 1M)</option>
+        <option value="claude-3-5-haiku-latest" ${a.model === 'claude-3-5-haiku-latest' ? 'selected' : ''}>Claude 3.5 Haiku (Fast & Lightweight — $0.80/$4 per 1M)</option>
+        <option value="claude-3-opus-latest" ${a.model === 'claude-3-opus-latest' ? 'selected' : ''}>Claude 3 Opus (Deep Architecture & Security — $15/$75 per 1M)</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Описание назначения (триггер делегации):</label>
+      <input type="text" class="form-input" id="modal-agent-desc" value="${a.desc}">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Системные инструкции (Markdown):</label>
+      <textarea class="form-textarea" id="modal-agent-body" style="min-height:140px">${a.instructions}</textarea>
+    </div>
+    
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-top:1.4rem">
+      <button class="btn btn-secondary" onclick="closeAppModal()">Отмена</button>
+      <button class="btn btn-emerald" onclick="submitCustomAgent()">💾 Сохранить в ~/.claude/agents/</button>
+    </div>
+  `;
+
+  document.getElementById('modal-overlay').style.display = 'flex';
 }
 
 function openCreateAgentModal() {
@@ -1871,11 +2110,12 @@ function openCreateAgentModal() {
       <input type="text" class="form-input" id="modal-agent-name" placeholder="Backend Expert">
     </div>
     <div class="form-group">
-      <label class="form-label">Модель:</label>
+      <label class="form-label">Модель Claude:</label>
       <select class="form-select" id="modal-agent-model">
-        <option value="claude-opus-5">Claude Opus (Глубокие рассуждения & Архитектура)</option>
-        <option value="claude-sonnet-5" selected>Claude Sonnet (Основной баланс скорости и качества)</option>
-        <option value="claude-haiku-4-5">Claude Haiku (Сверхбыстрая генерация & Документация)</option>
+        <option value="claude-3-7-sonnet-latest">Claude 3.7 Sonnet (Hybrid Reasoning & Coding — $3/$15 per 1M)</option>
+        <option value="claude-3-5-sonnet-latest" selected>Claude 3.5 Sonnet (Flagship Balance — $3/$15 per 1M)</option>
+        <option value="claude-3-5-haiku-latest">Claude 3.5 Haiku (Fast & Lightweight — $0.80/$4 per 1M)</option>
+        <option value="claude-3-opus-latest">Claude 3 Opus (Deep Architecture & Security — $15/$75 per 1M)</option>
       </select>
     </div>
     <div class="form-group">
@@ -1912,25 +2152,31 @@ function submitCustomAgent() {
   .then(res => res.json())
   .then(data => {
     if (data.success) {
+      appendTerminalLog(`[OK] Subagent '${name}' (${model}) saved into ~/.claude/agents/${id}.md\n`);
       alert(`Субагент '${name}' сохранен в ~/.claude/agents/${id}.md!`);
       closeAppModal();
+      renderAgentsCards();
     }
   });
 }
 
 function saveAgentDirectly(id, name, model, desc) {
+  const existing = AGENTS_DATABASE[id];
+  const instructions = existing ? existing.instructions : `# ${name}\n\nYou are a specialized assistant running on ${model}.\n\n## Guidelines\n* Provide concrete, actionable results.\n* Adhere to strict security boundaries.`;
+
   fetch('/api/agents/save', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
       id, name, model, description: desc,
-      instructions: `# ${name}\n\nYou are a specialized assistant running on ${model}.\n\n## Guidelines\n* Provide concrete, actionable results.\n* Adhere to strict security boundaries.`
+      instructions: instructions
     })
   })
   .then(res => res.json())
   .then(data => {
     if (data.success) {
-      alert(`Субагент '${name}' активирован в ~/.claude/agents/!`);
+      appendTerminalLog(`[OK] Subagent '${name}' active in ~/.claude/agents/${id}.md\n`);
+      alert(`Субагент '${name}' успешно активирован в ~/.claude/agents/!`);
     }
   });
 }

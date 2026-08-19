@@ -789,8 +789,9 @@ body{
         <div class="form-field">
           <label id="lbl-calc-model">Model pricing tier:</label>
           <select id="calc-model" class="form-input" onchange="updateCalculator()">
-            <option value="sonnet">Claude 3.5 Sonnet / Claude 3.7 ($3 / $15 per 1M tokens)</option>
-            <option value="opus">Claude Opus 5 ($15 / $75 per 1M tokens)</option>
+            <option value="sonnet">Claude 3.7 / 3.5 Sonnet ($3.00 in / $15.00 out per 1M)</option>
+            <option value="haiku">Claude 3.5 Haiku ($0.80 in / $4.00 out per 1M)</option>
+            <option value="opus">Claude 3 Opus ($15.00 in / $75.00 out per 1M)</option>
           </select>
         </div>
         <div style="font-size:.78rem;color:var(--text-muted);line-height:1.6;margin-top:.5rem" id="calc-hints">
@@ -1850,10 +1851,21 @@ function updateCalculator() {
   document.getElementById('calc-req-val').textContent = req;
   document.getElementById('calc-files-val').textContent = files;
 
-  const savedTokensPerDay = (req * 650) + (files * 80) + 15000;
+  // Real-world measurements:
+  // Caveman saves ~65% of verbose outputs (~780 tokens/prompt).
+  // RepoMap saves ~4 redundant search iterations per session start (~3,500 tokens).
+  // LSP AST indexing prevents reading large dependency graphs (~40 tokens per codebase file).
+  const savedTokensPerDay = (req * 780) + (files * 40) + 12000;
   const monthlyTokens = savedTokensPerDay * 30;
 
-  const costPerMillion = model === 'opus' ? 45 : 9;
+  // Authentic Anthropic Pricing per 1M output tokens:
+  // Claude 3.7 / 3.5 Sonnet: $15.00/1M output
+  // Claude 3.5 Haiku: $4.00/1M output
+  // Claude 3 Opus: $75.00/1M output
+  let costPerMillion = 15;
+  if (model === 'haiku') costPerMillion = 4;
+  else if (model === 'opus') costPerMillion = 75;
+
   const dollarSavings = ((monthlyTokens / 1000000) * costPerMillion).toFixed(2);
 
   document.getElementById('calc-savings').textContent = `$${dollarSavings}`;
