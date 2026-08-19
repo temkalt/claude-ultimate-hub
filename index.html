@@ -620,6 +620,7 @@ body{
   <div class="tabs-nav-wrap">
     <div class="tabs-nav">
       <button class="tab-btn active" data-tab="profiles"><span id="tab-lbl-profiles">Profiles</span> <span class="tab-btn__count">13</span></button>
+      <button class="tab-btn" data-tab="assembler"><span id="tab-lbl-assembler">Custom Build</span> <span class="tab-btn__count" id="tab-assembler-count">34</span></button>
       <button class="tab-btn" data-tab="components"><span id="tab-lbl-catalog">1,000+ Catalog</span> <span class="tab-btn__count" id="tab-comp-count">1000+</span></button>
       <button class="tab-btn" data-tab="agency"><span id="tab-lbl-agency">Agency Studio</span> <span class="tab-btn__count">50+</span></button>
       <button class="tab-btn" data-tab="calculator"><span id="tab-lbl-calc">Token ROI</span> <span class="tab-btn__count">-$65%</span></button>
@@ -640,6 +641,93 @@ body{
     </div>
 
     <div class="profiles-grid" id="profiles-grid"></div>
+  </div>
+
+  <!-- Panel: Custom Stack Assembler -->
+  <div class="tab-panel" id="panel-assembler">
+    <div class="hero-box">
+      <h2 id="assembler-hero-title">🧩 Visual Custom Stack Assembler</h2>
+      <p id="assembler-hero-desc">Create your own tailored Claude Code stack from 1,000+ verified components. Save custom presets in your browser, monitor live token budget, and generate ready-to-run installation scripts.</p>
+      
+      <!-- Build Toolbar -->
+      <div style="background:var(--bg-main);border:1px solid var(--border-subtle);border-radius:var(--radius-xs);padding:1.2rem;margin-top:1.2rem">
+        <div style="display:flex;flex-wrap:wrap;gap:.8rem;align-items:center;margin-bottom:1rem">
+          <input type="text" id="custom-build-name" class="form-input" style="flex:1;min-width:240px;background:var(--bg-card)" placeholder="Enter custom build name (e.g., My SaaS Stack)...">
+          <button class="btn btn-primary" onclick="saveCustomBuildPreset()">💾 <span id="lbl-btn-save-build">Save Build</span></button>
+          <button class="btn btn-secondary" onclick="copyCustomBuildCommand()">📋 <span id="lbl-btn-copy-build">Copy Command</span></button>
+          <button class="btn btn-secondary" onclick="downloadCustomBuildScript()">📥 <span id="lbl-btn-dl-build">Export .ps1</span></button>
+          <button class="btn btn-gold" onclick="openLaunchStudioModal()">⚡ <span id="lbl-btn-launch-build">Launch Studio</span></button>
+        </div>
+
+        <!-- Quick Preset Buttons -->
+        <div style="display:flex;flex-wrap:wrap;gap:.4rem;align-items:center">
+          <span style="font-size:.75rem;color:var(--text-faint);margin-right:.4rem" id="lbl-quick-presets">Quick Templates:</span>
+          <button class="pill active" onclick="applyQuickPreset('Master')">🌟 Master (34)</button>
+          <button class="pill" onclick="applyQuickPreset('Web')">🌐 Full-Stack Web (21)</button>
+          <button class="pill" onclick="applyQuickPreset('Backend')">⚙️ Backend & APIs (21)</button>
+          <button class="pill" onclick="applyQuickPreset('Security')">🔒 Security (14)</button>
+          <button class="pill" onclick="applyQuickPreset('Russia')">🇷🇺 Russia / CIS (19)</button>
+          <button class="pill" onclick="clearCustomSelection()" style="color:var(--accent-rose)">🧹 <span id="lbl-btn-clear-build">Clear All</span></button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Saved Builds Bar -->
+    <div id="saved-builds-section" style="background:var(--bg-card);border:1px solid var(--border-subtle);border-radius:var(--radius-xs);padding:1rem 1.2rem;margin-bottom:1.4rem;display:none">
+      <div style="font-size:.8rem;font-weight:700;color:var(--text-pure);margin-bottom:.6rem;display:flex;justify-content:space-between;align-items:center">
+        <span>💾 <span id="lbl-saved-builds-title">My Saved Builds:</span></span>
+        <span style="font-size:.72rem;color:var(--text-faint)" id="saved-builds-count">0 presets</span>
+      </div>
+      <div id="saved-builds-list" style="display:flex;flex-wrap:wrap;gap:.5rem"></div>
+    </div>
+
+    <!-- Live Telemetry & Stats -->
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1rem;margin-bottom:1.4rem">
+      <div class="builder-card" style="padding:1.2rem">
+        <div style="font-size:.8rem;font-weight:700;color:var(--text-pure);margin-bottom:.8rem;display:flex;justify-content:space-between">
+          <span id="lbl-token-budget-title">Token Budget & Load:</span>
+          <span id="assembler-budget-status" style="color:var(--accent-emerald)">Optimal (~1.2k tokens)</span>
+        </div>
+        <div class="budget-meter" style="margin-bottom:.8rem">
+          <div class="budget-meter__bar" id="assembler-budget-bar" style="width:56%;background:var(--accent-emerald)"></div>
+        </div>
+        <div style="font-size:.74rem;color:var(--text-muted);line-height:1.5" id="lbl-budget-desc">
+          Green zone (&lt;38 tools): Instant responses and minimal token overhead (~1.2k tokens).
+        </div>
+      </div>
+
+      <div class="builder-card" style="padding:1.2rem">
+        <div style="font-size:.8rem;font-weight:700;color:var(--text-pure);margin-bottom:.8rem" id="lbl-stack-summary-title">
+          Selected Components Composition:
+        </div>
+        <div style="display:flex;flex-wrap:wrap;gap:.4rem" id="assembler-chips-summary">
+          <span class="chip" style="color:var(--accent-cyan)">🔌 Plugins: <b id="cnt-plugs">5</b></span>
+          <span class="chip" style="color:var(--accent-gold)">🌐 MCP: <b id="cnt-mcps">10</b></span>
+          <span class="chip" style="color:var(--accent-emerald)">🎯 Skills: <b id="cnt-skills">8</b></span>
+          <span class="chip" style="color:var(--accent-silver)">⚡ LSP: <b id="cnt-lsps">2</b></span>
+          <span class="chip" style="color:var(--accent-amber)">🤖 Agents: <b id="cnt-agents">5</b></span>
+          <span class="chip" style="color:var(--accent-rose)">🛡️ Hooks: <b id="cnt-hooks">4</b></span>
+          <span class="chip" style="font-weight:700;color:var(--text-pure)">Total: <b id="cnt-total">34</b></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Filter & Matrix -->
+    <div class="filter-bar">
+      <input type="text" id="assembler-search-box" class="search-input" placeholder="🔍 Search components to toggle in your custom stack..." oninput="filterAssemblerComponents()">
+      
+      <div class="filter-pills">
+        <span class="pill active" data-afilter="all" onclick="setAssemblerCategoryFilter('all')" id="apill-all">All</span>
+        <span class="pill" data-afilter="plugin" onclick="setAssemblerCategoryFilter('plugin')" id="apill-plugin">Plugins</span>
+        <span class="pill" data-afilter="mcp" onclick="setAssemblerCategoryFilter('mcp')" id="apill-mcp">MCP Servers</span>
+        <span class="pill" data-afilter="skill" onclick="setAssemblerCategoryFilter('skill')" id="apill-skill">Skills</span>
+        <span class="pill" data-afilter="lsp" onclick="setAssemblerCategoryFilter('lsp')" id="apill-lsp">LSP Servers</span>
+        <span class="pill" data-afilter="agent" onclick="setAssemblerCategoryFilter('agent')" id="apill-agent">Subagents</span>
+        <span class="pill" data-afilter="hook" onclick="setAssemblerCategoryFilter('hook')" id="apill-hook">Hooks</span>
+      </div>
+    </div>
+
+    <div class="components-grid" id="assembler-grid"></div>
   </div>
 
   <!-- Panel: Components -->
@@ -1313,6 +1401,7 @@ function setLang(lang) {
     document.getElementById('lbl-stat-agent').textContent = 'Субагенты';
     document.getElementById('lbl-stat-hook').textContent = 'Хуки Защиты';
     document.getElementById('tab-lbl-profiles').textContent = 'Профили';
+    document.getElementById('tab-lbl-assembler').textContent = 'Конструктор Сборки';
     document.getElementById('tab-lbl-catalog').textContent = 'Каталог 1000+';
     document.getElementById('tab-lbl-agency').textContent = 'Agency Studio';
     document.getElementById('tab-lbl-calc').textContent = 'Калькулятор ROI';
@@ -1333,6 +1422,26 @@ function setLang(lang) {
     document.getElementById('pill-hook').textContent = 'Хуки (70+)';
     document.getElementById('prof-hero-title').innerHTML = '🌟 Проработанные инженерные профили — ноль перегрузки, мгновенный отклик';
     document.getElementById('prof-hero-desc').innerHTML = 'Каждый профиль ювелирно сбалансирован: от флагмана Master All-in-One (34 ключевых инструмента) до легкого Core (11 инструментов) и специализированных Backend/Web стеков. Выбирайте готовый сетап в 1 клик.';
+    
+    // Assembler Translations
+    if (document.getElementById('assembler-hero-title')) document.getElementById('assembler-hero-title').textContent = '🧩 Визуальный Конструктор Кастомной Сборки';
+    if (document.getElementById('assembler-hero-desc')) document.getElementById('assembler-hero-desc').textContent = 'Соберите свой собственный идеальный стек из 1,000+ проверенных компонентов. Сохраняйте сборки в браузере, рассчитывайте токен-бюджет и получайте готовую команду установки.';
+    if (document.getElementById('lbl-btn-save-build')) document.getElementById('lbl-btn-save-build').textContent = 'Сохранить сборку';
+    if (document.getElementById('lbl-btn-copy-build')) document.getElementById('lbl-btn-copy-build').textContent = 'Скопировать команду';
+    if (document.getElementById('lbl-btn-dl-build')) document.getElementById('lbl-btn-dl-build').textContent = 'Экспорт .ps1';
+    if (document.getElementById('lbl-btn-launch-build')) document.getElementById('lbl-btn-launch-build').textContent = 'Запустить студию';
+    if (document.getElementById('lbl-btn-clear-build')) document.getElementById('lbl-btn-clear-build').textContent = 'Очистить';
+    if (document.getElementById('lbl-quick-presets')) document.getElementById('lbl-quick-presets').textContent = 'Быстрые шаблоны:';
+    if (document.getElementById('lbl-saved-builds-title')) document.getElementById('lbl-saved-builds-title').textContent = 'Мои сохраненные сборки:';
+    if (document.getElementById('lbl-token-budget-title')) document.getElementById('lbl-token-budget-title').textContent = 'Бюджет токенов и нагрузка:';
+    if (document.getElementById('lbl-stack-summary-title')) document.getElementById('lbl-stack-summary-title').textContent = 'Состав выбранных компонентов:';
+    if (document.getElementById('apill-all')) document.getElementById('apill-all').textContent = 'Все';
+    if (document.getElementById('apill-plugin')) document.getElementById('apill-plugin').textContent = 'Плагины';
+    if (document.getElementById('apill-mcp')) document.getElementById('apill-mcp').textContent = 'MCP Серверы';
+    if (document.getElementById('apill-skill')) document.getElementById('apill-skill').textContent = 'Скиллы';
+    if (document.getElementById('apill-lsp')) document.getElementById('apill-lsp').textContent = 'LSP Серверы';
+    if (document.getElementById('apill-agent')) document.getElementById('apill-agent').textContent = 'Субагенты';
+    if (document.getElementById('apill-hook')) document.getElementById('apill-hook').textContent = 'Хуки';
   } else {
     document.getElementById('txt-badge').textContent = 'Claude Code 2.1.234+ · 1,000+ Global Ecosystem Hub';
     document.getElementById('txt-title').textContent = 'Ultimate Hub';
@@ -1345,6 +1454,7 @@ function setLang(lang) {
     document.getElementById('lbl-stat-agent').textContent = 'Subagents';
     document.getElementById('lbl-stat-hook').textContent = 'Security Hooks';
     document.getElementById('tab-lbl-profiles').textContent = 'Profiles';
+    document.getElementById('tab-lbl-assembler').textContent = 'Custom Build';
     document.getElementById('tab-lbl-catalog').textContent = '1,000+ Catalog';
     document.getElementById('tab-lbl-agency').textContent = 'Agency Studio';
     document.getElementById('tab-lbl-calc').textContent = 'Token ROI';
@@ -1365,9 +1475,30 @@ function setLang(lang) {
     document.getElementById('pill-hook').textContent = 'Hooks (70+)';
     document.getElementById('prof-hero-title').innerHTML = '🌟 Curated Engineering Profiles — Zero Bloat, Instant Speed';
     document.getElementById('prof-hero-desc').innerHTML = 'Each profile is surgically balanced for its specific mission: from the flagship Master All-in-One (34 core tools) to lightweight 11-tool Core and high-speed Backend/Web stacks. No useless bloat, optimal token budgets.';
+
+    // Assembler Translations (EN)
+    if (document.getElementById('assembler-hero-title')) document.getElementById('assembler-hero-title').textContent = '🧩 Visual Custom Stack Assembler';
+    if (document.getElementById('assembler-hero-desc')) document.getElementById('assembler-hero-desc').textContent = 'Create your own tailored Claude Code stack from 1,000+ verified components. Save custom presets in your browser, monitor live token budget, and generate ready-to-run installation scripts.';
+    if (document.getElementById('lbl-btn-save-build')) document.getElementById('lbl-btn-save-build').textContent = 'Save Build';
+    if (document.getElementById('lbl-btn-copy-build')) document.getElementById('lbl-btn-copy-build').textContent = 'Copy Command';
+    if (document.getElementById('lbl-btn-dl-build')) document.getElementById('lbl-btn-dl-build').textContent = 'Export .ps1';
+    if (document.getElementById('lbl-btn-launch-build')) document.getElementById('lbl-btn-launch-build').textContent = 'Launch Studio';
+    if (document.getElementById('lbl-btn-clear-build')) document.getElementById('lbl-btn-clear-build').textContent = 'Clear All';
+    if (document.getElementById('lbl-quick-presets')) document.getElementById('lbl-quick-presets').textContent = 'Quick Templates:';
+    if (document.getElementById('lbl-saved-builds-title')) document.getElementById('lbl-saved-builds-title').textContent = 'My Saved Builds:';
+    if (document.getElementById('lbl-token-budget-title')) document.getElementById('lbl-token-budget-title').textContent = 'Token Budget & Load:';
+    if (document.getElementById('lbl-stack-summary-title')) document.getElementById('lbl-stack-summary-title').textContent = 'Selected Components Composition:';
+    if (document.getElementById('apill-all')) document.getElementById('apill-all').textContent = 'All';
+    if (document.getElementById('apill-plugin')) document.getElementById('apill-plugin').textContent = 'Plugins';
+    if (document.getElementById('apill-mcp')) document.getElementById('apill-mcp').textContent = 'MCP Servers';
+    if (document.getElementById('apill-skill')) document.getElementById('apill-skill').textContent = 'Skills';
+    if (document.getElementById('apill-lsp')) document.getElementById('apill-lsp').textContent = 'LSP Servers';
+    if (document.getElementById('apill-agent')) document.getElementById('apill-agent').textContent = 'Subagents';
+    if (document.getElementById('apill-hook')) document.getElementById('apill-hook').textContent = 'Hooks';
   }
 
   renderProfiles();
+  renderAssembler();
   renderComponents();
   renderAgency();
   renderPrompts();
@@ -2120,8 +2251,284 @@ function openLaunchStudioModal() {
     });
 }
 
+// ─── Custom Stack Assembler Logic ──────────────────────────────
+let currentAssemblerCategory = 'all';
+let assemblerSearchQuery = '';
+
+function renderAssembler() {
+  const container = document.getElementById('assembler-grid');
+  if (!container) return;
+
+  const catNames = {plugin:'Plugin',mcp:'MCP Server',skill:'Skill',agent:'Subagent',hook:'Hook',lsp:'LSP Server'};
+  const authNames = {free: currentLang === 'ru' ? 'Бесплатно' : 'Free', key: currentLang === 'ru' ? 'Нужен Ключ' : 'API Key'};
+  const authClasses = {free:'auth-free',key:'auth-key'};
+
+  const filtered = COMPONENTS.filter(c => {
+    if (currentAssemblerCategory !== 'all' && c.cat !== currentAssemblerCategory) return false;
+    if (assemblerSearchQuery) {
+      const q = assemblerSearchQuery.toLowerCase();
+      const match = c.name.toLowerCase().includes(q) || (c.desc_en && c.desc_en.toLowerCase().includes(q)) || (c.desc_ru && c.desc_ru.toLowerCase().includes(q)) || c.id.toLowerCase().includes(q);
+      if (!match) return false;
+    }
+    return true;
+  });
+
+  if (filtered.length === 0) {
+    container.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:3rem;color:var(--text-faint)">${currentLang === 'ru' ? 'Компоненты по данному фильтру не найдены.' : 'No components found matching current filter.'}</div>`;
+  } else {
+    container.innerHTML = filtered.map(c => {
+      const isSel = selectedComponents.has(c.id);
+      const desc = currentLang === 'ru' ? (c.desc_ru || c.desc_en) : (c.desc_en || c.desc_ru);
+
+      return `
+        <div class="comp-card ${isSel ? 'selected' : ''}" onclick="toggleAssemblerComponent('${c.id}')">
+          <div class="comp-card__top">
+            <div class="check-box">${isSel ? '✓' : ''}</div>
+            <div class="comp-card__title-wrap">
+              <div class="comp-card__title">
+                ${c.name}
+                <span class="badge-cat">${catNames[c.cat] || c.cat}</span>
+                <span class="badge-auth ${authClasses[c.auth] || 'auth-free'}">${authNames[c.auth] || 'Free'}</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="comp-card__desc">${desc}</div>
+
+          <div class="comp-card__footer">
+            <span style="font-size:.75rem;color:var(--text-faint);font-family:'JetBrains Mono',monospace">${c.id}</span>
+            <button class="btn btn-sm ${isSel ? 'btn-emerald' : 'btn-secondary'}" onclick="event.stopPropagation();toggleAssemblerComponent('${c.id}')" style="padding:.2rem .6rem">
+              ${isSel ? (currentLang === 'ru' ? '✓ Выбран' : '✓ Added') : (currentLang === 'ru' ? '+ Добавить' : '+ Add')}
+            </button>
+          </div>
+        </div>
+      `;
+    }).join('');
+  }
+
+  updateAssemblerTelemetry();
+  renderSavedBuilds();
+}
+
+function toggleAssemblerComponent(id) {
+  if (selectedComponents.has(id)) {
+    selectedComponents.delete(id);
+  } else {
+    selectedComponents.add(id);
+  }
+  renderAssembler();
+  renderComponents();
+  updateStats();
+  updateCommand();
+}
+
+function setAssemblerCategoryFilter(cat) {
+  currentAssemblerCategory = cat;
+  document.querySelectorAll('#panel-assembler .filter-pills .pill').forEach(p => {
+    p.classList.toggle('active', p.dataset.afilter === cat);
+  });
+  renderAssembler();
+}
+
+function filterAssemblerComponents() {
+  assemblerSearchQuery = document.getElementById('assembler-search-box').value;
+  renderAssembler();
+}
+
+function updateAssemblerTelemetry() {
+  const sel = [...selectedComponents];
+  const total = sel.length;
+
+  const plugs = sel.filter(id => id.includes('plugin') || id === 'frontend-design' || id === 'superpowers' || id === 'context7' || id === 'agentmemory').length;
+  const mcps = sel.filter(id => id.startsWith('mcp-')).length;
+  const skills = sel.filter(id => id.startsWith('skill-') || id === 'agent-security').length;
+  const lsps = sel.filter(id => id.startsWith('lsp-')).length;
+  const agents = sel.filter(id => id.startsWith('agent-') && id !== 'agent-security').length;
+  const hooks = sel.filter(id => id.startsWith('hook-')).length;
+
+  if (document.getElementById('cnt-plugs')) document.getElementById('cnt-plugs').textContent = plugs;
+  if (document.getElementById('cnt-mcps')) document.getElementById('cnt-mcps').textContent = mcps;
+  if (document.getElementById('cnt-skills')) document.getElementById('cnt-skills').textContent = skills;
+  if (document.getElementById('cnt-lsps')) document.getElementById('cnt-lsps').textContent = lsps;
+  if (document.getElementById('cnt-agents')) document.getElementById('cnt-agents').textContent = agents;
+  if (document.getElementById('cnt-hooks')) document.getElementById('cnt-hooks').textContent = hooks;
+  if (document.getElementById('cnt-total')) document.getElementById('cnt-total').textContent = total;
+  if (document.getElementById('tab-assembler-count')) document.getElementById('tab-assembler-count').textContent = total;
+
+  const bar = document.getElementById('assembler-budget-bar');
+  const status = document.getElementById('assembler-budget-status');
+  if (bar && status) {
+    const percent = Math.min(100, Math.round((total / 60) * 100));
+    bar.style.width = percent + '%';
+
+    if (total <= 38) {
+      bar.style.background = 'var(--accent-emerald)';
+      status.style.color = 'var(--accent-emerald)';
+      status.textContent = currentLang === 'ru' ? `Оптимально (${total} инстр. · ~1.2k токенов)` : `Optimal (${total} tools · ~1.2k tokens)`;
+    } else if (total <= 60) {
+      bar.style.background = 'var(--accent-gold)';
+      status.style.color = 'var(--accent-gold)';
+      status.textContent = currentLang === 'ru' ? `Умеренная нагрузка (${total} инстр. · ~4k токенов)` : `Moderate (${total} tools · ~4k tokens)`;
+    } else {
+      bar.style.background = 'var(--accent-rose)';
+      status.style.color = 'var(--accent-rose)';
+      status.textContent = currentLang === 'ru' ? `Тяжелый стек (${total} инстр. · рекомендуются субагенты)` : `Heavy stack (${total} tools · subagents recommended)`;
+    }
+  }
+}
+
+function applyQuickPreset(pId) {
+  selectedProfile = pId;
+  selectedComponents = new Set(getComponentsForProfile(pId));
+  const nameInput = document.getElementById('custom-build-name');
+  if (nameInput) nameInput.value = `${pId} Custom Stack`;
+  renderAssembler();
+  renderProfiles();
+  renderComponents();
+  updateStats();
+  updateCommand();
+}
+
+function clearCustomSelection() {
+  selectedComponents.clear();
+  selectedProfile = 'Custom';
+  renderAssembler();
+  renderProfiles();
+  renderComponents();
+  updateStats();
+  updateCommand();
+}
+
+function saveCustomBuildPreset() {
+  const nameInput = document.getElementById('custom-build-name');
+  const name = (nameInput && nameInput.value.trim()) || `Custom Build ${new Date().toLocaleDateString()}`;
+  const comps = [...selectedComponents];
+
+  if (comps.length === 0) {
+    alert(currentLang === 'ru' ? '⚠️ Выберите хотя бы один компонент перед сохранением!' : '⚠️ Select at least one component before saving!');
+    return;
+  }
+
+  let saved = {};
+  try {
+    saved = JSON.parse(localStorage.getItem('claude_custom_builds') || '{}');
+  } catch (e) {}
+
+  saved[name] = {
+    name: name,
+    date: new Date().toISOString(),
+    components: comps
+  };
+
+  localStorage.setItem('claude_custom_builds', JSON.stringify(saved));
+  renderSavedBuilds();
+  alert(currentLang === 'ru' ? `✅ Сборка "${name}" успешно сохранена в браузере!` : `✅ Custom build "${name}" saved to browser storage!`);
+}
+
+function loadCustomBuildPreset(name) {
+  let saved = {};
+  try {
+    saved = JSON.parse(localStorage.getItem('claude_custom_builds') || '{}');
+  } catch (e) {}
+
+  const build = saved[name];
+  if (!build || !build.components) return;
+
+  selectedComponents = new Set(build.components);
+  selectedProfile = 'Custom';
+  const nameInput = document.getElementById('custom-build-name');
+  if (nameInput) nameInput.value = name;
+
+  renderAssembler();
+  renderProfiles();
+  renderComponents();
+  updateStats();
+  updateCommand();
+}
+
+function deleteCustomBuildPreset(name) {
+  if (!confirm(currentLang === 'ru' ? `Удалить сохраненную сборку "${name}"?` : `Delete saved build "${name}"?`)) return;
+
+  let saved = {};
+  try {
+    saved = JSON.parse(localStorage.getItem('claude_custom_builds') || '{}');
+  } catch (e) {}
+
+  delete saved[name];
+  localStorage.setItem('claude_custom_builds', JSON.stringify(saved));
+  renderSavedBuilds();
+}
+
+function renderSavedBuilds() {
+  const section = document.getElementById('saved-builds-section');
+  const list = document.getElementById('saved-builds-list');
+  const countEl = document.getElementById('saved-builds-count');
+  if (!section || !list) return;
+
+  let saved = {};
+  try {
+    saved = JSON.parse(localStorage.getItem('claude_custom_builds') || '{}');
+  } catch (e) {}
+
+  const names = Object.keys(saved);
+  if (names.length === 0) {
+    section.style.display = 'none';
+    return;
+  }
+
+  section.style.display = 'block';
+  if (countEl) countEl.textContent = `${names.length} ${currentLang === 'ru' ? 'сборок' : 'saved'}`;
+
+  list.innerHTML = names.map(n => {
+    const b = saved[n];
+    return `
+      <div style="background:var(--bg-main);border:1px solid var(--border-subtle);border-radius:6px;padding:.4rem .8rem;display:flex;align-items:center;gap:.6rem">
+        <span style="font-weight:700;color:var(--text-pure);font-size:.8rem;cursor:pointer" onclick="loadCustomBuildPreset('${n}')">📁 ${n} (${b.components.length})</span>
+        <button class="btn btn-sm btn-emerald" style="padding:.15rem .45rem;font-size:.68rem" onclick="loadCustomBuildPreset('${n}')">${currentLang === 'ru' ? 'Загрузить' : 'Load'}</button>
+        <button class="btn btn-sm btn-secondary" style="padding:.15rem .45rem;font-size:.68rem;color:var(--accent-rose)" onclick="deleteCustomBuildPreset('${n}')">✕</button>
+      </div>
+    `;
+  }).join('');
+}
+
+function copyCustomBuildCommand() {
+  const comps = [...selectedComponents];
+  const cmd = `.\\setup-claude-code-ultimate.ps1 -Profile Custom -Components "${comps.join(',')}"`;
+  navigator.clipboard.writeText(cmd).then(() => {
+    alert(currentLang === 'ru' ? `✅ Команда установки кастомной сборки (${comps.length} компонентов) скопирована в буфер!` : `✅ Custom build installation command (${comps.length} tools) copied!`);
+  });
+}
+
+function downloadCustomBuildScript() {
+  const comps = [...selectedComponents];
+  const name = document.getElementById('custom-build-name').value || 'my-custom-stack';
+  
+  const content = `# ==============================================================================
+# Claude Code Custom Stack Setup Script: ${name}
+# Generated by Claude Code Ultimate Hub
+# Components: ${comps.length} tools
+# ==============================================================================
+
+powershell -NoProfile -ExecutionPolicy Bypass -Command {
+    Invoke-RestMethod -Uri "https://raw.githubusercontent.com/temkalt/claude-ultimate-hub/main/setup-claude-code-ultimate.ps1" -OutFile "$env:TEMP/setup.ps1"
+    & "$env:TEMP/setup.ps1" -Profile Custom -Components "${comps.join(',')}"
+}
+`;
+
+  const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `setup-${name.toLowerCase().replace(/[^a-z0-9]/g, '-')}.ps1`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
 // ─── Init ──────────────────────────────────────────────────────
 selectProfile('Master');
+renderAssembler();
 renderAgency();
 renderPrompts();
 renderRepos();

@@ -511,12 +511,21 @@ html,body{height:100%;font-family:'Plus Jakarta Sans',system-ui,sans-serif;backg
             </div>
 
             <div style="margin-top:1.2rem;display:flex;flex-direction:column;gap:.5rem">
+              <input type="text" id="app-custom-build-name" class="form-input" placeholder="Имя сборки (напр. My SaaS)..." style="padding:.35rem .6rem;font-size:.78rem;background:var(--bg-main)">
+              <button class="btn btn-primary btn-sm" style="width:100%;justify-content:center" onclick="saveAppCustomBuildPreset()">
+                💾 Сохранить в "Мои Сборки"
+              </button>
               <button class="btn btn-emerald btn-sm" style="width:100%;justify-content:center" onclick="executeCustomComponentsDirectly()">
-                ⚡ Применить Сборку
+                ⚡ Применить Сборку Локально
               </button>
               <button class="btn btn-secondary btn-sm" style="width:100%;justify-content:center" onclick="downloadCustomScript()">
                 📥 Экспорт setup.ps1
               </button>
+            </div>
+
+            <div id="app-saved-builds-box" style="margin-top:1rem;border-top:1px solid var(--border-subtle);padding-top:.8rem;display:none">
+              <div style="font-size:.74rem;font-weight:700;color:var(--text-pure);margin-bottom:.5rem">📁 Сохраненные сборки:</div>
+              <div id="app-saved-builds-list" style="display:flex;flex-direction:column;gap:.35rem"></div>
             </div>
           </div>
         </div>
@@ -1257,6 +1266,99 @@ function clearAllComponents() {
   renderAssembler();
   updateSummaryStats();
   updateCommandLine();
+}
+
+function saveAppCustomBuildPreset() {
+  const nameInput = document.getElementById('app-custom-build-name');
+  const name = (nameInput && nameInput.value.trim()) || `Custom Build ${new Date().toLocaleDateString()}`;
+  const comps = [...selectedComps];
+
+  if (comps.length === 0) {
+    alert(currentAppLang === 'ru' ? '⚠️ Выберите хотя бы один компонент!' : '⚠️ Select at least one component!');
+    return;
+  }
+
+  let saved = {};
+  try {
+    saved = JSON.parse(localStorage.getItem('claude_app_custom_builds') || '{}');
+  } catch (e) {}
+
+  saved[name] = {
+    name: name,
+    date: new Date().toISOString(),
+    components: comps
+  };
+
+  localStorage.setItem('claude_app_custom_builds', JSON.stringify(saved));
+  renderAppSavedBuilds();
+  appendTerminalLog(`[OK] Saved custom build "${name}" with ${comps.length} components.\n`);
+  alert(currentAppLang === 'ru' ? `✅ Сборка "${name}" успешно сохранена!` : `✅ Custom build "${name}" saved!`);
+}
+
+function loadAppCustomBuildPreset(name) {
+  let saved = {};
+  try {
+    saved = JSON.parse(localStorage.getItem('claude_app_custom_builds') || '{}');
+  } catch (e) {}
+
+  const build = saved[name];
+  if (!build || !build.components) return;
+
+  selectedComps = new Set(build.components);
+  selectedProf = 'Custom';
+  const nameInput = document.getElementById('app-custom-build-name');
+  if (nameInput) nameInput.value = name;
+  document.getElementById('top-profile-badge').innerText = `${name} (${selectedComps.size} инстр.)`;
+
+  renderAssembler();
+  renderProfiles();
+  updateSummaryStats();
+  updateCommandLine();
+  appendTerminalLog(`[>>] Loaded custom build "${name}" (${build.components.length} tools).\n`);
+}
+
+function deleteAppCustomBuildPreset(name) {
+  if (!confirm(currentAppLang === 'ru' ? `Удалить сборку "${name}"?` : `Delete build "${name}"?`)) return;
+
+  let saved = {};
+  try {
+    saved = JSON.parse(localStorage.getItem('claude_app_custom_builds') || '{}');
+  } catch (e) {}
+
+  delete saved[name];
+  localStorage.setItem('claude_app_custom_builds', JSON.stringify(saved));
+  renderAppSavedBuilds();
+}
+
+function renderAppSavedBuilds() {
+  const box = document.getElementById('app-saved-builds-box');
+  const list = document.getElementById('app-saved-builds-list');
+  if (!box || !list) return;
+
+  let saved = {};
+  try {
+    saved = JSON.parse(localStorage.getItem('claude_app_custom_builds') || '{}');
+  } catch (e) {}
+
+  const names = Object.keys(saved);
+  if (names.length === 0) {
+    box.style.display = 'none';
+    return;
+  }
+
+  box.style.display = 'block';
+  list.innerHTML = names.map(n => {
+    const b = saved[n];
+    return `
+      <div style="display:flex;justify-content:space-between;align-items:center;background:var(--bg-main);padding:.35rem .6rem;border-radius:4px;border:1px solid var(--border-subtle);font-size:.74rem">
+        <span style="font-weight:600;color:var(--text-pure);cursor:pointer;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" onclick="loadAppCustomBuildPreset('${n}')">📁 ${n} (${b.components.length})</span>
+        <div style="display:flex;gap:.3rem">
+          <button class="btn btn-sm btn-emerald" style="padding:.1rem .35rem;font-size:.65rem" onclick="loadAppCustomBuildPreset('${n}')">Load</button>
+          <button class="btn btn-sm btn-secondary" style="padding:.1rem .35rem;font-size:.65rem;color:var(--accent-rose)" onclick="deleteAppCustomBuildPreset('${n}')">✕</button>
+        </div>
+      </div>
+    `;
+  }).join('');
 }
 
 function updateSummaryStats() {
