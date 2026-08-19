@@ -58,9 +58,9 @@ $ProgressPreference = 'SilentlyContinue'
 
 try { [Console]::OutputEncoding = [System.Text.Encoding]::UTF8; $OutputEncoding = [System.Text.Encoding]::UTF8 } catch {}
 
-$script:Version = '1.5.0'
-$script:ResearchDate = '2026-08-18'
-$script:MinClaudeVersion = '2.1.228'
+$script:Version = '3.0.0'
+$script:ResearchDate = '2026-08-19'
+$script:MinClaudeVersion = '2.1.235'
 $script:StartTime = Get-Date
 
 $script:ClaudeHome = Join-Path $env:USERPROFILE '.claude'
