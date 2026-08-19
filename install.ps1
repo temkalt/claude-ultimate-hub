@@ -69,25 +69,38 @@ switch ($choice.Trim().ToUpper()) {
     '0' {
         Write-Host "`n[>>] Launching Claude Code Control Center Studio..." -ForegroundColor Cyan
         
-        $serverJs = Join-Path $PSScriptRoot "server.js"
-        if (-not (Test-Path $serverJs)) {
-            $serverJs = "D:\claude optimiz\server.js"
+        $hubDir = Join-Path $env:USERPROFILE ".claude-ultimate-hub"
+        if (-not (Test-Path $hubDir)) {
+            New-Item -ItemType Directory -Path $hubDir -Force | Out-Null
+        }
+
+        $serverJs = Join-Path $hubDir "server.js"
+        $appHtml = Join-Path $hubDir "app.html"
+
+        if ($PSScriptRoot -and (Test-Path (Join-Path $PSScriptRoot "server.js"))) {
+            $serverJs = Join-Path $PSScriptRoot "server.js"
+            $appHtml = Join-Path $PSScriptRoot "app.html"
+        } elseif (-not (Test-Path $serverJs)) {
+            Write-Host "[>>] Downloading Control Center files from GitHub..." -ForegroundColor DarkGray
+            try {
+                Invoke-RestMethod -Uri "https://raw.githubusercontent.com/temkalt/claude-ultimate-hub/main/server.js" -OutFile $serverJs
+                Invoke-RestMethod -Uri "https://raw.githubusercontent.com/temkalt/claude-ultimate-hub/main/app.html" -OutFile $appHtml
+            } catch {
+                Write-Host "[-] Warning downloading server: $_" -ForegroundColor DarkGray
+            }
         }
 
         $nodeCmd = Get-Command "node" -ErrorAction SilentlyContinue
         if ($nodeCmd -and (Test-Path $serverJs)) {
-            Write-Host "[>>] Starting local execution bridge (node server.js)..." -ForegroundColor DarkGray
-            Start-Process -FilePath "node" -ArgumentList "`"$serverJs`"" -WindowStyle Hidden -ErrorAction SilentlyContinue
+            Write-Host "[>>] Starting local execution bridge (node server.js)..." -ForegroundColor Green
+            Start-Process -FilePath "node" -ArgumentList "`"$serverJs`"" -WorkingDirectory (Split-Path $serverJs) -WindowStyle Hidden -ErrorAction SilentlyContinue
             Start-Sleep -Milliseconds 800
             $targetUrl = "http://localhost:3456"
         } else {
-            $targetUrl = (Join-Path $PSScriptRoot "app.html")
-            if (-not (Test-Path $targetUrl)) {
-                $targetUrl = "D:\claude optimiz\app.html"
-            }
+            $targetUrl = $appHtml
         }
 
-        Write-Host "[OK] Opening Control Center: $targetUrl" -ForegroundColor Green
+        Write-Host "[OK] Opening Web Control Center: $targetUrl" -ForegroundColor Green
         Start-Process $targetUrl
     }
     '1' {

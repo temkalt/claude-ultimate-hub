@@ -554,7 +554,9 @@ body{
       </div>
 
       <div style="display:flex;align-items:center;gap:.6rem">
-        <a href="app.html" class="btn btn-primary btn-sm" style="box-shadow:none;text-decoration:none">⚡ <span id="btn-open-ctrl">Launch Web Control Center</span></a>
+        <button class="btn btn-primary btn-sm" onclick="openLaunchStudioModal()" style="box-shadow:none;cursor:pointer">
+          ⚡ <span id="btn-open-ctrl">Запустить Control Center</span>
+        </button>
         <div class="lang-switch">
           <button class="lang-btn active" onclick="setLang('en')">EN</button>
           <button class="lang-btn" onclick="setLang('ru')">RU</button>
@@ -566,20 +568,20 @@ body{
     <p class="header__sub" id="txt-sub">The world's largest engineering ecosystem: <strong>1,000+ verified tools</strong>, calibrated Master All-in-One profile (34 core global tools), token ROI calculator, Agency Studio, and 7-layer defense.</p>
     
     <div class="header__meta">
-    <span>💎 1,000+ Verified Tools</span>
-    <span>⚡ Zero-Bloat Calibration</span>
-    <span>🛡️ 7-Layer Defense</span>
-    <span>☁️ Vercel Edge Serverless</span>
-  </div>
+      <span>💎 1,000+ Verified Tools</span>
+      <span>⚡ Zero-Bloat Calibration</span>
+      <span>🛡️ 7-Layer Defense</span>
+      <span>⭐ Claude Code 2.1.235+</span>
+    </div>
 
-  <div style="display:flex;justify-content:center;gap:.9rem;margin-top:1.5rem;flex-wrap:wrap">
-    <a href="/app" class="btn btn-primary" style="font-weight:800;font-size:.92rem;padding:.8rem 1.8rem;box-shadow:0 0 25px rgba(255,255,255,.2)">
-      ⚡ Открыть Веб-Центр Управления (Web Studio)
-    </a>
-    <a href="#profiles" class="btn btn-secondary" style="font-size:.92rem;padding:.8rem 1.6rem">
-      🌟 Обзор 14 Профилей
-    </a>
-  </div>
+    <div style="display:flex;justify-content:center;gap:.9rem;margin-top:1.5rem;flex-wrap:wrap">
+      <button onclick="openLaunchStudioModal()" class="btn btn-primary" style="font-weight:800;font-size:.92rem;padding:.8rem 1.8rem;box-shadow:0 0 25px rgba(255,255,255,.2);cursor:pointer">
+        ⚡ Запустить Control Center на компьютере (1 команда)
+      </button>
+      <a href="#profiles" class="btn btn-secondary" style="font-size:.92rem;padding:.8rem 1.6rem;text-decoration:none">
+        🌟 Изучить 14 Профилей онлайн
+      </a>
+    </div>
     
     <div class="header__meta">
       <span>● Onyx Luxury Black</span>
@@ -2003,6 +2005,70 @@ document.querySelectorAll('.tab-btn').forEach(tab => {
     }
   });
 });
+
+function openLaunchStudioModal() {
+  const modalBody = document.getElementById('modal-body');
+  const isWindows = navigator.userAgent.indexOf('Win') !== -1;
+  const isMac = navigator.userAgent.indexOf('Mac') !== -1;
+
+  const psCmd = `irm https://raw.githubusercontent.com/temkalt/claude-ultimate-hub/main/install.ps1 | iex`;
+  const shCmd = `curl -fsSL https://raw.githubusercontent.com/temkalt/claude-ultimate-hub/main/install.sh | bash`;
+
+  modalBody.innerHTML = `
+    <div style="display:flex;align-items:center;gap:.8rem;margin-bottom:.8rem">
+      <span style="font-size:2.2rem">⚡</span>
+      <div>
+        <h3 style="font-size:1.35rem;font-weight:800;color:var(--text-pure)">Запуск Локального Control Center</h3>
+        <p style="font-size:.78rem;color:var(--accent-emerald);font-family:'JetBrains Mono',monospace" id="live-hub-detect-status">Проверка локального сервера...</p>
+      </div>
+    </div>
+
+    <p style="font-size:.85rem;color:var(--text-muted);line-height:1.6;margin-bottom:1.2rem">
+      Запустите 1 команду в терминале на вашем компьютере. Скрипт <strong>автоматически запустит локальный мост и откроет веб-интерфейс в браузере</strong> с прямым доступом к <code>~/.claude/</code>:
+    </p>
+
+    <div style="margin-bottom:1.1rem">
+      <div style="display:flex;justify-content:space-between;margin-bottom:.35rem;align-items:center">
+        <strong style="color:var(--text-pure);font-size:.8rem">💻 Windows (PowerShell):</strong>
+        <button class="btn btn-sm btn-secondary" onclick="navigator.clipboard.writeText('${psCmd}'); alert('Команда для PowerShell скопирована!');">📋 Скопировать</button>
+      </div>
+      <code style="display:block;padding:.75rem 1rem;background:var(--bg-main);border:1px solid var(--border-subtle);border-radius:var(--radius-xs);color:var(--text-pure);font-family:'JetBrains Mono',monospace;font-size:.8rem;word-break:break-all">${psCmd}</code>
+    </div>
+
+    <div style="margin-bottom:1.4rem">
+      <div style="display:flex;justify-content:space-between;margin-bottom:.35rem;align-items:center">
+        <strong style="color:var(--text-pure);font-size:.8rem">🐧 Linux & macOS (Bash):</strong>
+        <button class="btn btn-sm btn-secondary" onclick="navigator.clipboard.writeText('${shCmd}'); alert('Команда для Bash скопирована!');">📋 Скопировать</button>
+      </div>
+      <code style="display:block;padding:.75rem 1rem;background:var(--bg-main);border:1px solid var(--border-subtle);border-radius:var(--radius-xs);color:var(--text-pure);font-family:'JetBrains Mono',monospace;font-size:.8rem;word-break:break-all">${shCmd}</code>
+    </div>
+
+    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.8rem" id="modal-launch-actions">
+      <a href="http://localhost:3456" target="_blank" class="btn btn-emerald" id="btn-open-live-local">🌐 Открыть http://localhost:3456</a>
+      <button class="btn btn-secondary" onclick="closeModal()">Закрыть</button>
+    </div>
+  `;
+
+  document.getElementById('modal-overlay').style.display = 'flex';
+
+  // Probe local server
+  fetch('http://localhost:3456/api/status', { mode: 'cors' })
+    .then(res => res.json())
+    .then(data => {
+      const statusText = document.getElementById('live-hub-detect-status');
+      if (statusText) {
+        statusText.innerText = '🟢 Локальный сервер активен на порту 3456!';
+        statusText.style.color = 'var(--accent-emerald)';
+      }
+    })
+    .catch(() => {
+      const statusText = document.getElementById('live-hub-detect-status');
+      if (statusText) {
+        statusText.innerText = '⚪ Локальный сервер пока не запущен. Выполните команду выше в терминале.';
+        statusText.style.color = 'var(--text-muted)';
+      }
+    });
+}
 
 // ─── Init ──────────────────────────────────────────────────────
 selectProfile('Master');
